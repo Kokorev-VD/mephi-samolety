@@ -1,0 +1,247 @@
+% main.tex — объединенный файл документа
+\documentclass[12pt,a4paper]{article}
+
+% =============================================================================
+% КОНФИГУРАЦИЯ И ПРЕАМБУЛА
+% =============================================================================
+
+% --- конфигурация метаданных ---
+% config.tex — метаданные и макросы (прямые определения)
+\ProvidesFile{config.tex}[2025/10/24 MUFSIPA config]
+
+% ---------- Прямые значения (редактируйте по необходимости) ----------
+\newcommand{\Company}{Компания}
+\newcommand{\DocumentTitleMain}{Шаблончик}
+\newcommand{\DocumentTitleSub}{для оформления документиков}
+\newcommand{\Version}{1.0}
+\newcommand{\DocDate}{17.10.2025}
+\newcommand{\AuthorName}{Фамилия И.О.}
+\newcommand{\AgreedBy}{Фамилия И.О.}
+\newcommand{\ApprovedBy}{Фамилия И.О.}  % если пусто, оставьте как есть
+\newcommand{\City}{Москва}
+
+% --- преамбула и стили ---
+% preamble.tex — пакеты и глобальные установки, соблюдающие стиль документа
+\usepackage[utf8]{inputenc}
+\usepackage[T2A]{fontenc}
+\usepackage[russian]{babel}
+
+% Times New Roman-like
+\usepackage{newtxtext,newtxmath} % похож на Times; обеспечивает текст+математику
+\usepackage{setspace}
+\onehalfspacing % межстрочный интервал 1.5
+
+% Страницы
+\usepackage{geometry}
+\geometry{left=25mm,right=15mm,top=20mm,bottom=20mm}
+
+% отступ первой строки
+\usepackage{indentfirst}
+\setlength{\parindent}{1.25cm}
+
+% таблицы, картинки, списки, подписи
+\usepackage{graphicx}
+\usepackage{caption}
+\usepackage{subcaption}
+\captionsetup[table]{position=top}    % подпись таблицы над ней
+\captionsetup[figure]{position=bottom}% подпись рисунка под ним
+\usepackage{booktabs}
+\usepackage{tabularx}
+\usepackage{longtable}
+\usepackage{array}
+\usepackage{enumitem}
+\setlist[itemize]{left=0pt,label=\textbullet}
+\setlist[enumerate]{left=0pt,label=\arabic*.}
+
+% код и конфигурации
+\usepackage{listings}
+\lstset{basicstyle=\ttfamily\small,breaklines=true}
+
+% гиперссылки
+\usepackage{hyperref}
+\hypersetup{colorlinks=true,linkcolor=black,urlcolor=blue}
+
+\pagestyle{plain}  % только номер страницы внизу по центру
+
+% нумерация разделов — стандартная десятичная (article по умолчанию)
+% дополнительные удобства
+\usepackage{tocloft} % управление оглавлением
+\setlength{\cftbeforesecskip}{6pt}
+
+% небольшие утилиты
+\newcommand{\reqfield}[1]{\textbf{#1}:} % для шаблонов в приложениях
+
+\begin{document}
+
+% =============================================================================
+% ТИТУЛЬНЫЙ ЛИСТ
+% =============================================================================
+% titlepage.tex — титульный лист (первая часть названия жирная)
+\begin{titlepage}
+  \thispagestyle{empty} % убирает номер/колонтитул на этой странице
+  \centering
+  \vspace*{5.8cm}
+  {\Huge \textbf{\DocumentTitleMain}\par}
+  {\Large \vspace{4pt} \DocumentTitleSub \par} % вторая часть — обычным шрифтом, чуть ниже
+  \vspace{0.8cm}
+
+  {\large Версия: \Version \par}
+  {\large Дата: \DocDate \par}
+  \vspace{1.2cm}
+
+  % ----- Таблица с ролями -----
+  \centering
+  \begin{tabularx}{0.95\textwidth}{@{\hspace{6pt}}p{5.5cm} p{6cm} p{4cm}@{\hspace{6pt}}}
+    \toprule
+    \textbf{Роль} & \textbf{ФИО} & \textbf{Подпись / Дата} \\
+    \midrule
+    Разработал: & \AuthorName & \\
+    \addlinespace[6pt]
+    Согласовано: & \AgreedBy & \\
+    \addlinespace[6pt]
+    Утверждено: & \ApprovedBy & \\
+    \bottomrule
+  \end{tabularx}
+
+  \vfill
+  {\large г. \City, \the\year \par}
+\end{titlepage}
+
+% =============================================================================
+% ЖУРНАЛ ИЗМЕНЕНИЙ
+% =============================================================================
+% changes.tex — журнал изменений (образец)
+\section*{Лист регистрации изменений \texttt{[MUOSD.CHANGES]}}
+\addcontentsline{toc}{section}{Лист регистрации изменений}
+
+\begin{table}[h!]
+\centering
+\small
+\begin{tabularx}{\textwidth}{
+  >{\centering\arraybackslash}p{1.1cm}
+  >{\centering\arraybackslash}p{2.1cm}
+  p{2.3cm}
+  p{2.6cm}
+  p{1.6cm}
+  X
+  p{1.8cm}
+}
+\toprule
+\textbf{Версия} & \textbf{Дата} & \textbf{Автор} & \textbf{Изменённый элемент} & \textbf{Х-р изменения} & \textbf{Описание изменения} & \textbf{Утвердил} \\
+\midrule
+1.0 & 17.10.2025 & Фамилия И.О. & Весь документ & Добавлено & Первичный выпуск документа. & Фамилия И.О. \\
+\bottomrule
+\end{tabularx}
+\end{table}
+
+\clearpage
+\tableofcontents
+\clearpage
+
+% =============================================================================
+% ОСНОВНОЕ СОДЕРЖАНИЕ
+% =============================================================================
+
+% содержательная часть (модули)
+\section{Раздел \texttt{[SECTIONID]}}
+\subsection{Подраздел \texttt{[SUBSECTIONID]}}
+Умный текст
+
+\subsection{Еще один подраздел \texttt{[SUBSECTIONID]}}
+Еще умного текста
+
+\section{Раздел \texttt{[SECTIONID]}}
+\subsection{Подраздел \texttt{[SUBSECTIONID]}}
+Умный текст
+
+\subsection{Еще один подраздел \texttt{[SUBSECTIONID]}}
+Еще умного текста
+
+% =============================================================================
+% ПРИМЕРЫ ОФОРМЛЕНИЯ
+% =============================================================================
+
+\section{Примеры оформления рисунков}
+
+% figures.tex — шаблоны для оформления рисунков
+
+% =============================================================================
+% ПРИМЕР ВСТАВКИ ОДИНОЧНОГО РИСУНКА С ПОДПИСЬЮ
+% =============================================================================
+\begin{figure}[h!]
+    \centering
+    \includegraphics[width=0.8\textwidth]{example-image}
+    \caption{Подробное описание содержания рисунка.}
+    \label{fig:example}
+\end{figure}
+
+% =============================================================================
+% ШАБЛОН ДЛЯ НЕСКОЛЬКИХ РИСУНКОВ (SUBFIGURES)
+% =============================================================================
+\begin{figure}[h!]
+    \centering
+    
+    \begin{minipage}{0.45\textwidth}
+        \centering
+        \includegraphics[width=\textwidth]{example-image-a}
+        \subcaption{Описание первого рисунка}
+        \label{fig:example-a}
+    \end{minipage}
+    \hfill
+    \begin{minipage}{0.45\textwidth}
+        \centering
+        \includegraphics[width=\textwidth]{example-image-b}
+        \subcaption{Описание второго рисунка}
+        \label{fig:example-b}
+    \end{minipage}
+    
+    \caption{Общее описание группы связанных рисунков}
+    \label{fig:group}
+\end{figure}
+
+\section{Примеры оформления таблиц}
+
+% tables.tex — шаблоны для оформления таблиц
+
+% =============================================================================
+% БАЗОВАЯ ТАБЛИЦА С ЗАГОЛОВКАМИ
+% =============================================================================
+\begin{table}[h!]
+    \centering
+    \caption{Название таблицы}
+    \label{tab:example}
+    
+    \begin{tabularx}{0.9\textwidth}{lXl}
+        \toprule
+        \textbf{Колонка 1} & \textbf{Колонка 2} & \textbf{Колонка 3} \\
+        \midrule
+        Строка 1  & Описание элемента 1                               & 100 \\
+        Строка 2  & Длинное описание элемента 2, которое может 
+                    занимать несколько строк                         & 200 \\
+        Строка 3  & Описание элемента 3                               & 300 \\
+        \bottomrule
+    \end{tabularx}
+\end{table}
+
+% =============================================================================
+% ТАБЛИЦА С ГРУППИРОВКОЙ СТОЛБЦОВ
+% =============================================================================
+\begin{table}[h!]
+    \centering
+    \caption{Сложная таблица с группировкой}
+    \label{tab:complex}
+    
+    \begin{tabular}{lcccc}
+        \toprule
+                          & \multicolumn{2}{c}{\textbf{Группа A}} & \multicolumn{2}{c}{\textbf{Группа B}} \\
+        \cmidrule(lr){2-3} \cmidrule(lr){4-5}
+        \textbf{Элемент}  & Значение 1      & Значение 2      & Значение 1      & Значение 2      \\
+        \midrule
+        Элемент 1         & 10              & 20              & 30              & 40              \\
+        Элемент 2         & 15              & 25              & 35              & 45              \\
+        Элемент 3         & 12              & 22              & 32              & 42              \\
+        \bottomrule
+    \end{tabular}
+\end{table}
+
+\end{document}

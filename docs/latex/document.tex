@@ -1,0 +1,99 @@
+% Шаблон печатного представления. Содержимое подставляет docs/build_pdf.py.
+\documentclass[12pt,a4paper]{article}
+\usepackage{iftex}
+\ifPDFTeX
+  \usepackage[utf8]{inputenc}
+  \usepackage[T2A]{fontenc}
+  \usepackage{newtxtext,newtxmath}
+\else
+  \usepackage{fontspec}
+  \IfFontExistsTF{Times New Roman}
+    {\setmainfont{Times New Roman}}
+    {\setmainfont{Libertinus Serif}}
+  \IfFontExistsTF{Arial}{\setsansfont{Arial}}{\setsansfont{Latin Modern Sans}}
+  \IfFontExistsTF{Menlo}{\setmonofont{Menlo}[Scale=MatchLowercase]}
+    {\setmonofont{Latin Modern Mono}[Scale=MatchLowercase]}
+\fi
+\usepackage[russian]{babel}
+\usepackage{geometry}
+\geometry{left=25mm,right=15mm,top=20mm,bottom=20mm}
+\usepackage{setspace}
+\onehalfspacing
+\usepackage{indentfirst}
+\setlength{\parindent}{1.25cm}
+\setlength{\parskip}{2pt}
+\setlength{\emergencystretch}{3em}
+\usepackage{graphicx,booktabs,longtable,array,tabularx,calc,etoolbox}
+\usepackage{enumitem}
+\setlist[itemize]{leftmargin=1.25cm,itemsep=2pt,topsep=4pt}
+\setlist[enumerate]{leftmargin=1.25cm,itemsep=2pt,topsep=4pt}
+\newcommand{\tightlist}{\setlength{\itemsep}{0pt}\setlength{\parskip}{0pt}}
+\AtBeginEnvironment{longtable}{\small\singlespacing}
+\setlength{\LTpre}{8pt}
+\setlength{\LTpost}{8pt}
+\setlength{\tabcolsep}{5pt}
+\setlength{\LTleft}{0pt}
+\setlength{\LTright}{0pt}
+\usepackage{xurl}
+\usepackage[unicode,colorlinks=true,linkcolor=black,urlcolor=blue]{hyperref}
+\usepackage{bookmark}
+\hypersetup{pdftitle={@@TITLE@@},pdfauthor={Анохин Г.А.},pdfsubject={Криптотренажёр mephi-12}}
+\urlstyle{same}
+\pagestyle{plain}
+\setcounter{secnumdepth}{3}
+\setcounter{tocdepth}{2}
+
+\begin{document}
+\hypersetup{pageanchor=false}
+\begin{titlepage}
+  \thispagestyle{empty}
+  \centering
+  {\large НИЯУ МИФИ\par}
+  \vspace*{3.5cm}
+  {\LARGE\bfseries @@TITLE@@\par}
+  \vspace{0.5cm}
+  {\large @@DOCID@@\par}
+  \vspace{0.6cm}
+  {\large Платформа для изучения и практики курса по криптографии\par}
+  {\large Криптотренажёр mephi-12\par}
+  \vspace{0.7cm}
+  {\large Версия @@VERSION@@\par}
+  {\large Редакция от @@DATE@@\par}
+  \vspace{1cm}
+  \begin{tabularx}{\textwidth}{@{}p{3.4cm}Xp{4cm}@{}}
+    \toprule
+    Роль & ФИО & Подпись / Дата \\
+    \midrule
+    Разработал & Анохин Г.А. & \\
+    \addlinespace[6pt]
+    Согласовано & & \\
+    \addlinespace[6pt]
+    Утверждено & & \\
+    \bottomrule
+  \end{tabularx}
+  \vfill
+  {\large Москва, 2026\par}
+\end{titlepage}
+\hypersetup{pageanchor=true}
+
+\section*{Лист регистрации изменений}
+\addcontentsline{toc}{section}{Лист регистрации изменений}
+\begingroup\small\singlespacing
+\noindent
+\begin{tabularx}{\textwidth}{@{}p{1.2cm}p{2cm}p{2.5cm}Xp{1.8cm}@{}}
+\toprule
+Версия & Дата & Автор & Содержание изменения & Утвердил \\
+\midrule
+@@VERSION@@ & @@DATE@@ & Анохин Г.А. & @@CHANGE@@ & \\
+\bottomrule
+\end{tabularx}
+\endgroup
+\clearpage
+\begingroup\small\singlespacing
+\tableofcontents
+\endgroup
+\clearpage
+
+@@BODY@@
+
+\end{document}

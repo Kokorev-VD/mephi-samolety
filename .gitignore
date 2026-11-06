@@ -1,2 +1,12 @@
 /AGENTS.md
 /.codex/
+.DS_Store
+/docs/.build/
+*.aux
+*.log
+*.out
+*.toc
+*.xdv
+*.synctex.gz
+*.fls
+*.fdb_latexmk

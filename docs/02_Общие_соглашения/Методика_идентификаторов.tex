@@ -1,0 +1,179 @@
+% Источники: 02_Общие_соглашения/Методика_идентификаторов.md
+% Генератор: docs/build_pdf.py
+% Шаблон печатного представления. Содержимое подставляет docs/build_pdf.py.
+\documentclass[12pt,a4paper]{article}
+\usepackage{iftex}
+\ifPDFTeX
+  \usepackage[utf8]{inputenc}
+  \usepackage[T2A]{fontenc}
+  \usepackage{newtxtext,newtxmath}
+\else
+  \usepackage{fontspec}
+  \IfFontExistsTF{Times New Roman}
+    {\setmainfont{Times New Roman}}
+    {\setmainfont{Libertinus Serif}}
+  \IfFontExistsTF{Arial}{\setsansfont{Arial}}{\setsansfont{Latin Modern Sans}}
+  \IfFontExistsTF{Menlo}{\setmonofont{Menlo}[Scale=MatchLowercase]}
+    {\setmonofont{Latin Modern Mono}[Scale=MatchLowercase]}
+\fi
+\usepackage[russian]{babel}
+\usepackage{geometry}
+\geometry{left=25mm,right=15mm,top=20mm,bottom=20mm}
+\usepackage{setspace}
+\onehalfspacing
+\usepackage{indentfirst}
+\setlength{\parindent}{1.25cm}
+\setlength{\parskip}{2pt}
+\setlength{\emergencystretch}{3em}
+\usepackage{graphicx,booktabs,longtable,array,tabularx,calc,etoolbox}
+\usepackage{enumitem}
+\setlist[itemize]{leftmargin=1.25cm,itemsep=2pt,topsep=4pt}
+\setlist[enumerate]{leftmargin=1.25cm,itemsep=2pt,topsep=4pt}
+\newcommand{\tightlist}{\setlength{\itemsep}{0pt}\setlength{\parskip}{0pt}}
+\AtBeginEnvironment{longtable}{\small\singlespacing}
+\setlength{\LTpre}{8pt}
+\setlength{\LTpost}{8pt}
+\setlength{\tabcolsep}{5pt}
+\setlength{\LTleft}{0pt}
+\setlength{\LTright}{0pt}
+\usepackage{xurl}
+\usepackage[unicode,colorlinks=true,linkcolor=black,urlcolor=blue]{hyperref}
+\usepackage{bookmark}
+\hypersetup{pdftitle={Методика идентификаторов},pdfauthor={Анохин Г.А.},pdfsubject={Криптотренажёр mephi-12}}
+\urlstyle{same}
+\pagestyle{plain}
+\setcounter{secnumdepth}{3}
+\setcounter{tocdepth}{2}
+
+\begin{document}
+\hypersetup{pageanchor=false}
+\begin{titlepage}
+  \thispagestyle{empty}
+  \centering
+  {\large НИЯУ МИФИ\par}
+  \vspace*{3.5cm}
+  {\LARGE\bfseries Методика идентификаторов\par}
+  \vspace{0.5cm}
+  {\large Методика ID\par}
+  \vspace{0.6cm}
+  {\large Платформа для изучения и практики курса по криптографии\par}
+  {\large Криптотренажёр mephi-12\par}
+  \vspace{0.7cm}
+  {\large Версия 0.3\par}
+  {\large Редакция от 07.11.2026\par}
+  \vspace{1cm}
+  \begin{tabularx}{\textwidth}{@{}p{3.4cm}Xp{4cm}@{}}
+    \toprule
+    Роль & ФИО & Подпись / Дата \\
+    \midrule
+    Разработал & Анохин Г.А. & \\
+    \addlinespace[6pt]
+    Согласовано & & \\
+    \addlinespace[6pt]
+    Утверждено & & \\
+    \bottomrule
+  \end{tabularx}
+  \vfill
+  {\large Москва, 2026\par}
+\end{titlepage}
+\hypersetup{pageanchor=true}
+
+\section*{Лист регистрации изменений}
+\addcontentsline{toc}{section}{Лист регистрации изменений}
+\begingroup\small\singlespacing
+\noindent
+\begin{tabularx}{\textwidth}{@{}p{1.2cm}p{2cm}p{2.5cm}Xp{1.8cm}@{}}
+\toprule
+Версия & Дата & Автор & Содержание изменения & Утвердил \\
+\midrule
+0.3 & 07.11.2026 & Анохин Г.А. & Уточнены правила и контракты; расширено описание сценариев; подготовлена печатная редакция. & \\
+\bottomrule
+\end{tabularx}
+\endgroup
+\clearpage
+\begingroup\small\singlespacing
+\tableofcontents
+\endgroup
+\clearpage
+
+\hypertarget{методика-идентификаторов}{}
+
+Версия: 0.3. Дата: 07.11.2026. Ответственный: Анохин Г.А. Методика действует для требований этой редакции.
+
+\section{Область действия}\label{ux43eux431ux43bux430ux441ux442ux44c-ux434ux435ux439ux441ux442ux432ux438ux44f}
+
+Методика задаёт обозначения требований и связей в \href{https://github.com/Kokorev-VD/mephi-samolety/blob/main/docs/README.md}{текущей редакции}. Схема «тип-домен-номер» сохраняет идентификаторы ранее подготовленных Markdown-требований сессий. Это соглашение проекта; оно не объявляется обязательным форматом какого-либо стандарта.
+
+В исходной \href{https://github.com/Kokorev-VD/mephi-samolety/blob/main/notes/methodology/id-methodology.md}{методике комплекта} используются плоские номера \texttt{SR-001}, \texttt{SWR-001}. Они не переименовываются этой редакцией. При переносе редактор указывает соответствие между прежним и новым обозначением; оно должно подтверждаться смыслом требования. Совпадение номера не доказывает совпадение смысла.
+
+\section{Форматы}\label{ux444ux43eux440ux43cux430ux442ux44b}
+
+{\def\LTcaptype{none} % do not increment counter
+\begin{longtable}[]{@{}
+  >{\raggedright\arraybackslash}p{(\linewidth - 2\tabcolsep) * \real{0.3200}}
+  >{\raggedright\arraybackslash}p{(\linewidth - 2\tabcolsep) * \real{0.6800}}@{}}
+\toprule\noalign{}
+\begin{minipage}[b]{\linewidth}\raggedright
+Объект
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright
+Обозначение
+\end{minipage} \\
+\midrule\noalign{}
+\endhead
+\bottomrule\noalign{}
+\endlastfoot
+Документ & \texttt{DOC-NN}; для подсистем допускается суффикс \texttt{.N} \\
+Системное требование & \texttt{SR-ДОМЕН-NNN} \\
+Программное требование & \texttt{SWR-ДОМЕН-NNN} \\
+Описательный проверочный кейс & \texttt{TC-ДОМЕН-NNN} \\
+Зарегистрированное замечание & \texttt{DEF-NNN} \\
+\end{longtable}
+}
+
+Номер начинается с \texttt{001}; для SR, SWR и TC он выдаётся отдельно внутри каждого домена. В обозначении используются латинские буквы, цифры и обычный дефис. Маркеры требований действующего ТЗ, например \texttt{[TS.\allowbreak{}REQ.\allowbreak{}FUNC.\allowbreak{}SESSION.\allowbreak{}CREATE]}, сохраняются в исходном виде.
+
+{\def\LTcaptype{none} % do not increment counter
+\begin{longtable}[]{@{}
+  >{\raggedright\arraybackslash}p{(\linewidth - 4\tabcolsep) * \real{0.3219}}
+  >{\raggedright\arraybackslash}p{(\linewidth - 4\tabcolsep) * \real{0.3563}}
+  >{\raggedright\arraybackslash}p{(\linewidth - 4\tabcolsep) * \real{0.3219}}@{}}
+\toprule\noalign{}
+\begin{minipage}[b]{\linewidth}\raggedright
+Домен
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright
+Область
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright
+Владелец по плану
+\end{minipage} \\
+\midrule\noalign{}
+\endhead
+\bottomrule\noalign{}
+\endlastfoot
+\texttt{AUTH} & Аутентификация и пользователи & Кокорев \\
+\texttt{SES} & Сессии задач и планировщик & Анохин \\
+\texttt{KNAP} & Ранцевые криптосистемы & Георгиев \\
+\texttt{BDR} & Учебная бэкдор-атака & Минасов \\
+\texttt{ELG} & Эль-Гамаль & Портнов \\
+\texttt{CFG} & Конфигурации, модерация и инфраструктура & Самбьюи \\
+\texttt{SYS} & Общие требования и интеграция & Редактор совместно с владельцами \\
+\end{longtable}
+}
+
+\section{Правила ведения}\label{ux43fux440ux430ux432ux438ux43bux430-ux432ux435ux434ux435ux43dux438ux44f}
+
+Автор выдаёт свободный ID в своём домене. Один ID обозначает одну проверяемую обязанность или неделимую реакцию на событие. При уточнении того же требования ID сохраняется. Для замены другим требованием указываются старый и новый ID; отменённый номер повторно не выдаётся. Перенос между файлами не меняет ID.
+
+Каждое требование содержит формулировку, источник, приоритет и способ проверки. Общие значения этих полей можно задать перед группой требований. Приоритеты: обязательный, желательный, необязательный. Приоритет требования не заменяет состояние документа или факт его согласования.
+
+В источнике указывается требование ТЗ, более высокого уровня или предметный сценарий. Если исходные документы расходятся, связь сопровождается пояснением; её нельзя выдавать за полное соответствие. Общее требование определяется один раз. В родительских документах и таблицах используются ссылки на его определение.
+
+\section{Трассировка}\label{ux442ux440ux430ux441ux441ux438ux440ux43eux432ux43aux430}
+
+Для подготовленных программных требований указываются реальные системные источники. Связи с TC добавляются после подготовки самих кейсов. До этого в таблице указывается описательный способ проверки без вымышленного номера TC.
+
+Полную матрицу SR, SWR и TC ведёт Портнов. Автор домена передаёт ему свои определения и связи. Назначение номера кейсу не означает, что проверка выполнена. DEF присваивается только зарегистрированному замечанию фактической инспекции.
+
+История: 05.11.2026 --- подготовлена рабочая редакция для второго спринта; сохранены \texttt{SR-SES-001}--\texttt{SR-SES-010}, добавлено правило учёта времени поступления ответа.
+
+
+\end{document}

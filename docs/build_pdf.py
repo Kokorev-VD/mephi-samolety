@@ -17,18 +17,18 @@ REPO = ROOT.parent
 DATE = "07.11.2026"
 DOCUMENTS = [
     {
-        "id": "DOC-05", "version": "0.3",
+        "id": "DOC-05", "version": "0.4",
         "title": "Системные требования. Сессии задач и интеграция",
         "sources": ["04_Системные_требования/DOC-05_Системные_требования.md",
                     "04_Системные_требования/Сессии_задач.md",
                     "04_Системные_требования/Интеграция.md"],
     },
     {
-        "id": "DOC-06", "version": "0.5", "title": "Сводные программные требования",
+        "id": "DOC-06", "version": "0.6", "title": "Сводные программные требования",
         "sources": ["07_Программные_требования/DOC-06_Программные_требования.md"],
     },
     {
-        "id": "DOC-06.2", "version": "0.8", "title": "Сессии задач и планировщик",
+        "id": "DOC-06.2", "version": "0.9", "title": "Сессии задач и планировщик",
         "sources": ["07_Программные_требования/DOC-06.2_Сессии_задач_и_планировщик.md",
                     "07_Программные_требования/Контракты_сессий.md"],
     },
@@ -45,6 +45,14 @@ DOCUMENTS = [
         "sources": ["03_Карточки_доменов/Сессии_задач.md"],
     },
 ]
+ROOT_EXPORTS = {
+    "DOC-05": "04_Системные_требования/DOC-05_Системные_требования.pdf",
+    "DOC-06": "07_Программные_требования/DOC-06_Программные_требования.pdf",
+    "DOC-06.2": "07_Программные_требования/DOC-06.2_Сессии_задач_и_планировщик.pdf",
+    "Методика ID": "notes/methodology/Методика_идентификаторов.pdf",
+    "Глоссарий": "notes/methodology/Глоссарий.pdf",
+    "Карточка домена": "notes/domains/Сессии_задач.pdf",
+}
 
 
 def run(command, **kwargs):
@@ -78,6 +86,8 @@ def slug(title):
 
 
 def pdf_path(document):
+    if "root_pdf" in document:
+        return REPO / document["root_pdf"]
     return (ROOT / document["sources"][0]).with_suffix(".pdf")
 
 
@@ -153,6 +163,8 @@ def main():
     parser.add_argument("--pandoc", default=os.environ.get("PANDOC", "pandoc"))
     parser.add_argument("--tectonic", default=os.environ.get("TECTONIC", "tectonic"))
     parser.add_argument("--tex-only", action="store_true")
+    parser.add_argument("--root-copies", action="store_true",
+                        help="Также обновить .tex и .pdf в исходных корневых папках")
     args = parser.parse_args()
     pandoc = shutil.which(args.pandoc)
     tectonic = shutil.which(args.tectonic)
@@ -170,8 +182,14 @@ def main():
             owners[path] = document
             title = next(block for block in ast["blocks"] if block["t"] == "Header" and block["c"][0] == 1)
             headings[path] = slug(inline_text(title["c"][2]))
+    jobs = [(document, owners) for document in DOCUMENTS]
+    if args.root_copies:
+        root_documents = [{**document, "root_pdf": ROOT_EXPORTS[document["id"]]} for document in DOCUMENTS]
+        root_owners = {(ROOT / source).resolve(): document
+                       for document in root_documents for source in document["sources"]}
+        jobs.extend((document, root_owners) for document in root_documents)
     report = []
-    for index, document in enumerate(DOCUMENTS):
+    for index, (document, group_owners) in enumerate(jobs):
         combined = None
         for position, source in enumerate(document["sources"]):
             path = (ROOT / source).resolve()
@@ -188,12 +206,14 @@ def main():
                     if inlines and inlines[0]["t"] == "Str" and re.fullmatch(r"\d+\.", inlines[0]["c"]):
                         block["c"][2] = inlines[2:] if len(inlines) > 1 and inlines[1]["t"] == "Space" else inlines[1:]
                 blocks.append(block)
-            ast["blocks"] = transform(blocks, path, document, owners, headings)
+                if block["t"] == "Header":
+                    blocks.append({"t": "RawBlock", "c": ["latex", r"\hypertarget{" + block["c"][1][0] + "}{}"]})
+            ast["blocks"] = transform(blocks, path, document, group_owners, headings)
             if combined is None:
                 combined = ast
             else:
                 combined["blocks"].extend(ast["blocks"])
-        body = run([pandoc, "-f", "json", "-t", "latex", "--wrap=none"], input=json.dumps(combined, ensure_ascii=False), capture_output=True).stdout
+        body = run([pandoc, "-f", "json", "-t", "latex", "--wrap=none", "--no-highlight"], input=json.dumps(combined, ensure_ascii=False), capture_output=True).stdout
         values = {"TITLE": document["title"], "DOCID": document["id"], "VERSION": document["version"],
                   "DATE": DATE, "CHANGE": "Уточнены правила и контракты; расширено описание сценариев; подготовлена печатная редакция."}
         tex = template
@@ -213,9 +233,14 @@ def main():
                 print(result.stdout)
                 raise SystemExit("Не собран " + target.name)
             shutil.copyfile(outdir / target.with_suffix(".pdf").name, pdf_path(document))
-        report.append({"id": document["id"], "tex": str(target.relative_to(ROOT)),
-                       "pdf": str(pdf_path(document).relative_to(ROOT)), "sources": document["sources"]})
-        print(document["id"] + ": " + target.name, flush=True)
+        if "root_pdf" in document and document["id"] == "DOC-05":
+            alias = REPO / "04_Системные_требования/Системные_требования.tex"
+            shutil.copyfile(target, alias)
+            if not args.tex_only:
+                shutil.copyfile(pdf_path(document), alias.with_suffix(".pdf"))
+        report.append({"id": document["id"], "tex": str(target.relative_to(REPO)),
+                       "pdf": str(pdf_path(document).relative_to(REPO)), "sources": document["sources"]})
+        print(document["id"] + ": " + str(target.relative_to(REPO)), flush=True)
     (build / "documents.json").write_text(json.dumps(report, ensure_ascii=False, indent=2))
 
 

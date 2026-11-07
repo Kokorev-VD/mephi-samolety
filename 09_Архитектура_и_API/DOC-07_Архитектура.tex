@@ -1,0 +1,312 @@
+% Источники: 09_Архитектура_и_API/DOC-07_Архитектура.md
+% Генератор: docs/build_pdf.py
+% Шаблон печатного представления. Содержимое подставляет docs/build_pdf.py.
+\documentclass[12pt,a4paper]{article}
+\usepackage{iftex}
+\ifPDFTeX
+  \usepackage[utf8]{inputenc}
+  \usepackage[T2A]{fontenc}
+  \usepackage{newtxtext,newtxmath}
+\else
+  \usepackage{fontspec}
+  \IfFontExistsTF{Times New Roman}
+    {\setmainfont{Times New Roman}}
+    {\setmainfont{Libertinus Serif}}
+  \IfFontExistsTF{Arial}{\setsansfont{Arial}}{\setsansfont{Latin Modern Sans}}
+  \IfFontExistsTF{Menlo}{\setmonofont{Menlo}[Scale=MatchLowercase]}
+    {\setmonofont{Latin Modern Mono}[Scale=MatchLowercase]}
+\fi
+\usepackage[russian]{babel}
+\usepackage{geometry}
+\geometry{left=25mm,right=15mm,top=20mm,bottom=20mm}
+\usepackage{setspace}
+\onehalfspacing
+\usepackage{indentfirst}
+\setlength{\parindent}{1.25cm}
+\setlength{\parskip}{2pt}
+\setlength{\emergencystretch}{3em}
+\usepackage{graphicx,booktabs,longtable,array,tabularx,calc,etoolbox}
+\usepackage{enumitem}
+\setlist[itemize]{leftmargin=1.25cm,itemsep=2pt,topsep=4pt}
+\setlist[enumerate]{leftmargin=1.25cm,itemsep=2pt,topsep=4pt}
+\newcommand{\tightlist}{\setlength{\itemsep}{0pt}\setlength{\parskip}{0pt}}
+\AtBeginEnvironment{longtable}{\small\singlespacing}
+\setlength{\LTpre}{8pt}
+\setlength{\LTpost}{8pt}
+\setlength{\tabcolsep}{5pt}
+\setlength{\LTleft}{0pt}
+\setlength{\LTright}{0pt}
+\usepackage{xurl}
+\usepackage[unicode,colorlinks=true,linkcolor=black,urlcolor=blue]{hyperref}
+\usepackage{bookmark}
+\hypersetup{pdftitle={Архитектура ПО},pdfauthor={Георгиев Д.Д.},pdfsubject={Криптотренажёр mephi-12}}
+\urlstyle{same}
+\pagestyle{plain}
+\setcounter{secnumdepth}{3}
+\setcounter{tocdepth}{2}
+
+\begin{document}
+\hypersetup{pageanchor=false}
+\begin{titlepage}
+  \thispagestyle{empty}
+  \centering
+  {\large НИЯУ МИФИ\par}
+  \vspace*{3.5cm}
+  {\LARGE\bfseries Архитектура ПО\par}
+  \vspace{0.5cm}
+  {\large DOC-07\par}
+  \vspace{0.6cm}
+  {\large Платформа для изучения и практики курса по криптографии\par}
+  {\large Криптотренажёр mephi-12\par}
+  \vspace{0.7cm}
+  {\large Версия 0.5\par}
+  {\large Редакция от 07.11.2026\par}
+  \vspace{1cm}
+  \begin{tabularx}{\textwidth}{@{}p{3.4cm}Xp{4cm}@{}}
+    \toprule
+    Роль & ФИО & Подпись / Дата \\
+    \midrule
+    Разработал & Георгиев Д.Д. & \\
+    \addlinespace[6pt]
+    Согласовано & & \\
+    \addlinespace[6pt]
+    Утверждено & & \\
+    \bottomrule
+  \end{tabularx}
+  \vfill
+  {\large Москва, 2026\par}
+\end{titlepage}
+\hypersetup{pageanchor=true}
+
+\section*{Лист регистрации изменений}
+\addcontentsline{toc}{section}{Лист регистрации изменений}
+\begingroup\small\singlespacing
+\noindent
+\begin{tabularx}{\textwidth}{@{}p{1.2cm}p{2cm}p{2.5cm}Xp{1.8cm}@{}}
+\toprule
+Версия & Дата & Автор & Содержание изменения & Утвердил \\
+\midrule
+0.5 & 07.11.2026 & Георгиев Д.Д. & Подготовлен проект архитектуры: слои, компоненты и связи, развёртывание, соответствие требованиям. & \\
+\bottomrule
+\end{tabularx}
+\endgroup
+\clearpage
+\begingroup\small\singlespacing
+\tableofcontents
+\endgroup
+\clearpage
+
+\hypertarget{doc-07-архитектура-по}{}
+
+{\def\LTcaptype{none} % do not increment counter
+\begin{longtable}[]{@{}
+  >{\raggedright\arraybackslash}p{(\linewidth - 2\tabcolsep) * \real{0.3200}}
+  >{\raggedright\arraybackslash}p{(\linewidth - 2\tabcolsep) * \real{0.6800}}@{}}
+\toprule\noalign{}
+\begin{minipage}[b]{\linewidth}\raggedright
+Поле
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright
+Значение
+\end{minipage} \\
+\midrule\noalign{}
+\endhead
+\bottomrule\noalign{}
+\endlastfoot
+Версия & 0.5 \\
+Дата & 07.11.2026 \\
+Ответственный & Георгиев Д.Д. \\
+Основания & \href{../07_\%D0\%9F\%D1\%80\%D0\%BE\%D0\%B3\%D1\%80\%D0\%B0\%D0\%BC\%D0\%BC\%D0\%BD\%D1\%8B\%D0\%B5_\%D1\%82\%D1\%80\%D0\%B5\%D0\%B1\%D0\%BE\%D0\%B2\%D0\%B0\%D0\%BD\%D0\%B8\%D1\%8F/DOC-06_\%D0\%9F\%D1\%80\%D0\%BE\%D0\%B3\%D1\%80\%D0\%B0\%D0\%BC\%D0\%BC\%D0\%BD\%D1\%8B\%D0\%B5_\%D1\%82\%D1\%80\%D0\%B5\%D0\%B1\%D0\%BE\%D0\%B2\%D0\%B0\%D0\%BD\%D0\%B8\%D1\%8F.pdf\#nameddest=doc-06-\%D1\%81\%D0\%B2\%D0\%BE\%D0\%B4\%D0\%BD\%D1\%8B\%D0\%B5-\%D0\%BF\%D1\%80\%D0\%BE\%D0\%B3\%D1\%80\%D0\%B0\%D0\%BC\%D0\%BC\%D0\%BD\%D1\%8B\%D0\%B5-\%D1\%82\%D1\%80\%D0\%B5\%D0\%B1\%D0\%BE\%D0\%B2\%D0\%B0\%D0\%BD\%D0\%B8\%D1\%8F}{DOC-06}; \href{../02_\%D0\%A2\%D0\%B5\%D1\%85\%D0\%BD\%D0\%B8\%D1\%87\%D0\%B5\%D1\%81\%D0\%BA\%D0\%BE\%D0\%B5_\%D0\%B7\%D0\%B0\%D0\%B4\%D0\%B0\%D0\%BD\%D0\%B8\%D0\%B5/\%D0\%A2\%D0\%B5\%D1\%85\%D0\%BD\%D0\%B8\%D1\%87\%D0\%B5\%D1\%81\%D0\%BA\%D0\%BE\%D0\%B5_\%D0\%B7\%D0\%B0\%D0\%B4\%D0\%B0\%D0\%BD\%D0\%B8\%D0\%B5.pdf}{ТЗ, раздел «Архитектура и взаимодействие»}; карточки доменов в \texttt{notes/domains/} \\
+Плановый срок & v1.0 --- 15.11.2026 \\
+\end{longtable}
+}
+
+\section{Назначение и границы}\label{1-ux43dux430ux437ux43dux430ux447ux435ux43dux438ux435-ux438-ux433ux440ux430ux43dux438ux446ux44b}
+
+\hypertarget{1-назначение-и-границы}{}
+
+Документ описывает архитектуру ПО криптотренажёра mephi-12: состав программных компонентов, их размещение по слоям, связи и развёртывание. Он показывает, где в системе размещаются обязательства, определённые \href{../07_\%D0\%9F\%D1\%80\%D0\%BE\%D0\%B3\%D1\%80\%D0\%B0\%D0\%BC\%D0\%BC\%D0\%BD\%D1\%8B\%D0\%B5_\%D1\%82\%D1\%80\%D0\%B5\%D0\%B1\%D0\%BE\%D0\%B2\%D0\%B0\%D0\%BD\%D0\%B8\%D1\%8F/DOC-06_\%D0\%9F\%D1\%80\%D0\%BE\%D0\%B3\%D1\%80\%D0\%B0\%D0\%BC\%D0\%BC\%D0\%BD\%D1\%8B\%D0\%B5_\%D1\%82\%D1\%80\%D0\%B5\%D0\%B1\%D0\%BE\%D0\%B2\%D0\%B0\%D0\%BD\%D0\%B8\%D1\%8F.pdf\#nameddest=doc-06-\%D1\%81\%D0\%B2\%D0\%BE\%D0\%B4\%D0\%BD\%D1\%8B\%D0\%B5-\%D0\%BF\%D1\%80\%D0\%BE\%D0\%B3\%D1\%80\%D0\%B0\%D0\%BC\%D0\%BC\%D0\%BD\%D1\%8B\%D0\%B5-\%D1\%82\%D1\%80\%D0\%B5\%D0\%B1\%D0\%BE\%D0\%B2\%D0\%B0\%D0\%BD\%D0\%B8\%D1\%8F}{DOC-06} и подсистемными требованиями, и не вводит новых требований. Математические алгоритмы, форматы операций и состав требований здесь не дублируются --- на них даются ссылки.
+
+Источником фактов об реализации служат карточки доменов Спринта 1 (\texttt{notes/domains/*.md}) и каталог эндпоинтов (\texttt{notes/\allowbreak{}api/\allowbreak{}endpoints.\allowbreak{}md}), сверенные с кодом \texttt{mephi-12/backend}. Технологии зафиксированы \href{../02_\%D0\%A2\%D0\%B5\%D1\%85\%D0\%BD\%D0\%B8\%D1\%87\%D0\%B5\%D1\%81\%D0\%BA\%D0\%BE\%D0\%B5_\%D0\%B7\%D0\%B0\%D0\%B4\%D0\%B0\%D0\%BD\%D0\%B8\%D0\%B5/\%D0\%A2\%D0\%B5\%D1\%85\%D0\%BD\%D0\%B8\%D1\%87\%D0\%B5\%D1\%81\%D0\%BA\%D0\%BE\%D0\%B5_\%D0\%B7\%D0\%B0\%D0\%B4\%D0\%B0\%D0\%BD\%D0\%B8\%D0\%B5.pdf}{ТЗ}: Kotlin 1.9.25, Spring Boot 3.4.0 (Web, JPA, Security, Validation), PostgreSQL 17, Docker/docker-compose.
+
+\section{Общий облик системы}\label{2-ux43eux431ux449ux438ux439-ux43eux431ux43bux438ux43a-ux441ux438ux441ux442ux435ux43cux44b}
+
+\hypertarget{2-общий-облик-системы}{}
+
+Система --- монолитное серверное приложение со слоистой структурой и одной внешней зависимостью: реляционной базой данных. Все компоненты выполняются в одном процессе; отдельные сервисы, брокеры сообщений и внешние хранилища не используются. Разделение на слои определяет направление зависимостей: внешний запрос проходит слои сверху вниз, предметные вычисления не обращаются к приёму операций.
+
+{\def\LTcaptype{none} % do not increment counter
+\begin{longtable}[]{@{}
+  >{\raggedright\arraybackslash}p{(\linewidth - 4\tabcolsep) * \real{0.2275}}
+  >{\raggedright\arraybackslash}p{(\linewidth - 4\tabcolsep) * \real{0.3913}}
+  >{\raggedright\arraybackslash}p{(\linewidth - 4\tabcolsep) * \real{0.3812}}@{}}
+\toprule\noalign{}
+\begin{minipage}[b]{\linewidth}\raggedright
+Слой
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright
+Назначение
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright
+Основные элементы
+\end{minipage} \\
+\midrule\noalign{}
+\endhead
+\bottomrule\noalign{}
+\endlastfoot
+Приём операций & HTTP-приём, аутентификация, авторизация, разбор параметров, единое представление ошибок & Контроллеры, \texttt{JwtFilter}, \texttt{SecurityConfig}, \texttt{ExceptionResolver} \\
+Оркестрация & Пользовательские сценарии: coordination доступа, конфигураций, генерации и проверки & \texttt{AuthService}, \texttt{UserService}, \texttt{GroupConfigService}, \texttt{ProblemDecorator}, \texttt{HistoryService} \\
+Предметные домены & Генерация условий и математическая проверка решений & Ранцевые решатели и проверяющий, Эль-Гамаль с математической библиотекой, бэкдор-генератор \\
+Хранение & Сохранение и чтение данных, согласованность изменений & JPA-сущности, Spring Data-репозитории, конвертеры списковых величин \\
+Фоновый контроль & Завершение просроченных задач по расписанию & \texttt{ProblemAutoFailScheduler} \\
+\end{longtable}
+}
+
+\section{Компоненты и связи}\label{3-ux43aux43eux43cux43fux43eux43dux435ux43dux442ux44b-ux438-ux441ux432ux44fux437ux438}
+
+\hypertarget{3-компоненты-и-связи}{}
+
+Компоненты соответствуют распределению ответственности \href{../07_\%D0\%9F\%D1\%80\%D0\%BE\%D0\%B3\%D1\%80\%D0\%B0\%D0\%BC\%D0\%BC\%D0\%BD\%D1\%8B\%D0\%B5_\%D1\%82\%D1\%80\%D0\%B5\%D0\%B1\%D0\%BE\%D0\%B2\%D0\%B0\%D0\%BD\%D0\%B8\%D1\%8F/DOC-06_\%D0\%9F\%D1\%80\%D0\%BE\%D0\%B3\%D1\%80\%D0\%B0\%D0\%BC\%D0\%BC\%D0\%BD\%D1\%8B\%D0\%B5_\%D1\%82\%D1\%80\%D0\%B5\%D0\%B1\%D0\%BE\%D0\%B2\%D0\%B0\%D0\%BD\%D0\%B8\%D1\%8F.pdf\#nameddest=2-\%D0\%BE\%D1\%82\%D0\%B2\%D0\%B5\%D1\%82\%D1\%81\%D1\%82\%D0\%B2\%D0\%B5\%D0\%BD\%D0\%BD\%D0\%BE\%D1\%81\%D1\%82\%D1\%8C-\%D0\%B8-\%D1\%81\%D0\%B2\%D1\%8F\%D0\%B7\%D0\%B8}{DOC-06}; ниже они дополнены привязкой к реализации и владельцу. Имена классов --- фактические сведения реализации, а не архитектурное ограничение.
+
+{\def\LTcaptype{none} % do not increment counter
+\begin{longtable}[]{@{}
+  >{\raggedright\arraybackslash}p{(\linewidth - 6\tabcolsep) * \real{0.2047}}
+  >{\raggedright\arraybackslash}p{(\linewidth - 6\tabcolsep) * \real{0.3306}}
+  >{\raggedright\arraybackslash}p{(\linewidth - 6\tabcolsep) * \real{0.2601}}
+  >{\raggedright\arraybackslash}p{(\linewidth - 6\tabcolsep) * \real{0.2047}}@{}}
+\toprule\noalign{}
+\begin{minipage}[b]{\linewidth}\raggedright
+Компонент
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright
+Ответственность
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright
+Реализация
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright
+Владелец
+\end{minipage} \\
+\midrule\noalign{}
+\endhead
+\bottomrule\noalign{}
+\endlastfoot
+Проверка доступа & Аутентификация по JWT, роли, контекст пользователя & \texttt{AuthController}, \texttt{JwtFilter}, \texttt{JwtParser}, \texttt{SecurityConfig} & Кокорев \\
+Пользователи и группы & Учётные записи, вступление в группы, история задач & \texttt{UserController}, \texttt{UserService}, \texttt{UserGroupService} & Кокорев \\
+Конфигурации и модерация & Доступный состав наборов, признак включения, просмотр сессий & \texttt{GroupConfigService}, \texttt{ModeratorController} & Самбьюи \\
+Управление сессиями & Создание набора, допуск и обработка ответа, итог сессии, чтение & \texttt{ProblemController}, \texttt{ProblemDecorator} & Анохин \\
+Контроль срока & Фоновое завершение просроченных задач & \texttt{ProblemAutoFailScheduler} & Анохин \\
+Ранцевые обработчики & Генерация и проверка ранцевых задач обоих вариантов & \texttt{BackpackProblemsCheckerServiceImpl}, \texttt{BackpackProblemHandler}, семейство решателей & Георгиев \\
+Бэкдор-генератор & Учебная демонстрация бэкдора в ранцевой криптосистеме & \texttt{BackdoorController}, \texttt{BackpackBackDoorDegreesProblemSolverServiceImpl} & Минасов \\
+Эль-Гамаль и матбиблиотека & Генерация и проверка задач Эль-Гамаля, общая арифметика & \texttt{EIGamalController}, \texttt{ElGamalServiceImpl}, \texttt{utils/mathLibrary} & Портнов \\
+Хранение & Модель данных: 8 сущностей и их связи & JPA-сущности, \texttt{*Dao}-репозитории & Самбьюи \\
+\end{longtable}
+}
+
+\subsection{Последовательность создания набора}\label{ux43fux43eux441ux43bux435ux434ux43eux432ux430ux442ux435ux43bux44cux43dux43eux441ux442ux44c-ux441ux43eux437ux434ux430ux43dux438ux44f-ux43dux430ux431ux43eux440ux430}
+
+\hypertarget{последовательность-создания-набора}{}
+
+Приём операции передаёт в оркестрацию подтверждённого пользователя и имя конфигурации. Оркестрация через компонент конфигураций получает доступный состав набора, затем для каждого квалификатора вызывает генератор предметного домена. Условия, типы и принадлежность задач сохраняются вместе с сессией; подтверждение выдаётся после сохранения полного набора. Порядок закреплён \href{../07_\%D0\%9F\%D1\%80\%D0\%BE\%D0\%B3\%D1\%80\%D0\%B0\%D0\%BC\%D0\%BC\%D0\%BD\%D1\%8B\%D0\%B5_\%D1\%82\%D1\%80\%D0\%B5\%D0\%B1\%D0\%BE\%D0\%B2\%D0\%B0\%D0\%BD\%D0\%B8\%D1\%8F/DOC-06.2_\%D0\%A1\%D0\%B5\%D1\%81\%D1\%81\%D0\%B8\%D0\%B8_\%D0\%B7\%D0\%B0\%D0\%B4\%D0\%B0\%D1\%87_\%D0\%B8_\%D0\%BF\%D0\%BB\%D0\%B0\%D0\%BD\%D0\%B8\%D1\%80\%D0\%BE\%D0\%B2\%D1\%89\%D0\%B8\%D0\%BA.pdf\#nameddest=2-\%D1\%81\%D0\%BE\%D0\%B7\%D0\%B4\%D0\%B0\%D0\%BD\%D0\%B8\%D0\%B5-\%D1\%81\%D0\%B5\%D1\%81\%D1\%81\%D0\%B8\%D0\%B8}{SWR-SES-002--005}.
+
+\subsection{Последовательность обработки ответа}\label{ux43fux43eux441ux43bux435ux434ux43eux432ux430ux442ux435ux43bux44cux43dux43eux441ux442ux44c-ux43eux431ux440ux430ux431ux43eux442ux43aux438-ux43eux442ux432ux435ux442ux430}
+
+\hypertarget{последовательность-обработки-ответа}{}
+
+Приём фиксирует время получения запроса. Управление сессиями проверяет допуск (принадлежность, состояния, срок), затем формат по схеме типа. Допустимый ответ передаётся предметному проверяющему вместе с сохранённым условием; вердикт согласованно сохраняется с состоянием задачи и итогом сессии. Категории результата различаются машинными кодами \href{../07_\%D0\%9F\%D1\%80\%D0\%BE\%D0\%B3\%D1\%80\%D0\%B0\%D0\%BC\%D0\%BC\%D0\%BD\%D1\%8B\%D0\%B5_\%D1\%82\%D1\%80\%D0\%B5\%D0\%B1\%D0\%BE\%D0\%B2\%D0\%B0\%D0\%BD\%D0\%B8\%D1\%8F/DOC-06.2_\%D0\%A1\%D0\%B5\%D1\%81\%D1\%81\%D0\%B8\%D0\%B8_\%D0\%B7\%D0\%B0\%D0\%B4\%D0\%B0\%D1\%87_\%D0\%B8_\%D0\%BF\%D0\%BB\%D0\%B0\%D0\%BD\%D0\%B8\%D1\%80\%D0\%BE\%D0\%B2\%D1\%89\%D0\%B8\%D0\%BA.pdf\#nameddest=\%D0\%BA\%D0\%BE\%D0\%B4\%D1\%8B-\%D0\%B8-\%D0\%BF\%D1\%80\%D0\%B5\%D0\%B4\%D1\%81\%D1\%82\%D0\%B0\%D0\%B2\%D0\%BB\%D0\%B5\%D0\%BD\%D0\%B8\%D0\%B5-\%D0\%BE\%D1\%88\%D0\%B8\%D0\%B1\%D0\%BE\%D0\%BA}{контракта сессий}. Порядок закреплён \href{../07_\%D0\%9F\%D1\%80\%D0\%BE\%D0\%B3\%D1\%80\%D0\%B0\%D0\%BC\%D0\%BC\%D0\%BD\%D1\%8B\%D0\%B5_\%D1\%82\%D1\%80\%D0\%B5\%D0\%B1\%D0\%BE\%D0\%B2\%D0\%B0\%D0\%BD\%D0\%B8\%D1\%8F/DOC-06.2_\%D0\%A1\%D0\%B5\%D1\%81\%D1\%81\%D0\%B8\%D0\%B8_\%D0\%B7\%D0\%B0\%D0\%B4\%D0\%B0\%D1\%87_\%D0\%B8_\%D0\%BF\%D0\%BB\%D0\%B0\%D0\%BD\%D0\%B8\%D1\%80\%D0\%BE\%D0\%B2\%D1\%89\%D0\%B8\%D0\%BA.pdf\#nameddest=3-\%D0\%BE\%D0\%B1\%D1\%80\%D0\%B0\%D0\%B1\%D0\%BE\%D1\%82\%D0\%BA\%D0\%B0-\%D0\%BE\%D1\%82\%D0\%B2\%D0\%B5\%D1\%82\%D0\%B0}{SWR-SES-007--015}.
+
+\subsection{Фоновый контроль и чтение}\label{ux444ux43eux43dux43eux432ux44bux439-ux43aux43eux43dux442ux440ux43eux43bux44c-ux438-ux447ux442ux435ux43dux438ux435}
+
+\hypertarget{фоновый-контроль-и-чтение}{}
+
+Планировщик выполняется в процессе приложения с периодом 60 секунд и приводит просроченные незавершённые задачи к \texttt{FAILED}, учитывая принятые своевременные ответы; агенты внешних очередей отсутствуют. Чтение собственной сессии возвращает сохранённые состояния и результаты без повторной проверки. Обязательства определены \href{../07_\%D0\%9F\%D1\%80\%D0\%BE\%D0\%B3\%D1\%80\%D0\%B0\%D0\%BC\%D0\%BC\%D0\%BD\%D1\%8B\%D0\%B5_\%D1\%82\%D1\%80\%D0\%B5\%D0\%B1\%D0\%BE\%D0\%B2\%D0\%B0\%D0\%BD\%D0\%B8\%D1\%8F/DOC-06.2_\%D0\%A1\%D0\%B5\%D1\%81\%D1\%81\%D0\%B8\%D0\%B8_\%D0\%B7\%D0\%B0\%D0\%B4\%D0\%B0\%D1\%87_\%D0\%B8_\%D0\%BF\%D0\%BB\%D0\%B0\%D0\%BD\%D0\%B8\%D1\%80\%D0\%BE\%D0\%B2\%D1\%89\%D0\%B8\%D0\%BA.pdf\#nameddest=4-\%D0\%BA\%D0\%BE\%D0\%BD\%D1\%82\%D1\%80\%D0\%BE\%D0\%BB\%D1\%8C-\%D1\%81\%D1\%80\%D0\%BE\%D0\%BA\%D0\%B0-\%D0\%B8-\%D0\%B8\%D1\%82\%D0\%BE\%D0\%B3}{SWR-SES-016--019 и SWR-SES-023}.
+
+\section{Размещение и исполнение}\label{4-ux440ux430ux437ux43cux435ux449ux435ux43dux438ux435-ux438-ux438ux441ux43fux43eux43bux43dux435ux43dux438ux435}
+
+\hypertarget{4-размещение-и-исполнение}{}
+
+Все компоненты выполняются в одном процессе приложения; единственный внешний исполнитель --- СУБД. Предметные вычисления выполняются синхронно в рамках обработки запроса; собственные потоки доменов не создаются. Фоновый контроль использует средство планирования платформы и разделяет хранилище с остальными компонентами, поэтому согласование параллельных действий выполняется транзакциями и блокировками данных, а не обменом сообщениями.
+
+Расширение состава задач выполняется подключением нового предметного обработчика под собственным квалификатором: конфигурация называет квалификатор, оркестрация вызывает обработчик, остальные компоненты не изменяются. Требование к такому подключению задано \href{../07_\%D0\%9F\%D1\%80\%D0\%BE\%D0\%B3\%D1\%80\%D0\%B0\%D0\%BC\%D0\%BC\%D0\%BD\%D1\%8B\%D0\%B5_\%D1\%82\%D1\%80\%D0\%B5\%D0\%B1\%D0\%BE\%D0\%B2\%D0\%B0\%D0\%BD\%D0\%B8\%D1\%8F/DOC-06_\%D0\%9F\%D1\%80\%D0\%BE\%D0\%B3\%D1\%80\%D0\%B0\%D0\%BC\%D0\%BC\%D0\%BD\%D1\%8B\%D0\%B5_\%D1\%82\%D1\%80\%D0\%B5\%D0\%B1\%D0\%BE\%D0\%B2\%D0\%B0\%D0\%BD\%D0\%B8\%D1\%8F.pdf\#nameddest=swr-sys-004-\%D0\%BA\%D0\%BE\%D0\%BD\%D1\%82\%D1\%80\%D0\%B0\%D0\%BA\%D1\%82-\%D0\%BF\%D1\%80\%D0\%B5\%D0\%B4\%D0\%BC\%D0\%B5\%D1\%82\%D0\%BD\%D0\%BE\%D0\%B3\%D0\%BE-\%D0\%BE\%D0\%B1\%D1\%80\%D0\%B0\%D0\%B1\%D0\%BE\%D1\%82\%D1\%87\%D0\%B8\%D0\%BA\%D0\%B0}{контрактом предметного обработчика}.
+
+\section{Развёртывание}\label{5-ux440ux430ux437ux432ux451ux440ux442ux44bux432ux430ux43dux438ux435}
+
+\hypertarget{5-развёртывание}{}
+
+Развёртывание выполняется docker-compose из двух служб: контейнер СУБД и контейнер приложения, стартующий после готовности СУБД.
+
+{\def\LTcaptype{none} % do not increment counter
+\begin{longtable}[]{@{}
+  >{\raggedright\arraybackslash}p{(\linewidth - 2\tabcolsep) * \real{0.3200}}
+  >{\raggedright\arraybackslash}p{(\linewidth - 2\tabcolsep) * \real{0.6800}}@{}}
+\toprule\noalign{}
+\begin{minipage}[b]{\linewidth}\raggedright
+Элемент
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright
+Значение
+\end{minipage} \\
+\midrule\noalign{}
+\endhead
+\bottomrule\noalign{}
+\endlastfoot
+Контейнер СУБД & PostgreSQL 17 (alpine), база \texttt{mephi12}, порт 5432, контроль готовности \texttt{pg\_isready}, том данных \texttt{mephi12-data} \\
+Контейнер приложения & Сборка Gradle на JDK 17, исполнение на OpenJDK 17, порт 8083, базовый путь \texttt{/api} \\
+Параметры окружения & \texttt{JWT\_SECRET}, \texttt{ACCESS\_\allowbreak{}TOKEN\_\allowbreak{}LIFETIME}, \texttt{DATABASE\_URL}, \texttt{DATABASE\_USER}, \texttt{DATABASE\_PASSWORD} \\
+Схема базы & Создаётся средствами JPA по описанию сущностей \\
+\end{longtable}
+}
+
+Обязательства развёртывания заданы {[}ТЗ, \texttt{TS.REQ.REL.DEPLOY}{]}: старт приложения только после готовности СУБД и сохранность данных между перезапусками томом данных. Секреты передаются только переменными окружения и не включаются в код или репозиторий ({[}\texttt{TS.REQ.SEC.SECRETS}{]}).
+
+\section{Соответствие компонентов требованиям}\label{6-ux441ux43eux43eux442ux432ux435ux442ux441ux442ux432ux438ux435-ux43aux43eux43cux43fux43eux43dux435ux43dux442ux43eux432-ux442ux440ux435ux431ux43eux432ux430ux43dux438ux44fux43c}
+
+\hypertarget{6-соответствие-компонентов-требованиям}{}
+
+Таблица связывает компоненты с документами требований, обязательства которых они размещают. Полная матрица SR → SWR → TC ведётся в DOC-09.
+
+{\def\LTcaptype{none} % do not increment counter
+\begin{longtable}[]{@{}
+  >{\raggedright\arraybackslash}p{(\linewidth - 4\tabcolsep) * \real{0.3698}}
+  >{\raggedright\arraybackslash}p{(\linewidth - 4\tabcolsep) * \real{0.3156}}
+  >{\raggedright\arraybackslash}p{(\linewidth - 4\tabcolsep) * \real{0.3146}}@{}}
+\toprule\noalign{}
+\begin{minipage}[b]{\linewidth}\raggedright
+Компонент
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright
+Требования
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright
+Документ
+\end{minipage} \\
+\midrule\noalign{}
+\endhead
+\bottomrule\noalign{}
+\endlastfoot
+Проверка доступа; пользователи и группы & \texttt{SR.AUTH.*}, \texttt{SWR.AUTH.*} & DOC-06.1 (Кокорев) \\
+Управление сессиями; контроль срока & \texttt{SR-SES-*}, \texttt{SWR-SES-*} & \href{../07_\%D0\%9F\%D1\%80\%D0\%BE\%D0\%B3\%D1\%80\%D0\%B0\%D0\%BC\%D0\%BC\%D0\%BD\%D1\%8B\%D0\%B5_\%D1\%82\%D1\%80\%D0\%B5\%D0\%B1\%D0\%BE\%D0\%B2\%D0\%B0\%D0\%BD\%D0\%B8\%D1\%8F/DOC-06.2_\%D0\%A1\%D0\%B5\%D1\%81\%D1\%81\%D0\%B8\%D0\%B8_\%D0\%B7\%D0\%B0\%D0\%B4\%D0\%B0\%D1\%87_\%D0\%B8_\%D0\%BF\%D0\%BB\%D0\%B0\%D0\%BD\%D0\%B8\%D1\%80\%D0\%BE\%D0\%B2\%D1\%89\%D0\%B8\%D0\%BA.pdf\#nameddest=doc-062-\%D1\%81\%D0\%B5\%D1\%81\%D1\%81\%D0\%B8\%D0\%B8-\%D0\%B7\%D0\%B0\%D0\%B4\%D0\%B0\%D1\%87-\%D0\%B8-\%D0\%BF\%D0\%BB\%D0\%B0\%D0\%BD\%D0\%B8\%D1\%80\%D0\%BE\%D0\%B2\%D1\%89\%D0\%B8\%D0\%BA}{DOC-06.2} (Анохин) \\
+Ранцевые обработчики & \texttt{SR-KNAP-*}, \texttt{SWR-KNAP-*} & \href{../07_\%D0\%9F\%D1\%80\%D0\%BE\%D0\%B3\%D1\%80\%D0\%B0\%D0\%BC\%D0\%BC\%D0\%BD\%D1\%8B\%D0\%B5_\%D1\%82\%D1\%80\%D0\%B5\%D0\%B1\%D0\%BE\%D0\%B2\%D0\%B0\%D0\%BD\%D0\%B8\%D1\%8F/DOC-06.3_\%D0\%A0\%D0\%B0\%D0\%BD\%D1\%86\%D0\%B5\%D0\%B2\%D1\%8B\%D0\%B5_\%D0\%BA\%D1\%80\%D0\%B8\%D0\%BF\%D1\%82\%D0\%BE\%D1\%81\%D0\%B8\%D1\%81\%D1\%82\%D0\%B5\%D0\%BC\%D1\%8B.pdf\#nameddest=doc-063-\%D1\%80\%D0\%B0\%D0\%BD\%D1\%86\%D0\%B5\%D0\%B2\%D1\%8B\%D0\%B5-\%D0\%BA\%D1\%80\%D0\%B8\%D0\%BF\%D1\%82\%D0\%BE\%D1\%81\%D0\%B8\%D1\%81\%D1\%82\%D0\%B5\%D0\%BC\%D1\%8B}{DOC-06.3} (Георгиев) \\
+Бэкдор-генератор & \texttt{SR.BDR.*}, \texttt{SWR.BDR.*} & DOC-06.4 (Минасов) \\
+Эль-Гамаль и матбиблиотека & \texttt{SR.ELG.*}, \texttt{SWR.ELG.*} & DOC-06.5 (Портнов) \\
+Конфигурации, модерация, хранение & \texttt{SR.CFG.*}, \texttt{SWR.CFG.*} & DOC-06.6 (Самбьюи) \\
+Общие свойства взаимодействия & \texttt{SR-SYS-*}, \texttt{SWR-SYS-*} & \href{../07_\%D0\%9F\%D1\%80\%D0\%BE\%D0\%B3\%D1\%80\%D0\%B0\%D0\%BC\%D0\%BC\%D0\%BD\%D1\%8B\%D0\%B5_\%D1\%82\%D1\%80\%D0\%B5\%D0\%B1\%D0\%BE\%D0\%B2\%D0\%B0\%D0\%BD\%D0\%B8\%D1\%8F/DOC-06_\%D0\%9F\%D1\%80\%D0\%BE\%D0\%B3\%D1\%80\%D0\%B0\%D0\%BC\%D0\%BC\%D0\%BD\%D1\%8B\%D0\%B5_\%D1\%82\%D1\%80\%D0\%B5\%D0\%B1\%D0\%BE\%D0\%B2\%D0\%B0\%D0\%BD\%D0\%B8\%D1\%8F.pdf\#nameddest=doc-06-\%D1\%81\%D0\%B2\%D0\%BE\%D0\%B4\%D0\%BD\%D1\%8B\%D0\%B5-\%D0\%BF\%D1\%80\%D0\%BE\%D0\%B3\%D1\%80\%D0\%B0\%D0\%BC\%D0\%BC\%D0\%BD\%D1\%8B\%D0\%B5-\%D1\%82\%D1\%80\%D0\%B5\%D0\%B1\%D0\%BE\%D0\%B2\%D0\%B0\%D0\%BD\%D0\%B8\%D1\%8F}{DOC-06} \\
+\end{longtable}
+}
+
+\section{Известные ограничения реализации}\label{7-ux438ux437ux432ux435ux441ux442ux43dux44bux435-ux43eux433ux440ux430ux43dux438ux447ux435ux43dux438ux44f-ux440ux435ux430ux43bux438ux437ux430ux446ux438ux438}
+
+\hypertarget{7-известные-ограничения-реализации}{}
+
+Ограничения зафиксированы \href{../02_\%D0\%A2\%D0\%B5\%D1\%85\%D0\%BD\%D0\%B8\%D1\%87\%D0\%B5\%D1\%81\%D0\%BA\%D0\%BE\%D0\%B5_\%D0\%B7\%D0\%B0\%D0\%B4\%D0\%B0\%D0\%BD\%D0\%B8\%D0\%B5/\%D0\%A2\%D0\%B5\%D1\%85\%D0\%BD\%D0\%B8\%D1\%87\%D0\%B5\%D1\%81\%D0\%BA\%D0\%BE\%D0\%B5_\%D0\%B7\%D0\%B0\%D0\%B4\%D0\%B0\%D0\%BD\%D0\%B8\%D0\%B5.pdf}{ТЗ, п. 2.3} и карточками доменов; они не меняют описанную архитектуру, а помечают различия между ней и текущим кодом.
+
+\begin{enumerate}
+\def\labelenumi{\arabic{enumi}.}
+\tightlist
+\item
+  Схема базы создаётся режимом обновления JPA-описания; инструменты миграции не применяются.
+\item
+  Правило доступа к функции модерации фактически не отличает роли: эндпоинт просмотра сессий доступен любой роли \texttt{USER}, а выдача роли \texttt{ADMIN} через API невозможна.
+\item
+  Настройка CORS разрешает все источники с передачей учётных данных; область применения системы --- учебная.
+\item
+  Управление группами и конфигурациями на уровне API не покрывает создание, изменение и удаление --- выполняется средствами СУБД.
+\item
+  Средство наблюдения (Actuator) входит в зависимости, но не настроено; собственные метрики и зонды готовности приложения не экспортируются.
+\end{enumerate}
+
+История: 07.11.2026 --- подготовлен проект 0.5: слои, компоненты и связи, последовательности операций, развёртывание и соответствие требованиям.
+
+
+\end{document}

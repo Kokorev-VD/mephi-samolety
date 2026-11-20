@@ -1,0 +1,722 @@
+% Источники: 09_Архитектура_и_API/DOC-08_Справочник_API.md, 09_Архитектура_и_API/DOC-08_API_сессий.md
+% Генератор: docs/build_pdf.py
+% Шаблон печатного представления. Содержимое подставляет docs/build_pdf.py.
+\documentclass[12pt,a4paper]{article}
+\usepackage{iftex}
+\ifPDFTeX
+  \usepackage[utf8]{inputenc}
+  \usepackage[T2A]{fontenc}
+  \usepackage{newtxtext,newtxmath}
+\else
+  \usepackage{fontspec}
+  \IfFontExistsTF{Times New Roman}
+    {\setmainfont{Times New Roman}}
+    {\setmainfont{Libertinus Serif}}
+  \IfFontExistsTF{Arial}{\setsansfont{Arial}}{\setsansfont{Latin Modern Sans}}
+  \IfFontExistsTF{Menlo}{\setmonofont{Menlo}[Scale=MatchLowercase]}
+    {\setmonofont{Latin Modern Mono}[Scale=MatchLowercase]}
+\fi
+\usepackage[russian]{babel}
+\usepackage{geometry}
+\geometry{left=25mm,right=15mm,top=20mm,bottom=20mm}
+\usepackage{setspace}
+\onehalfspacing
+\usepackage{indentfirst}
+\setlength{\parindent}{1.25cm}
+\setlength{\parskip}{2pt}
+\setlength{\emergencystretch}{3em}
+\usepackage{graphicx,booktabs,longtable,array,tabularx,calc,etoolbox}
+\usepackage{enumitem}
+\setlist[itemize]{leftmargin=1.25cm,itemsep=2pt,topsep=4pt}
+\setlist[enumerate]{leftmargin=1.25cm,itemsep=2pt,topsep=4pt}
+\newcommand{\tightlist}{\setlength{\itemsep}{0pt}\setlength{\parskip}{0pt}}
+\AtBeginEnvironment{longtable}{\small\singlespacing}
+\setlength{\LTpre}{8pt}
+\setlength{\LTpost}{8pt}
+\setlength{\tabcolsep}{5pt}
+\setlength{\LTleft}{0pt}
+\setlength{\LTright}{0pt}
+\usepackage{xurl}
+\usepackage[unicode,colorlinks=true,linkcolor=black,urlcolor=blue]{hyperref}
+\usepackage{bookmark}
+\hypersetup{pdftitle={Справочник API учебной платформы},pdfauthor={Анохин Г.А.},pdfsubject={Криптотренажёр mephi-12}}
+\urlstyle{same}
+\pagestyle{plain}
+\setcounter{secnumdepth}{3}
+\setcounter{tocdepth}{2}
+
+\begin{document}
+\hypersetup{pageanchor=false}
+\begin{titlepage}
+  \thispagestyle{empty}
+  \centering
+  {\large НИЯУ МИФИ\par}
+  \vspace*{3.5cm}
+  {\LARGE\bfseries Справочник API учебной платформы\par}
+  \vspace{0.5cm}
+  {\large DOC-08\par}
+  \vspace{0.6cm}
+  {\large Платформа для изучения и практики курса по криптографии\par}
+  {\large Криптотренажёр mephi-12\par}
+  \vspace{0.7cm}
+  {\large Версия 1.0\par}
+  {\large Редакция от 20.11.2026\par}
+  \vspace{1cm}
+  \begin{tabularx}{\textwidth}{@{}p{3.4cm}Xp{4cm}@{}}
+    \toprule
+    Роль & ФИО & Подпись / Дата \\
+    \midrule
+    Разработал & Анохин Г.А. & \\
+    \addlinespace[6pt]
+    Согласовано & & \\
+    \addlinespace[6pt]
+    Утверждено & & \\
+    \bottomrule
+  \end{tabularx}
+  \vfill
+  {\large Москва, 2026\par}
+\end{titlepage}
+\hypersetup{pageanchor=true}
+
+\section*{Лист регистрации изменений}
+\addcontentsline{toc}{section}{Лист регистрации изменений}
+\begingroup\small\singlespacing
+\noindent
+\begin{tabularx}{\textwidth}{@{}p{1.2cm}p{2cm}p{2.5cm}Xp{1.8cm}@{}}
+\toprule
+Версия & Дата & Автор & Содержание изменения & Утвердил \\
+\midrule
+1.0 & 20.11.2026 & Анохин Г.А. & Сведены публичные операции платформы и контракты сессий. Указаны форматы запросов, результатов и отказов. & \\
+\bottomrule
+\end{tabularx}
+\endgroup
+\clearpage
+\begingroup\small\singlespacing
+\tableofcontents
+\endgroup
+\clearpage
+
+\hypertarget{doc-08-справочник-api-платформы}{}
+
+{\def\LTcaptype{none} % do not increment counter
+\begin{longtable}[]{@{}
+  >{\raggedright\arraybackslash}p{(\linewidth - 2\tabcolsep) * \real{0.3200}}
+  >{\raggedright\arraybackslash}p{(\linewidth - 2\tabcolsep) * \real{0.6800}}@{}}
+\toprule\noalign{}
+\begin{minipage}[b]{\linewidth}\raggedright
+Поле
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright
+Значение
+\end{minipage} \\
+\midrule\noalign{}
+\endhead
+\bottomrule\noalign{}
+\endlastfoot
+Редакция & 1.0 от 20.11.2026 \\
+Владелец справочника & Минасов М.Р. \\
+Автор раздела о сессиях & Анохин Г.А. \\
+Статус & Редакторская версия для согласования с владельцами предметных разделов \\
+\end{longtable}
+}
+
+\section{Как обращаться к платформе}\label{ux43aux430ux43a-ux43eux431ux440ux430ux449ux430ux442ux44cux441ux44f-ux43a-ux43fux43bux430ux442ux444ux43eux440ux43cux435}
+
+\hypertarget{как-обращаться-к-платформе}{}
+
+\textbf{API} --- программный интерфейс, через который приложение пользователя (клиент) обращается к серверу платформы. Преподаватель составляет \textbf{контрольное мероприятие} --- работу с упорядоченным перечнем заданий, --- назначает его учебной группе и указывает время открытия и окончания. Публикация делает карточку работы видимой в расписании. В разрешённое время студент начинает \textbf{сессию} --- получает личный набор задач, в котором каждая задача имеет свой идентификатор. Сессия связывает выданные условия и полученные результаты с одним студентом. Одинаковая позиция в составе работы у двух студентов даёт две отдельные задачи.
+
+\subsection{Как читать запись операции}\label{ux43aux430ux43a-ux447ux438ux442ux430ux442ux44c-ux437ux430ux43fux438ux441ux44c-ux43eux43fux435ux440ux430ux446ux438ux438}
+
+\hypertarget{как-читать-запись-операции}{}
+
+Интерфейс использует REST. Каждая операция обращается по сетевому протоколу HTTP к определённому ресурсу --- например, расписанию или сессии. Полная запись состоит из метода и пути. \texttt{GET} запрашивает данные, \texttt{POST} передаёт данные для создания объекта или выполнения действия, \texttt{PUT} передаёт данные для изменения или обработки. В записи \texttt{GET /\allowbreak{}api/\allowbreak{}tasks/\allowbreak{}session/\allowbreak{}\{sessionId\}} вместо \texttt{\{sessionId\}} клиент подставляет идентификатор нужной сессии. В записи \texttt{?configuration=Sem4} после знака вопроса указаны имя параметра и его значение. Порт 8083 --- сетевая точка подключения к серверу, \texttt{/api} --- общая начальная часть пути.
+
+\textbf{Тело} --- передаваемые данные запроса или ответа. Платформа использует формат JSON. Объект в фигурных скобках содержит пары «имя поля --- значение», массив в квадратных скобках содержит упорядоченные элементы. Тип поля задаёт форму записи. В поле числового типа значение записывается без кавычек (например, \texttt{"power":\ 3}). В поле для десятичной строки цифры заключаются в кавычки (например, \texttt{"y":\ "8"}). Так передаются учебные целые числа произвольной длины. \texttt{true} и \texttt{false} --- логические значения «да» и «нет», \texttt{null} обозначает отсутствие значения. Идентификаторы (ID) ресурсов имеют вид UUID --- уникальных строк, например \texttt{312c6ab8-\allowbreak{}5c12-\allowbreak{}46ae-\allowbreak{}a8bf-\allowbreak{}942d3c45c125}. Даты и время обмена передаются в UTC (всемирное координированное время), а суффикс \texttt{Z} в записи времени означает нулевое смещение от UTC.
+
+После успешного входа клиент получает \texttt{accessJwt} --- строку с подписанным сервером токеном JWT (JSON Web Token). Токен удостоверяет личность пользователя. Для защищённого запроса клиент передаёт его в заголовке HTTP \texttt{Authorization:\ Bearer\ \textless{}JWT\textgreater{}}. Роль \texttt{USER} позволяет выполнять действия студента. Роль \texttt{TEACHER} позволяет вести свой банк упражнений и составлять контрольные. Назначать работу группе и читать её результаты преподаватель может при действующем закреплении этой группы. Роль \texttt{ADMIN} позволяет назначать группы преподавателям и просматривать сессии всех пользователей. Сервер проверяет права на группу при обращении. {\href{../02\_Техническое\_задание/DOC-02\_Техническое\_задание.pdf\#правила-доступа-и-прохождения-контрольного-мероприятия}{Правила доступа и прохождения мероприятия}}.
+
+В ответ на запрос сервер возвращает трёхзначный код состояния HTTP. \texttt{200\ OK} означает успешное выполнение операции, \texttt{201\ Created} --- создание нового объекта. Неверное тело или некорректный параметр запроса дают 400. Код 409 указывает, что операция вступила в конфликт с текущим состоянием данных. Отсутствующие, истёкшие или недействительные учётные данные дают 401, недостаточные полномочия --- 403, отсутствующий ресурс --- 404. Объект ошибки содержит \texttt{code} (строковый машинный код), \texttt{message} (пояснение для пользователя) и \texttt{timestamp} (строку серверного времени UTC). Проверка полномочий предшествует выдаче данных объекта. По состоянию собственной сессии и при отправке решения применяются дополнительные коды и правила из {\hyperlink{4-ошибки}{каталога ошибок сессий}}. В других разделах справочника отказ описан для той операции, в которой он возникает.
+
+95-й процентиль времени ответа --- граница, в которую укладываются не менее 95 \% запросов данной категории. При 30 одновременно работающих пользователях эта граница для обычных операций не должна превышать 2 секунд, для операций генерации --- 5 секунд. При формировании условий по запросу создания сессии применяется граница для генерации. Чтение сохранённой сессии относится к обычным операциям.
+
+\section{Указатель операций}\label{ux443ux43aux430ux437ux430ux442ux435ux43bux44c-ux43eux43fux435ux440ux430ux446ux438ux439}
+
+\hypertarget{указатель-операций}{}
+
+\textbf{Модуль задания} --- часть платформы, которая выдаёт условие и проверяет решение по правилам одного типа. \textbf{Банк преподавателя} хранит составленные им упражнения с вариантами. \textbf{Черновик} --- сохранённая работа, доступная для правки до публикации. \textbf{Шаблон набора задач} задаёт типы и порядок задач для самостоятельной практики студента. Для самостоятельного разбора платформа также выдаёт \textbf{эталоны} --- готовые учебные примеры с правильным решением и промежуточными данными. По ссылке в каждой строке указателя приведены входные данные, результат и условия отказа.
+
+{\def\LTcaptype{none} % do not increment counter
+\begin{longtable}[]{@{}
+  >{\raggedright\arraybackslash}p{(\linewidth - 2\tabcolsep) * \real{0.3200}}
+  >{\raggedright\arraybackslash}p{(\linewidth - 2\tabcolsep) * \real{0.6800}}@{}}
+\toprule\noalign{}
+\begin{minipage}[b]{\linewidth}\raggedright
+Метод и путь
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright
+Назначение и описание
+\end{minipage} \\
+\midrule\noalign{}
+\endhead
+\bottomrule\noalign{}
+\endlastfoot
+\texttt{GET /\allowbreak{}api/\allowbreak{}task-\allowbreak{}types} & {\hyperlink{каталог-типов-и-банк-преподавателя}{Каталог типов для составления контрольной}} \\
+\texttt{POST /\allowbreak{}api/\allowbreak{}custom-\allowbreak{}tasks} & {\hyperlink{каталог-типов-и-банк-преподавателя}{Создание авторского упражнения с вариантами}} \\
+\texttt{PUT /\allowbreak{}api/\allowbreak{}custom-\allowbreak{}tasks/\allowbreak{}\{customTaskId\}} & {\hyperlink{каталог-типов-и-банк-преподавателя}{Изменение своего упражнения для будущих публикаций}} \\
+\texttt{GET /\allowbreak{}api/\allowbreak{}custom-\allowbreak{}tasks} & {\hyperlink{каталог-типов-и-банк-преподавателя}{Задания из собственного банка}} \\
+\texttt{POST /\allowbreak{}api/\allowbreak{}assessments} & {\hyperlink{черновик-контрольного-мероприятия}{Создание черновика мероприятия}} \\
+\texttt{GET /\allowbreak{}api/\allowbreak{}assessments} & {\hyperlink{черновик-контрольного-мероприятия}{Собственные черновики и опубликованные мероприятия}} \\
+\texttt{PUT /\allowbreak{}api/\allowbreak{}assessments/\allowbreak{}\{assessmentId\}} & {\hyperlink{черновик-контрольного-мероприятия}{Изменение своего черновика}} \\
+\texttt{POST /\allowbreak{}api/\allowbreak{}assessments/\allowbreak{}\{assessmentId\}/\allowbreak{}publish} & {\hyperlink{назначение-группе-и-публикация}{Назначение группе и публикация расписания}} \\
+\texttt{GET /\allowbreak{}api/\allowbreak{}users/\allowbreak{}me/\allowbreak{}schedule} & {\hyperlink{расписание-студента}{Расписание текущего студента}} \\
+\texttt{GET /\allowbreak{}api/\allowbreak{}assessments/\allowbreak{}\{assessmentId\}/\allowbreak{}results} & {\hyperlink{результаты-контрольного-мероприятия}{Результаты своей работы в закреплённой группе}} \\
+\texttt{POST /\allowbreak{}api/\allowbreak{}auth/\allowbreak{}registration} & {\hyperlink{учётная-запись-и-вход}{Локальная регистрация или начало регистрации через МИФИ}} \\
+\texttt{POST /\allowbreak{}api/\allowbreak{}auth/\allowbreak{}login} & {\hyperlink{учётная-запись-и-вход}{Локальный вход или начало входа через МИФИ}} \\
+\texttt{POST /\allowbreak{}api/\allowbreak{}users/\allowbreak{}me/\allowbreak{}mephi-\allowbreak{}link} & {\hyperlink{учётная-запись-и-вход}{Начало привязки кабинета МИФИ к своему профилю}} \\
+\texttt{POST /\allowbreak{}api/\allowbreak{}auth/\allowbreak{}complete} & {\hyperlink{учётная-запись-и-вход}{Завершение внешней регистрации, входа или привязки}} \\
+\texttt{GET /\allowbreak{}api/\allowbreak{}users/\allowbreak{}groups} & {\hyperlink{группы-и-личная-история}{Перечень учебных групп}} \\
+\texttt{GET /\allowbreak{}api/\allowbreak{}admin/\allowbreak{}teachers} & {\hyperlink{группы-и-личная-история}{Преподаватели и назначенные им группы}} \\
+\texttt{PUT /\allowbreak{}api/\allowbreak{}admin/\allowbreak{}teachers/\allowbreak{}\{teacherId\}/\allowbreak{}groups} & {\hyperlink{группы-и-личная-история}{Замена назначений выбранному преподавателю}} \\
+\texttt{GET /\allowbreak{}api/\allowbreak{}users/\allowbreak{}me/\allowbreak{}tasks} & {\hyperlink{группы-и-личная-история}{Личная история решённых задач}} \\
+\texttt{GET /\allowbreak{}api/\allowbreak{}tasks/\allowbreak{}groups/\allowbreak{}configurations} & {\hyperlink{шаблоны-набора-задач-для-группы}{Шаблоны набора задач для группы}} \\
+\texttt{POST /\allowbreak{}api/\allowbreak{}tasks/\allowbreak{}session} & {\hyperlink{1-создание-сессии}{Создание собственной сессии}} \\
+\texttt{PUT /\allowbreak{}api/\allowbreak{}tasks/\allowbreak{}submit} & {\hyperlink{2-отправка-решения}{Отправка решения задачи своей сессии}} \\
+\texttt{GET /\allowbreak{}api/\allowbreak{}tasks/\allowbreak{}session/\allowbreak{}\{sessionId\}} & {\hyperlink{3-чтение-состояния-и-восстановление-после-обрыва-связи}{Чтение сессии и восстановление результата}} \\
+\texttt{GET /\allowbreak{}api/\allowbreak{}tasks/\allowbreak{}backpack/\allowbreak{}editorial} & {\hyperlink{ранцевые-примеры}{Эталон ранцевой задачи по варианту}} \\
+\texttt{POST /\allowbreak{}api/\allowbreak{}tasks/\allowbreak{}backpack/\allowbreak{}editorial} & {\hyperlink{ранцевые-примеры}{Эталон ранцевой задачи по заданным параметрам}} \\
+\texttt{GET /\allowbreak{}api/\allowbreak{}backdoor/\allowbreak{}editorial} & {\hyperlink{учебная-демонстрация-со-скрытым-свойством}{Просмотр учебной демонстрации}} \\
+\texttt{GET /\allowbreak{}api/\allowbreak{}tasks/\allowbreak{}eigamal/\allowbreak{}editorial} & {\hyperlink{задачи-эль-гамаля}{Пошаговый пример Эль-Гамаля}} \\
+\texttt{GET /\allowbreak{}api/\allowbreak{}tasks/\allowbreak{}eigamal} & {\hyperlink{задачи-эль-гамаля}{Условие для самостоятельного решения}} \\
+\texttt{GET /\allowbreak{}api/\allowbreak{}moderator/\allowbreak{}tasks/\allowbreak{}session} & {\hyperlink{обзор-сессий-при-модерации}{Обзор сессий студентов}} \\
+\end{longtable}
+}
+
+\section{От авторского вопроса до личной сессии}\label{ux43eux442-ux430ux432ux442ux43eux440ux441ux43aux43eux433ux43e-ux432ux43eux43fux440ux43eux441ux430-ux434ux43e-ux43bux438ux447ux43dux43eux439-ux441ux435ux441ux441ux438ux438}
+
+\hypertarget{от-авторского-вопроса-до-личной-сессии}{}
+
+\subsection{Каталог типов и банк преподавателя}\label{ux43aux430ux442ux430ux43bux43eux433-ux442ux438ux43fux43eux432-ux438-ux431ux430ux43dux43a-ux43fux440ux435ux43fux43eux434ux430ux432ux430ux442ux435ux43bux44f}
+
+\hypertarget{каталог-типов-и-банк-преподавателя}{}
+
+Преподаватель (\texttt{TEACHER}) и студент (\texttt{USER}) могут получить публичные описания подключённых типов через \texttt{GET /\allowbreak{}api/\allowbreak{}task-\allowbreak{}types}. Ответ 200 содержит массив объектов. В каждом \texttt{type} --- устойчивый строковый код типа, \texttt{title} --- его отображаемое название, \texttt{solutionSchema} --- публичная схема тела решения. Преподаватель использует код при составлении контрольной. Клиент студента находит по тому же коду схему полей ответа. Например, \texttt{CUSTOM\_\allowbreak{}TEXT} означает текстовое упражнение с вариантами, \texttt{BACKPACK} и \texttt{EL\_GAMAL} обозначают другие учебные модули.
+
+Схема \texttt{solutionSchema} описывает тело ответа \textbf{студента}. Правила подготовки задания \textbf{преподавателем} относятся к самому модулю. Например, для текстового задания автор вводит варианты по описанию ниже, а студент передаёт одно поле \texttt{answer}. В \texttt{solutionSchema} тип верхнего значения --- \texttt{object} (объект с именованными полями). По именам в \texttt{properties} клиент строит поля формы, по списку \texttt{required} отмечает обязательные. Описание поля задаёт название \texttt{title} и тип \texttt{type}, например \texttt{string} (строка), \texttt{integer} (целое), \texttt{boolean} (логическое значение) или \texttt{array} (массив). У массива \texttt{items} описывает тип одного элемента. Для составного объекта действуют те же правила \texttt{properties} и \texttt{required}. Если модуль ограничивает набор допустимых значений, их передают в \texttt{enum}. Этот перечень описывает форму ответа для всех студентов и не подсказывает верное значение конкретного варианта. Таким образом клиент может сформировать ответ на задачу подключённого типа, которого ещё не было при разработке его форм. Проверка на сервере остаётся обязательной.
+
+Например, в каталоге текстового задания студент увидит следующее описание формы. Оно одинаково для всех вариантов и не содержит эталонов, приватного контекста или сведений о том, какие варианты задал преподаватель.
+
+\begin{verbatim}
+{
+  "type": "CUSTOM_TEXT",
+  "title": "Текстовый ответ",
+  "solutionSchema": {
+    "type": "object",
+    "properties": {
+      "answer": {"title": "Ваш ответ", "type": "string"}
+    },
+    "required": ["answer"]
+  }
+}
+\end{verbatim}
+
+В \texttt{POST /\allowbreak{}api/\allowbreak{}custom-\allowbreak{}tasks} преподаватель передаёт строку \texttt{title} и массив \texttt{variants} с одним или несколькими вариантами. Для каждого нужны две заполненные строки --- \texttt{statement} с условием и \texttt{expectedAnswer} с эталонным ответом. Например, для одного упражнения преподаватель передаёт следующие данные.
+
+\begin{verbatim}
+{
+  "title": "Единицы информации",
+  "variants": [
+    {
+      "statement": "Сколько бит в одном байте?",
+      "expectedAnswer": "8"
+    },
+    {
+      "statement": "Сколько байтов в двух кибибайтах?",
+      "expectedAnswer": "2048"
+    }
+  ]
+}
+\end{verbatim}
+
+При успехе сервер отвечает 201 и выдаёт UUID созданного упражнения в поле \texttt{customTaskId}. Отсутствующее условие, эталон неверного типа или пустой список вариантов дают 400. Доступ к своему банку требует \texttt{TEACHER}. Допускается задание с одним заполненным вариантом. Через \texttt{GET /\allowbreak{}api/\allowbreak{}custom-\allowbreak{}tasks} преподаватель получает 200 и массив своих упражнений для составления контрольной. У каждого элемента есть UUID \texttt{customTaskId}, название \texttt{title} и список \texttt{variants} в той же форме, в какой его вводил автор. При пустом банке возвращается \texttt{{[}{]}}. Студенческие операции не открывают доступ к авторскому банку или эталонам.
+
+Для изменения собственного упражнения преподаватель передаёт \texttt{PUT /\allowbreak{}api/\allowbreak{}custom-\allowbreak{}tasks/\allowbreak{}\{customTaskId\}}. Тело имеет ту же схему, что при создании, и заменяет название и весь список вариантов. Успешный ответ 200 содержит исправленное упражнение с полями \texttt{customTaskId}, \texttt{title} и \texttt{variants}. До публикации преподаватель может исправить условие или эталон. Если упражнение уже вошло в опубликованную работу, изменение банка действует только для будущих публикаций. Повторное чтение студентом уже выданной задачи возвращает прежнее условие, а проверка использует прежний эталон. Неизвестное или чужое упражнение даёт 404, отсутствие роли преподавателя --- 403.
+
+\subsection{Черновик контрольного мероприятия}\label{ux447ux435ux440ux43dux43eux432ux438ux43a-ux43aux43eux43dux442ux440ux43eux43bux44cux43dux43eux433ux43e-ux43cux435ux440ux43eux43fux440ux438ux44fux442ux438ux44f}
+
+\hypertarget{черновик-контрольного-мероприятия}{}
+
+\texttt{POST /\allowbreak{}api/\allowbreak{}assessments} требует роль \texttt{TEACHER}. В теле обязательны строковое название \texttt{title} и упорядоченный массив позиций \texttt{items}. Поле \texttt{repeatAllowed} задаёт правило повтора. Значение \texttt{true} разрешает повторное прохождение после завершения предыдущего, \texttt{false} запрещает. В черновике поле можно опустить или передать \texttt{null}, если преподаватель ещё не сделал выбор. Любое иное значение даёт 400. Для сохранения черновика без заданий клиент передаёт \texttt{"items":\ {[}{]}}. Если поле \texttt{items} пропущено или содержит значение другого типа, сервер отвечает 400. В каждой позиции требуется строковый идентификатор зарегистрированного типа \texttt{type}. Для \texttt{CUSTOM\_\allowbreak{}TEXT} преподаватель указывает UUID своего упражнения в \texttt{customTaskId}. Для математической позиции в приведённом ниже запросе достаточно кода типа. Модуль использует обычные правила генерации. Дополнительные настройки позиции зависят от описания конкретного модуля. Поле \texttt{solutionSchema} описывает только ответ студента. Параметр \texttt{bitLength} в операции самостоятельной генерации Эль-Гамаля относится к той операции. Одинаковый тип допускается на разных позициях. Клиент их не объединяет.
+
+Пусть созданное упражнение получило UUID \texttt{7d3c4781-\allowbreak{}6c9c-\allowbreak{}493d-\allowbreak{}9162-\allowbreak{}044fb753ca60}. Преподаватель включает этот вопрос в первую позицию, а задание Эль-Гамаля --- во вторую.
+
+\begin{verbatim}
+{
+  "title": "Контрольная работа по цифровым представлениям",
+  "repeatAllowed": false,
+  "items": [
+    {
+      "type":"CUSTOM_TEXT",
+      "customTaskId":"7d3c4781-6c9c-493d-9162-044fb753ca60"
+    },
+    {"type":"EL_GAMAL"}
+  ]
+}
+\end{verbatim}
+
+В ответе 201 поле \texttt{assessmentId} содержит UUID созданного мероприятия, а состояние \texttt{DRAFT} означает, что перед нами черновик, скрытый от студентов. Неизвестный тип или параметры, не соответствующие типу позиции, дают 400. Метод \texttt{GET /\allowbreak{}api/\allowbreak{}assessments} возвращает 200 и перечень собственных мероприятий с полями \texttt{assessmentId}, \texttt{title}, \texttt{state}, \texttt{repeatAllowed}, \texttt{items}. Для опубликованной работы также указываются \texttt{groupId}, \texttt{opensAt}, \texttt{closesAt}. В состоянии \texttt{DRAFT} преподаватель может заменить состав через \texttt{PUT /\allowbreak{}api/\allowbreak{}assessments/\allowbreak{}\{assessmentId\}}, передав название, полный массив позиций и, если выбор сделан, логическое значение \texttt{repeatAllowed}. Как и при создании, пропуск поля или \texttt{null} означает, что у сохранённой редакции черновика правило повтора ещё не выбрано. Чтобы удалить последнее задание, клиент передаёт пустой массив \texttt{items}. Ответ 200 отражает сохранённый состав того же черновика. Если преподаватель отправляет правку своей работы после её публикации, сервер отвечает 409 с кодом \texttt{ASSESSMENT\_\allowbreak{}ALREADY\_\allowbreak{}PUBLISHED} и сообщает, что работу уже опубликовали. Это правило действует и при одновременной правке и публикации, если первой была сохранена публикация. Состав опубликованной работы сохраняется. Неизвестный или чужой черновик даёт 404.
+
+\subsection{Назначение группе и публикация}\label{ux43dux430ux437ux43dux430ux447ux435ux43dux438ux435-ux433ux440ux443ux43fux43fux435-ux438-ux43fux443ux431ux43bux438ux43aux430ux446ux438ux44f}
+
+\hypertarget{назначение-группе-и-публикация}{}
+
+\texttt{POST /\allowbreak{}api/\allowbreak{}assessments/\allowbreak{}\{assessmentId\}/\allowbreak{}publish} назначает свою работу одной группе. UUID черновика берётся из ответа на создание. Для контрольной из примера это \texttt{320b6de1-\allowbreak{}755f-\allowbreak{}4f05-\allowbreak{}8081-\allowbreak{}e677fb868d33}. Сервер проверяет роль \texttt{TEACHER}, авторство работы и действующее назначение учебной группы. Отсутствие роли даёт 403, чужая или неизвестная работа либо недоступная группа --- 404. Тело содержит обязательные \texttt{groupId} (UUID группы), \texttt{opensAt} и \texttt{closesAt} (моменты открытия и окончания, выбранные преподавателем). Клиент переводит обе даты в UTC и передаёт строки RFC 3339 с миллисекундами и суффиксом \texttt{Z}. Пропуск поля, неверная дата или \texttt{closesAt} не позже \texttt{opensAt} дают 400, расписание не меняется.
+
+Сервер проверяет список позиций, сохранённый под этим \texttt{assessmentId}. Если в нём нет заданий, корректный запрос публикации получает HTTP 409 с кодом \texttt{ASSESSMENT\_\allowbreak{}EMPTY}. В поле \texttt{message} сервер предлагает добавить хотя бы одно задание. При корректной группе и времени пустой состав проверяется первым, даже если правило повтора ещё не выбрано. Для непустой работы с незаполненным \texttt{repeatAllowed} сервер возвращает \texttt{409 ASSESSMENT\_\allowbreak{}RETAKE\_\allowbreak{}POLICY\_\allowbreak{}REQUIRED} и предлагает разрешить или запретить повтор. Явное \texttt{false} удовлетворяет этому условию. При любом из этих отказов работа сохраняет состояние \texttt{DRAFT} и отсутствует в расписании. Преподаватель дополняет черновик через \texttt{PUT /\allowbreak{}api/\allowbreak{}assessments/\allowbreak{}\{assessmentId\}} и снова вызывает \texttt{POST /\allowbreak{}api/\allowbreak{}assessments/\allowbreak{}\{assessmentId\}/\allowbreak{}publish} с прежним идентификатором.
+
+Для контрольной из примера преподаватель выбирает 25 ноября 2026 года, с 10:00 до 10:30 по Москве (UTC+03:00). Запрос публикации содержит следующий объект.
+
+\begin{verbatim}
+{
+  "groupId": "aab71c03-036d-44bf-9055-20ba3312077a",
+  "opensAt": "2026-11-25T07:00:00.000Z",
+  "closesAt": "2026-11-25T07:30:00.000Z"
+}
+\end{verbatim}
+
+Успешная публикация возвращает 200. Объект мероприятия содержит \texttt{assessmentId}, состояние \texttt{state\ =\ PUBLISHED}, название \texttt{title}, состав \texttt{items}, назначенную группу \texttt{groupId}, обе границы времени и сохранённое \texttt{repeatAllowed}. Публикация закрепляет порядок позиций, редакции вариантов с эталонами и правило повтора. При отказе сохраняется прежнее состояние. Повтор публикации уже опубликованной работы даёт \texttt{409 ASSESSMENT\_\allowbreak{}ALREADY\_\allowbreak{}PUBLISHED}.
+
+\subsection{Расписание студента}\label{ux440ux430ux441ux43fux438ux441ux430ux43dux438ux435-ux441ux442ux443ux434ux435ux43dux442ux430}
+
+\hypertarget{расписание-студента}{}
+
+\texttt{GET /\allowbreak{}api/\allowbreak{}users/\allowbreak{}me/\allowbreak{}schedule} с ролью \texttt{USER} не принимает параметров или тела. Ответ 200 --- массив опубликованных работ подтверждённой группы студента. Если группа не подтверждена или подходящих работ нет, возвращается \texttt{{[}{]}}. Карточка содержит UUID работы \texttt{assessmentId}, название \texttt{title}, UUID группы \texttt{groupId}, моменты \texttt{opensAt} и \texttt{closesAt}, логические значения \texttt{repeatAllowed} и \texttt{canStart}. Первое показывает, разрешил ли преподаватель повтор. Второе показывает, может ли именно этот студент начать новую сессию сейчас. Сервер проверяет назначение, свои часы, наличие незавершённой сессии и предыдущих прохождений. При запросе старта проверка выполняется снова. Если у студента уже была сессия этой работы, \texttt{sessionId} содержит UUID его активной сессии этого мероприятия, иначе последней завершённой. Если прохождений ещё нет, поле можно опустить. Карточка не содержит условий задач или эталонов.
+
+Публикация сразу показывает карточку группе. Клиент переводит обе даты в местное время и показывает часовой пояс. В примере студент видит «25 ноября 2026 года, 10:00--10:30 по Москве». В 09:59 карточка видна с \texttt{canStart\ =\ false}. В 10:00 студент без прежнего прохождения и без активной сессии может послать \texttt{POST /\allowbreak{}api/\allowbreak{}tasks/\allowbreak{}session?\allowbreak{}assessmentId=\allowbreak{}320b6de1-\allowbreak{}755f-\allowbreak{}4f05-\allowbreak{}8081-\allowbreak{}e677fb868d33}. При старте в 10:25 он получает собственный UUID, две задачи и срок приёма новых ответов \texttt{deadlineAt =\allowbreak{} 2026-\allowbreak{}11-\allowbreak{}25T07:30:00.\allowbreak{}000Z}. Для первой позиции сервер случайно выбирает один из двух текстовых вариантов. При дальнейшем чтении студент видит тот же вопрос. С 10:30 карточка показывает \texttt{canStart\ =\ false}, а по собственному \texttt{sessionId} студент по-прежнему может прочитать результат. {\hyperlink{1-создание-сессии}{Создание и сроки сессии}}, {\hyperlink{как-передаётся-текстовый-вариант}{пример выдачи текстового вопроса и ответа}}.
+
+\subsection{Результаты контрольного мероприятия}\label{ux440ux435ux437ux443ux43bux44cux442ux430ux442ux44b-ux43aux43eux43dux442ux440ux43eux43bux44cux43dux43eux433ux43e-ux43cux435ux440ux43eux43fux440ux438ux44fux442ux438ux44f}
+
+\hypertarget{результаты-контрольного-мероприятия}{}
+
+\texttt{GET /\allowbreak{}api/\allowbreak{}assessments/\allowbreak{}\{assessmentId\}/\allowbreak{}results} без тела или параметров возвращает результаты опубликованной работы. Для чтения требуются роль \texttt{TEACHER}, авторство работы и действующее назначение её группы. При отсутствии роли ответ 403. Если преподаватель указал неизвестную или чужую работу, черновик либо работу группы, которой он уже не управляет, ответ 404 во всех случаях. Запрос не изменяет результатов.
+
+Ответ 200 содержит \texttt{assessmentId} (UUID работы), \texttt{groupId} (UUID группы) и массив \texttt{sessions}. Каждый элемент --- отдельное прохождение в {\hyperlink{1-создание-сессии}{публичном формате сессии}}, включая собственный UUID прохождения \texttt{id}, UUID студента \texttt{userId}, время создания \texttt{createdAt}, срок \texttt{deadlineAt}, состояние \texttt{state} и задачи \texttt{problems} с сохранёнными вердиктами. Пока никто не начал работу, \texttt{sessions} равен \texttt{{[}{]}}. При разрешённых повторах преподаватель различает прохождения одного студента по \texttt{id}. Эталоны, закрытые данные проверки и привязки к кабинету МИФИ в ответ не входят.
+
+\section{Учётная запись и вход}\label{ux443ux447ux451ux442ux43dux430ux44f-ux437ux430ux43fux438ux441ux44c-ux438-ux432ux445ux43eux434}
+
+\hypertarget{учётная-запись-и-вход}{}
+
+\textbf{Регистрация.} Клиент передаёт \texttt{POST /\allowbreak{}api/\allowbreak{}auth/\allowbreak{}registration} с JSON-объектом. Поле \texttt{email} содержит адрес электронной почты длиной от 4 до 120 символов, \texttt{password} --- пароль длиной от 8 до 255 символов. Поле \texttt{name} с именем пользователя обязательно. В необязательном поле \texttt{surname} можно передать фамилию. Оба поля строковые. Регистрация и вход выполняются по защищённому соединению. Валидность адреса и длина строк проверяются на сервере. Некорректные поля дают 400. Повторная регистрация по занятому адресу даёт 409, существующая учётная запись сохраняется. Успех обозначается HTTP 200. Клиент сразу получает объект с полем \texttt{accessJwt} строкового типа.
+
+\textbf{Локальный вход.} Для \texttt{POST /\allowbreak{}api/\allowbreak{}auth/\allowbreak{}login} передают строки \texttt{email} и \texttt{password}. При успехе возвращается HTTP 200 и объект с полем \texttt{accessJwt}. Неверные учётные данные дают 401. Пароль и его хеш в ответы не входят.
+
+Например, при входе студент передаёт тело запроса в следующем виде.
+
+\begin{verbatim}
+{"email":"student@example.org","password":"study-example-2026"}
+\end{verbatim}
+
+\textbf{Регистрация и вход через личный кабинет МИФИ.} Для этого варианта клиент передаёт только \texttt{\{"provider":"MEPHI"\}} на \texttt{POST /\allowbreak{}api/\allowbreak{}auth/\allowbreak{}registration} или \texttt{POST /\allowbreak{}api/\allowbreak{}auth/\allowbreak{}login}. Регистрация создаёт локальный профиль после подтверждения, а вход открывает ранее связанный профиль. Вариант с \texttt{provider} нельзя смешивать с полями пароля или локальной регистрации. Некорректное тело даёт 400. Для привязки кабинета к уже существующему профилю вошедший пользователь отправляет \texttt{POST /\allowbreak{}api/\allowbreak{}users/\allowbreak{}me/\allowbreak{}mephi-\allowbreak{}link} с действительным JWT и без тела. При отсутствии действительного токена ответ 401. Все три начала возвращают 200 и объект с двумя строками --- \texttt{authRequestId} (UUID обращения) и \texttt{continueUrl} (адрес для продолжения подтверждения в браузере). Эти операции ещё не меняют профиль.
+
+\textbf{Завершение.} После прохождения подтверждения клиент отправляет на \texttt{POST /\allowbreak{}api/\allowbreak{}auth/\allowbreak{}complete} только объект с UUID \texttt{authRequestId}. При привязке он также предъявляет JWT того же пользователя. Сервер проверяет достоверное подтверждение личности от \texttt{home.\allowbreak{}mephi.\allowbreak{}ru}, его связь с исходным обращением, режимом и начавшим его клиентом. Для привязки проверяется также совпадение локального владельца. Один UUID обращения, введённый номер группы или совпавший адрес почты личность не подтверждают. Сервер использует подтверждение однократно. Неверная форма запроса даёт 400. Отсутствующее или недействительное подтверждение, несовпадение клиента или режима, попытка внешнего входа без существующей связи дают 401. Если источник временно недоступен и подтвердить личность нельзя, ответ 503. При отказе нет новой связи или смены владельца.
+
+Во всех трёх режимах успешный ответ на завершение --- 200, объект \texttt{accessJwt} (строка локального токена), \texttt{userId} (UUID локального профиля), \texttt{groupId} (UUID учебной группы) и \texttt{groupNumber} (строка её подтверждённого номера). При внешней регистрации это новый профиль, при входе --- ранее связанный, при привязке --- прежний профиль вошедшего пользователя с его историей и правами. Если достоверная внешняя личность установлена, а группу подтвердить не удалось, \texttt{groupId} и \texttt{groupNumber} равны \texttt{null}. Действия вне группы, например личная история и самостоятельные учебные примеры, доступны. Расписание и групповые задания требуют подтверждённой группы. Уже связанная с другим профилем внешняя личность либо повторная внешняя регистрация той же личности даёт 409. В том числе при одновременных запросах у одной внешней личности остаётся только один владелец. Имя, номер группы или роль, указанные пользователем, не дают групповых или преподавательских прав.
+
+\section{Группы и личная история}\label{ux433ux440ux443ux43fux43fux44b-ux438-ux43bux438ux447ux43dux430ux44f-ux438ux441ux442ux43eux440ux438ux44f}
+
+\hypertarget{группы-и-личная-история}{}
+
+\textbf{Доступные группы.} \texttt{GET /\allowbreak{}api/\allowbreak{}users/\allowbreak{}groups} без параметров и тела возвращает 200 и массив доступных групп. При роли \texttt{USER} доступна только собственная подтверждённая группа, при \texttt{TEACHER} --- закреплённые за преподавателем, при \texttt{ADMIN} --- все группы. Без доступных групп возвращается \texttt{{[}{]}}. Поля карточки --- \texttt{id} (UUID группы), \texttt{name} (название) и \texttt{users} (массив UUID её участников). Принадлежность студента определяется по подтверждённому номеру группы из личного кабинета МИФИ. Указание группового UUID, номера или имени в запросе клиента не устанавливает членство.
+
+\textbf{Закрепление групп за преподавателем.} \texttt{GET /\allowbreak{}api/\allowbreak{}admin/\allowbreak{}teachers} без параметров и тела возвращает 200 и массив записей с \texttt{teacherId} (UUID профиля с ролью \texttt{TEACHER}) и \texttt{groupIds} (массив UUID назначенных групп). \texttt{PUT /\allowbreak{}api/\allowbreak{}admin/\allowbreak{}teachers/\allowbreak{}\{teacherId\}/\allowbreak{}groups} принимает объект \texttt{\{"groupIds":[.\allowbreak{}.\allowbreak{}.\allowbreak{}]\}} с полным новым списком UUID. Пустой массив снимает все назначения. При успехе ответ 200 содержит поля \texttt{teacherId} и \texttt{groupIds} с сохранёнными значениями. Обе операции требуют роль \texttt{ADMIN}, для другой роли ответ 403. Неверная форма даёт 400, неизвестный преподаватель или любой неизвестный UUID группы --- 404. Назначения изменяются целиком либо сохраняются прежними. Назначение группы не меняет роль пользователя или учебную группу студента. После отзыва прежний преподаватель больше не может публиковать для этой группы или получать результаты её работ.
+
+\textbf{История.} \texttt{GET /\allowbreak{}api/\allowbreak{}users/\allowbreak{}me/\allowbreak{}tasks} с ролью \texttt{USER} возвращает массив записей решённых задач владельца JWT. Для задачи предметный результат (вердикт) показывает, верен ли её ответ. Параметров запроса нет. Запись содержит UUID задачи \texttt{id}, UUID её сессии \texttt{sessionId}, строку типа \texttt{type}, выданное условие \texttt{statement}, состояние \texttt{state} и сохранённый предметный результат \texttt{result}. Формы этих полей совпадают с представлением задачи в {\hyperlink{1-создание-сессии}{описании сессии}}. Если у студента ещё нет таких записей, возвращается пустой массив \texttt{{[}{]}}. Задачи другого студента в ответ не входят, в том числе при совпадающей группе. Для полного состава конкретного набора и чтения сохранённого вердикта предусмотрен {\hyperlink{3-чтение-состояния-и-восстановление-после-обрыва-связи}{запрос своей сессии}}.
+
+\section{Шаблоны набора задач для группы}\label{ux448ux430ux431ux43bux43eux43dux44b-ux43dux430ux431ux43eux440ux430-ux437ux430ux434ux430ux447-ux434ux43bux44f-ux433ux440ux443ux43fux43fux44b}
+
+\hypertarget{шаблоны-набора-задач-для-группы}{}
+
+\texttt{GET /\allowbreak{}api/\allowbreak{}tasks/\allowbreak{}groups/\allowbreak{}configurations} принимает обязательный параметр строки запроса \texttt{groupId} с UUID группы. Студент с ролью \texttt{USER} может читать шаблоны набора задач только своей группы. При отсутствии группы у студента либо при указании чужого UUID шаблоны не выдаются. Некорректная запись UUID даёт 400. Недостаточные права дают 403 без сведений о запрошенной группе.
+
+Ответ 200 содержит массив шаблонов, включая выключенные. Поле \texttt{id} --- UUID шаблона, \texttt{name} --- строка его имени, \texttt{tasks} --- упорядоченный массив устойчивых строковых кодов \texttt{type} из каталога, \texttt{enabled} --- логический признак включения для этой группы. Один тип может встречаться в списке несколько раз. При отсутствии шаблонов возвращается пустой массив. Ниже приведён ответ для группы с одним включённым шаблоном.
+
+\begin{verbatim}
+[
+  {
+    "id": "8e30de74-c161-49dd-a4dc-67f91ce6ae20",
+    "name": "Sem4",
+    "tasks": ["BACKPACK", "EL_GAMAL"],
+    "enabled": true
+  }
+]
+\end{verbatim}
+
+\section{Обзор сессий при модерации}\label{ux43eux431ux437ux43eux440-ux441ux435ux441ux441ux438ux439-ux43fux440ux438-ux43cux43eux434ux435ux440ux430ux446ux438ux438}
+
+\hypertarget{обзор-сессий-при-модерации}{}
+
+\texttt{GET /\allowbreak{}api/\allowbreak{}moderator/\allowbreak{}tasks/\allowbreak{}session} доступен пользователю с ролью \texttt{ADMIN}. Параметры и тело запроса отсутствуют. До получения данных сервер проверяет JWT и право административного просмотра. При отсутствии действительного токена возвращается 401, без роли \texttt{ADMIN} --- 403. Студент видит свой набор через запрос чтения собственной сессии.
+
+При успехе ответ 200 содержит массив сессий всех пользователей. Элемент имеет поля \texttt{id}, \texttt{assessmentId}, \texttt{userId}, \texttt{createdAt}, \texttt{deadlineAt}, \texttt{state} и \texttt{problems} в {\hyperlink{1-создание-сессии}{формате сессии}}. По \texttt{userId} администратор различает владельцев, а по \texttt{state} сессии и состояниям её задач --- незавершённые и законченные наборы. Если сессий нет, возвращается \texttt{{[}{]}}. Чтение не изменяет состояния.
+
+\section{Типы заданий и авторские упражнения}\label{ux442ux438ux43fux44b-ux437ux430ux434ux430ux43dux438ux439-ux438-ux430ux432ux442ux43eux440ux441ux43aux438ux435-ux443ux43fux440ux430ux436ux43dux435ux43dux438ux44f}
+
+\hypertarget{типы-заданий-и-авторские-упражнения}{}
+
+Тип задания определяет два связанных представления --- условие, которое видит студент, и форму решения, которую принимает проверяющий модуль. Состав поддерживаемых типов расширяется при подключении модулей. Известные клиенту примеры --- ранцевое задание \texttt{BACKPACK}, задача Эль-Гамаля \texttt{EL\_GAMAL} и текстовое упражнение \texttt{CUSTOM\_\allowbreak{}TEXT}. Поля ответа одной формы нельзя переносить на задачу другого типа. Для любого типа попытка завершается, когда сервер сохраняет предметный вердикт. При верном решении результат положительный, при неверном --- отрицательный.
+
+При старте сессии для каждой позиции авторского задания сервер случайно выбирает один вариант. Он закрепляется за задачей один раз. Двум студентам может достаться один вариант, но у каждого будет свой UUID задачи и свой результат. Для задания из {\hyperlink{каталог-типов-и-банк-преподавателя}{примера контрольной}} клиент передаёт объект \texttt{\{"answer":"8"\}}. Сервер отбрасывает пробелы в начале и в конце обеих строк и сравнивает их с учётом регистра и внутренних пробелов. Для вопроса о количестве бит в байте \texttt{\{"answer":"\ 8\ "\}} даёт верный ответ, а \texttt{\{"answer":"восемь"\}} --- неверный. Проверяющий использует эталон, закреплённый за предъявленной позицией.
+
+\section{Ранцевые примеры}\label{ux440ux430ux43dux446ux435ux432ux44bux435-ux43fux440ux438ux43cux435ux440ux44b}
+
+\hypertarget{ранцевые-примеры}{}
+
+В ранцевой задаче заданы последовательности чисел, называемые лёгким и тяжёлым ранцами. Сообщение указывает, какие элементы участвуют в учебном шифровании. Эталон --- подготовленный полный пример с правильными параметрами, шифртекстом и расшифрованным сообщением. Обе операции доступны студенту (\texttt{USER}) и преподавателю (\texttt{TEACHER}) независимо от наличия активной сессии. Редакционная выдача содержит полное решение и не записывается в историю сессий. Правила генерации и проверки параметров приведены в {\href{../07\_Программные\_требования/DOC-06.3\_Ранцевые\_криптосистемы.pdf\#doc-063-ранцевые-криптосистемы}{DOC-06.3}}.
+
+\textbf{Эталон по варианту.} Для \texttt{GET /\allowbreak{}api/\allowbreak{}tasks/\allowbreak{}backpack/\allowbreak{}editorial} передаётся строковый параметр \texttt{type}. Значение \texttt{BACKPACK\_\allowbreak{}CODE\_\allowbreak{}SUPER\_\allowbreak{}INCREASING} выбирает супервозрастающую последовательность, в которой каждый элемент больше суммы предшествующих. \texttt{BACKPACK\_\allowbreak{}CODE\_\allowbreak{}DEGREES} выбирает последовательность степеней одного основания. Остальные параметры подбирает генератор. При неизвестном варианте эталон другого варианта не выдаётся.
+
+\textbf{Эталон с параметрами.} Для \texttt{POST /\allowbreak{}api/\allowbreak{}tasks/\allowbreak{}backpack/\allowbreak{}editorial} передаётся JSON-объект. Значение \texttt{type} выбирает вариант по тем же обозначениям. Поле \texttt{message} содержит исходное сообщение как массив логических значений. Поле \texttt{lightBackpack} --- последовательность целых чисел лёгкого ранца, \texttt{power} --- размерность задачи, \texttt{omega} --- целый множитель преобразования лёгкого ранца в тяжёлый. Размерность и множитель можно опустить. Если множитель задан, он должен быть взаимно прост с модулем. Некорректный тип, неизвестный вариант или математически непригодные параметры дают 400 с пояснением, эталон отсутствует.
+
+При успехе обе операции возвращают HTTP 200 и объект эталона. В нём \texttt{power} --- положительное целое число, \texttt{type} --- строка варианта, \texttt{message} и \texttt{decodedMessage} --- массивы логических значений. Поля \texttt{lightBackpack} и \texttt{hardBackpack} содержат последовательности лёгкого и тяжёлого ранцев, \texttt{omega} и \texttt{reverseOmega} --- множитель и обратный к нему по модулю \texttt{module}. Поле \texttt{encodedMessage} --- зашифрованное сообщение. В редакционных запросах и ответах целые произвольной длины передаются десятичными строками. Например, выбрав вариант на степенях без собственных параметров, студент получает все величины именно этого варианта. Редакционный пример не расходует попытку решения ни одной задачи.
+
+\section{Задачи Эль-Гамаля}\label{ux437ux430ux434ux430ux447ux438-ux44dux43bux44c-ux433ux430ux43cux430ux43bux44f}
+
+\hypertarget{задачи-эль-гамаля}{}
+
+Для обеих операций нужна роль \texttt{USER}. Схема Эль-Гамаля используется здесь как учебная задача о шифровании и расшифровании сообщения. Параметр строки запроса \texttt{bitLength} задаёт разрядность --- длину генерируемого простого числа в битах. Его значение целое. При его отсутствии используется значение 10. В пути обеих операций пишется \texttt{eigamal}. При успехе возвращается HTTP 200. Целые величины произвольной длины в ответе представлены десятичными строками, текстовые пояснения --- обычными строками.
+
+\textbf{Самостоятельное задание.} \texttt{GET /\allowbreak{}api/\allowbreak{}tasks/\allowbreak{}eigamal} возвращает объект с четырьмя целыми величинами --- простым модулем \texttt{p}, основанием \texttt{g}, учебным показателем \texttt{x} и сообщением \texttt{m}. В учебном примере значения могут быть записаны как \texttt{\{"p":"23","g":"5","x":"6","m":"13"\}}. Клиент показывает их студенту без потери точности. При запросе \texttt{GET /\allowbreak{}api/\allowbreak{}tasks/\allowbreak{}eigamal?\allowbreak{}bitLength=\allowbreak{}10} возвращается условие для самостоятельного расчёта. Зафиксировать результат по одной из задач выданной сессии можно через {\hyperlink{2-отправка-решения}{отправку решения}}.
+
+\textbf{Пошаговый разбор.} \texttt{GET /\allowbreak{}api/\allowbreak{}tasks/\allowbreak{}eigamal/\allowbreak{}editorial} возвращает исходные \texttt{p}, \texttt{g}, \texttt{x}, \texttt{m} и промежуточные величины. \texttt{y} --- открытый ключ, \texttt{k} --- одноразовый показатель шифрования. \texttt{c1} и \texttt{c2} --- две части шифртекста, \texttt{yk} --- промежуточная степень открытого ключа. \texttt{s} и \texttt{sInverse} --- общий секрет и его обратная величина по модулю. В \texttt{decryptedMessage} записано восстановленное сообщение. Пояснения представлены строками \texttt{yCalculation}, \texttt{c1Calculation}, \texttt{c2Calculation}, \texttt{decryptionCalculation}. По ним можно разобрать получение открытого ключа, шифрование и расшифрование в учебном примере. Редакционные запросы не создают попыток. Для обеих операций нецелое, нулевое или отрицательное значение \texttt{bitLength} даёт 400. Если при заданной разрядности математически невозможно сформировать условие, генерация завершается диагностическим отказом.
+
+\section{Учебная демонстрация со скрытым свойством}\label{ux443ux447ux435ux431ux43dux430ux44f-ux434ux435ux43cux43eux43dux441ux442ux440ux430ux446ux438ux44f-ux441ux43e-ux441ux43aux440ux44bux442ux44bux43c-ux441ux432ux43eux439ux441ux442ux432ux43eux43c}
+
+\hypertarget{учебная-демонстрация-со-скрытым-свойством}{}
+
+Для пользователя с ролью \texttt{USER} предусмотрен просмотр готового учебного примера. При успехе сервер возвращает HTTP 200 и JSON-объект с условием, демонстрационным результатом и педагогическим пояснением. В пояснении различаются два исхода. При нарушении конфиденциальности в рамках упражнения стали известны сведения, которые по условию должны были оставаться закрытыми. При ошибке вычисления получено неверное значение. Клиент показывает пояснение вместе с условием и соответствующим ему результатом. Если пример недоступен, сервер возвращает диагностический ответ. Просмотр не открывает сессию и не меняет оценок за ранее выданные задачи.
+
+\section{Связи с требованиями}\label{ux441ux432ux44fux437ux438-ux441-ux442ux440ux435ux431ux43eux432ux430ux43dux438ux44fux43cux438}
+
+\hypertarget{связи-с-требованиями}{}
+
+Обозначение \texttt{SR} указывает системное требование, \texttt{TS} --- положение технического задания. По ссылке можно перейти от операции к формулировке, которая определяет ожидаемое поведение.
+
+{\def\LTcaptype{none} % do not increment counter
+\begin{longtable}[]{@{}
+  >{\raggedright\arraybackslash}p{(\linewidth - 2\tabcolsep) * \real{0.3200}}
+  >{\raggedright\arraybackslash}p{(\linewidth - 2\tabcolsep) * \real{0.6800}}@{}}
+\toprule\noalign{}
+\begin{minipage}[b]{\linewidth}\raggedright
+Операции
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright
+Системное основание
+\end{minipage} \\
+\midrule\noalign{}
+\endhead
+\bottomrule\noalign{}
+\endlastfoot
+Регистрация, вход и защита учётных данных & {\href{../04\_Системные\_требования/DOC-05\_Системные\_требования.pdf\#sr-auth-001}{SR-AUTH-001}}, {\href{../04\_Системные\_требования/DOC-05\_Системные\_требования.pdf\#sr-auth-002}{SR-AUTH-002}}, {\href{../04\_Системные\_требования/DOC-05\_Системные\_требования.pdf\#sr-auth-003}{SR-AUTH-003}}, {\href{../04\_Системные\_требования/DOC-05\_Системные\_требования.pdf\#sr-auth-008}{SR-AUTH-008}} \\
+Профиль, подтверждение группы, история & {\href{../04\_Системные\_требования/DOC-05\_Системные\_требования.pdf\#sr-auth-004}{SR-AUTH-004}}--{\href{../04\_Системные\_требования/DOC-05\_Системные\_требования.pdf\#sr-auth-007}{SR-AUTH-007}} \\
+Закрепление групп за преподавателем и просмотр результатов своей работы & {\href{../04\_Системные\_требования/DOC-05\_Системные\_требования.pdf\#sr-auth-009}{SR-AUTH-009}}, {\href{../04\_Системные\_требования/DOC-05\_Системные\_требования.pdf\#sr-cfg-002}{SR-CFG-002}} \\
+Каталог шаблонов и модерация & {\href{../04\_Системные\_требования/DOC-05\_Системные\_требования.pdf\#sr-cfg-001}{SR-CFG-001}}, {\href{../04\_Системные\_требования/DOC-05\_Системные\_требования.pdf\#sr-cfg-002}{SR-CFG-002}} \\
+Состав контрольной, публикация расписания и начало личной работы & {\href{../02\_Техническое\_задание/DOC-02\_Техническое\_задание.pdf\#ts-req-func-event-create}{TS.REQ.FUNC.EVENT.CREATE}}, {\href{../02\_Техническое\_задание/DOC-02\_Техническое\_задание.pdf\#ts-req-func-event-schedule}{TS.REQ.FUNC.EVENT.SCHEDULE}}, {\href{../02\_Техническое\_задание/DOC-02\_Техническое\_задание.pdf\#ts-req-func-event-publish}{TS.REQ.FUNC.EVENT.PUBLISH}}, {\href{../02\_Техническое\_задание/DOC-02\_Техническое\_задание.pdf\#ts-req-func-event-view}{TS.REQ.FUNC.EVENT.VIEW}}, {\href{../02\_Техническое\_задание/DOC-02\_Техническое\_задание.pdf\#ts-req-func-event-start}{TS.REQ.FUNC.EVENT.START}} \\
+Подключение типов и авторское упражнение & {\href{../02\_Техническое\_задание/DOC-02\_Техническое\_задание.pdf\#ts-req-func-task-module}{TS.REQ.FUNC.TASK.MODULE}}, {\href{../02\_Техническое\_задание/DOC-02\_Техническое\_задание.pdf\#ts-req-func-task-custom}{TS.REQ.FUNC.TASK.CUSTOM}}, {\href{../02\_Техническое\_задание/DOC-02\_Техническое\_задание.pdf\#ts-req-func-task-assign}{TS.REQ.FUNC.TASK.ASSIGN}} \\
+Создание, отправка ответа и чтение собственной сессии & {\href{../04\_Системные\_требования/DOC-05\_Системные\_требования.pdf\#sr-ses-001}{SR-SES-001}}--{\href{../04\_Системные\_требования/DOC-05\_Системные\_требования.pdf\#sr-ses-014}{SR-SES-014}} \\
+Учебные примеры для самостоятельной работы & {\href{../04\_Системные\_требования/DOC-05\_Системные\_требования.pdf\#sr-knap-008}{SR-KNAP-008}}--{\href{../04\_Системные\_требования/DOC-05\_Системные\_требования.pdf\#sr-knap-010}{SR-KNAP-010}}, {\href{../04\_Системные\_требования/DOC-05\_Системные\_требования.pdf\#sr-elg-002}{SR-ELG-002}}, {\href{../04\_Системные\_требования/DOC-05\_Системные\_требования.pdf\#sr-bdr-001}{SR-BDR-001}} \\
+Общие правила обмена & {\href{../04\_Системные\_требования/DOC-05\_Системные\_требования.pdf\#sr-sys-010}{SR-SYS-010}} \\
+\end{longtable}
+}
+
+Системные основания для преподавателя, студента и администратора даны в {\href{../04\_Системные\_требования/DOC-05\_Системные\_требования.pdf\#doc-05-системные-требования}{DOC-05}}. Схемы запросов студента и примеры чтения сохранённого результата входят в {\hyperlink{doc-08-справочник-api-сессии-задач}{раздел о сессиях}}.
+
+\section{DOC-08. Справочник API. Сессии задач}\label{doc-08-ux441ux43fux440ux430ux432ux43eux447ux43dux438ux43a-api-ux441ux435ux441ux441ux438ux438-ux437ux430ux434ux430ux447}
+
+\hypertarget{doc-08-справочник-api-сессии-задач}{}
+
+{\def\LTcaptype{none} % do not increment counter
+\begin{longtable}[]{@{}
+  >{\raggedright\arraybackslash}p{(\linewidth - 2\tabcolsep) * \real{0.3200}}
+  >{\raggedright\arraybackslash}p{(\linewidth - 2\tabcolsep) * \real{0.6800}}@{}}
+\toprule\noalign{}
+\begin{minipage}[b]{\linewidth}\raggedright
+Поле
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright
+Значение
+\end{minipage} \\
+\midrule\noalign{}
+\endhead
+\bottomrule\noalign{}
+\endlastfoot
+Версия раздела & 1.0 \\
+Дата редакции & 20.11.2026 \\
+Автор раздела & Анохин Г.А. \\
+Редактор общего справочника & Минасов М.Р. \\
+\end{longtable}
+}
+
+Сессия --- личный набор задач студента с общим сроком решения. Клиентское приложение может создать набор, отправить решение одной из его задач и прочитать состояние всего набора. Сервер устанавливает студента по JWT --- подписанному токену, который клиент передаёт в заголовке \texttt{Authorization:\ Bearer\ \textless{}JWT\textgreater{}}. Для этих трёх операций требуется роль \texttt{USER} (права студента). Владелец операции определяется токеном. Формат обмена --- \texttt{application/\allowbreak{}json} (данные JSON) в кодировке UTF-8. Запись методов и путей, значение HTTP-статусов, формат UUID и обозначения JSON разобраны в {\hyperlink{как-читать-запись-операции}{правилах чтения операций}}.
+
+\textbf{Шаблон набора задач} задаёт типы и порядок задач для самостоятельной практики. \textbf{Контрольное мероприятие} --- работа, которую составляет преподаватель. Уже у черновика есть свой идентификатор. После публикации мероприятие видно в расписании назначенной группы, а начать личную сессию можно в разрешённое время. В обоих случаях сессия и каждая из её задач получают свои идентификаторы. Какой запрос сервер допускает к проверке и когда сохраняет вердикт (результат «верно» или «неверно»), определяют {\href{../07\_Программные\_требования/DOC-06.2\_Сессии\_задач\_и\_планировщик.pdf\#3-обработка-ответа}{требования к приёму ответа}}.
+
+\subsection{Создание сессии}\label{1-ux441ux43eux437ux434ux430ux43dux438ux435-ux441ux435ux441ux441ux438ux438}
+
+\hypertarget{1-создание-сессии}{}
+
+\texttt{POST /\allowbreak{}api/\allowbreak{}tasks/\allowbreak{}session}
+
+В строке запроса передают ровно один из двух параметров. Для контрольной работы требуется \texttt{assessmentId} --- UUID опубликованного мероприятия из {\hyperlink{расписание-студента}{расписания}}. Для самостоятельной практики используется \texttt{configuration} --- непустое имя шаблона набора задач, включённого для группы пользователя, с учётом регистра. Передача обоих параметров, отсутствие обоих, повтор параметра или неверная запись его значения дают \texttt{400 INVALID\_\allowbreak{}REQUEST}.
+
+Для старта контрольной сервер проверяет роль студента, подтверждённую учебную группу и публикацию для этой группы. Если группа не подтверждена либо мероприятие чужое, отсутствует или скрыто в черновике, ответ одинаков --- \texttt{404 ASSESSMENT\_\allowbreak{}NOT\_\allowbreak{}FOUND}. Затем сервер проверяет свои часы. До назначенного открытия \texttt{opensAt} запрос даёт \texttt{409 ASSESSMENT\_\allowbreak{}NOT\_\allowbreak{}OPEN}, в момент окончания \texttt{closesAt} и позже --- \texttt{409 ASSESSMENT\_\allowbreak{}CLOSED}. Старт возможен в момент открытия и строго до окончания. Расписание и правило повторного прохождения определены при {\hyperlink{назначение-группе-и-публикация}{публикации работы}}. Имя шаблона самостоятельной практики не предоставляет доступ к контрольной.
+
+При успехе сервер возвращает \texttt{201\ Created} и объект сессии со всем набором задач. Число в ответе обозначает статус HTTP. При отказе вслед за ним в справочнике указан машинный код причины. Все пары перечислены в {\hyperlink{4-ошибки}{таблице ошибок}}. Поле \texttt{assessmentId} связывает личную работу с её мероприятием. Состав и редакция вариантов взяты из публикации. При ошибке формирования любой позиции частичная сессия не выдаётся.
+
+В ответах на создание и чтение сессии используются одинаковые поля.
+
+{\def\LTcaptype{none} % do not increment counter
+\begin{longtable}[]{@{}
+  >{\raggedright\arraybackslash}p{(\linewidth - 2\tabcolsep) * \real{0.3200}}
+  >{\raggedright\arraybackslash}p{(\linewidth - 2\tabcolsep) * \real{0.6800}}@{}}
+\toprule\noalign{}
+\begin{minipage}[b]{\linewidth}\raggedright
+Поле сессии
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright
+Тип и значение
+\end{minipage} \\
+\midrule\noalign{}
+\endhead
+\bottomrule\noalign{}
+\endlastfoot
+\texttt{id} & Строка UUID. Этот идентификатор нужен для чтения сессии \\
+\texttt{assessmentId} & Строка UUID мероприятия для контрольной работы. У самостоятельной практики значение равно \texttt{null} \\
+\texttt{createdAt} & Время создания по серверным часам. Строка RFC 3339 в UTC (всемирное координированное время), с миллисекундами и суффиксом \texttt{Z}, например \texttt{2026-\allowbreak{}11-\allowbreak{}20T12:00:00.\allowbreak{}000Z} \\
+\texttt{deadlineAt} & Момент прекращения приёма новых ответов, в том же формате. Для практики наступает через 20 минут после \texttt{createdAt}. Для контрольной берётся более ранний из двух моментов --- через 20 минут после \texttt{createdAt} или в \texttt{closesAt} мероприятия \\
+\texttt{state} & Строка состояния сессии. Пока хотя бы одна задача открыта, сессия имеет состояние \texttt{NEW}. Когда все задачи закрыты, сессия получает \texttt{SOLVED} при успехе каждой задачи и \texttt{FAILED} при наличии хотя бы одной неудачи \\
+\texttt{userId} & Строка UUID владельца \\
+\texttt{problems} & Массив объектов задач \\
+\end{longtable}
+}
+
+{\def\LTcaptype{none} % do not increment counter
+\begin{longtable}[]{@{}
+  >{\raggedright\arraybackslash}p{(\linewidth - 2\tabcolsep) * \real{0.3200}}
+  >{\raggedright\arraybackslash}p{(\linewidth - 2\tabcolsep) * \real{0.6800}}@{}}
+\toprule\noalign{}
+\begin{minipage}[b]{\linewidth}\raggedright
+Поле задачи
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright
+Тип и значение
+\end{minipage} \\
+\midrule\noalign{}
+\endhead
+\bottomrule\noalign{}
+\endlastfoot
+\texttt{id} & Строка UUID. Этот идентификатор передают в параметре \texttt{statementId} \\
+\texttt{sessionId} & Строка UUID родительской сессии, совпадает с её \texttt{id} \\
+\texttt{statement} & Строка, внутри которой записан JSON выданного условия \\
+\texttt{type} & Строковый идентификатор подключённого типа задания. Определяет форму условия и решения \\
+\texttt{state} & Строка. \texttt{NEW} --- задача открыта, \texttt{SOLVED} --- верное решение сохранено, \texttt{FAILED} --- сохранено неверное решение или задача закрыта по сроку \\
+\texttt{result} & Сохранённый {\hyperlink{2-отправка-решения}{объект вердикта}}. Если вердикт отсутствует, значение поля равно \texttt{null} \\
+\end{longtable}
+}
+
+У студента может быть только одна незавершённая сессия, то есть набор хотя бы с одной открытой задачей. В открытое время мероприятия или при создании сессии практики сервер сначала проверяет, осталась ли такая сессия. Если да, возвращается \texttt{409 ACTIVE\_\allowbreak{}SESSION\_\allowbreak{}EXISTS}. Клиент берёт собственный UUID из \texttt{details.\allowbreak{}sessionId} и читает прежний набор. Если при создании практики ответ потерян, повторный запрос при наличии активной сессии вернёт этот конфликт.
+
+Если соединение оборвалось при старте контрольной и UUID ещё не получен, клиент сначала читает \texttt{GET /\allowbreak{}api/\allowbreak{}users/\allowbreak{}me/\allowbreak{}schedule}. В карточке мероприятия он находит \texttt{sessionId} своей активной или последней сессии и читает её через \texttt{GET /\allowbreak{}api/\allowbreak{}tasks/\allowbreak{}session/\allowbreak{}\{sessionId\}}. Повторный \texttt{POST} после завершения прежней сессии при разрешённом повторе создаёт новое прохождение. Эту операцию пользователь выбирает, когда действительно хочет начать работу заново.
+
+Если активной сессии нет, первый старт открытого мероприятия создаёт новый набор. После завершения прежнего прохождения этого же мероприятия новый набор создаётся только при \texttt{repeatAllowed\ =\ true}. У него другой UUID и отдельный результат. Предыдущая работа сохраняется. При \texttt{repeatAllowed\ =\ false} повтор получает \texttt{409 ASSESSMENT\_\allowbreak{}RETAKE\_\allowbreak{}DISABLED} с UUID собственной завершённой сессии в \texttt{details.\allowbreak{}sessionId}. Одновременные запросы старта проходят ту же проверку до создания набора.
+
+\subsection{Отправка решения}\label{2-ux43eux442ux43fux440ux430ux432ux43aux430-ux440ux435ux448ux435ux43dux438ux44f}
+
+\hypertarget{2-отправка-решения}{}
+
+\texttt{PUT /\allowbreak{}api/\allowbreak{}tasks/\allowbreak{}submit}
+
+В строке запроса передают ровно один параметр \texttt{statementId} со значением UUID выбранной задачи. Тело содержит объект решения. Допустимый размер тела до разбора JSON --- не более 1 048 576 байт (1 МиБ). Сервер выбирает предметную схему по сохранённому типу задачи. Обязательные поля определены для каждого модуля его схемой \texttt{solutionSchema} из {\hyperlink{каталог-типов-и-банк-преподавателя}{каталога типов}}. Для трёх типов ниже обязательны все перечисленные поля, и каждое должно иметь значение, отличное от \texttt{null}. Десятичная строка --- строка с целым числом, записанным десятичными цифрами; точные правила записи приведены сразу под таблицей. Назначение параметров криптографических задач объяснено в {\href{../07\_Программные\_требования/DOC-06.2\_Сессии\_задач\_и\_планировщик.pdf\#ранцевая-задача}{контракте ранцевого ответа}} и {\href{../07\_Программные\_требования/DOC-06.2\_Сессии\_задач\_и\_планировщик.pdf\#эль-гамаль}{контракте ответа Эль-Гамаля}}.
+
+{\def\LTcaptype{none} % do not increment counter
+\begin{longtable}[]{@{}
+  >{\raggedright\arraybackslash}p{(\linewidth - 4\tabcolsep) * \real{0.3046}}
+  >{\raggedright\arraybackslash}p{(\linewidth - 4\tabcolsep) * \real{0.3131}}
+  >{\raggedright\arraybackslash}p{(\linewidth - 4\tabcolsep) * \real{0.3823}}@{}}
+\toprule\noalign{}
+\begin{minipage}[b]{\linewidth}\raggedright
+Тип задачи
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright
+Поля решения
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright
+Представление в JSON
+\end{minipage} \\
+\midrule\noalign{}
+\endhead
+\bottomrule\noalign{}
+\endlastfoot
+\texttt{BACKPACK} & \texttt{power} & Положительное целое число \\
+\texttt{BACKPACK} & \texttt{type} & Строка варианта из сохранённого ранцевого условия \\
+\texttt{BACKPACK} & \texttt{message}, \texttt{decodedMessage} & Массивы логических значений \\
+\texttt{BACKPACK} & \texttt{lightBackpack}, \texttt{hardBackpack} & Массивы десятичных строк \\
+\texttt{BACKPACK} & \texttt{omega}, \texttt{module}, \texttt{reverseOmega}, \texttt{encodedMessage} & Десятичные строки \\
+\texttt{EL\_GAMAL} & \texttt{y}, \texttt{k}, \texttt{c1}, \texttt{c2}, \texttt{decryptedMessage} & Десятичные строки \\
+\texttt{CUSTOM\_\allowbreak{}TEXT} & \texttt{answer} & Строка ответа на выбранный для этой позиции вариант \\
+\end{longtable}
+}
+
+Для каждого дополнительного подключённого типа форму решения задаёт его модуль. Для \texttt{CUSTOM\_\allowbreak{}TEXT} сервер сравнивает со скрытым эталоном строки после удаления пробелов с обоих концов. Регистр и внутренние пробелы сохраняются. Публичный ответ на чтение задачи содержит выданное условие и результат проверки. Сервер хранит эталонный ответ вне студенческой выдачи.
+
+Десятичная строка содержит \texttt{0} либо целое число без ведущих нулей. Для отрицательного числа перед цифрами ставится минус. Пробелы, плюс, дробная часть и экспоненциальная запись недопустимы. Преобразование длинной строки в число с плавающей точкой на клиенте может исказить решение.
+
+Сервер сравнивает момент получения полного запроса с полем \texttt{deadlineAt}. В этот момент и позднее новый ответ получает \texttt{410 SESSION\_\allowbreak{}EXPIRED}. Если полный ответ владельца получен раньше, на его обработку отводится 60 секунд с момента получения. Вердикт можно сохранить строго до конца этих 60 секунд, в том числе после окончания контрольной. Ни закрытие мероприятия, ни ожидание обработчика, ни перезапуск сервера не меняют исходный предел обработки.
+
+При верном и при неверном решении сервер возвращает \texttt{200\ OK} и объект вердикта. Клиент находит тот же объект в поле \texttt{result} при следующем чтении сессии.
+
+{\def\LTcaptype{none} % do not increment counter
+\begin{longtable}[]{@{}
+  >{\raggedright\arraybackslash}p{(\linewidth - 2\tabcolsep) * \real{0.3200}}
+  >{\raggedright\arraybackslash}p{(\linewidth - 2\tabcolsep) * \real{0.6800}}@{}}
+\toprule\noalign{}
+\begin{minipage}[b]{\linewidth}\raggedright
+Поле вердикта
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright
+Тип и значение
+\end{minipage} \\
+\midrule\noalign{}
+\endhead
+\bottomrule\noalign{}
+\endlastfoot
+\texttt{problemId} & Строка UUID проверенной задачи, равна переданному \texttt{statementId} \\
+\texttt{problemType} & Строка сохранённого типа задачи \\
+\texttt{isOk} & Логическое значение. При \texttt{true} задача решена и получает \texttt{SOLVED}. При \texttt{false} попытка также завершается, задача получает \texttt{FAILED} \\
+\texttt{errorMessage} & При \texttt{true} равно \texttt{null}. При \texttt{false} содержит непустое пояснение, по умолчанию «Решение неверно» \\
+\end{longtable}
+}
+
+\subsubsection{Как передаётся текстовый вариант}\label{ux43aux430ux43a-ux43fux435ux440ux435ux434ux430ux451ux442ux441ux44f-ux442ux435ux43aux441ux442ux43eux432ux44bux439-ux432ux430ux440ux438ux430ux43dux442}
+
+\hypertarget{как-передаётся-текстовый-вариант}{}
+
+При подготовке упражнения преподаватель записывает фразу в поле \texttt{statement} выбранного варианта, например «Сколько бит в байте?». При выдаче задачи одноимённое поле имеет общую для предметных модулей форму --- строку с сериализованным JSON. Для \texttt{CUSTOM\_\allowbreak{}TEXT} само условие внутри этой строки является JSON-строкой. Ниже приведён один элемент массива \texttt{problems} в полученном студентом JSON.
+
+\begin{verbatim}
+{
+  "id": "b72e684c-4beb-4e15-b94b-11f3d52bc50b",
+  "sessionId": "c8959f02-0477-435f-8d8f-b94bb1f94db8",
+  "type": "CUSTOM_TEXT",
+  "statement": "\"Сколько бит в байте?\"",
+  "state": "NEW",
+  "result": null
+}
+\end{verbatim}
+
+Клиент сначала разбирает JSON сессии. Тогда значение \texttt{statement} ещё содержит пару кавычек вокруг вопроса. Он разбирает это значение как JSON и получает текст для экрана «Сколько бит в байте?». В параметре \texttt{statementId} строки запроса клиент передаёт UUID задачи \texttt{b72e684c-\allowbreak{}4beb-\allowbreak{}4e15-\allowbreak{}b94b-\allowbreak{}11f3d52bc50b}. Тело решения передаётся отдельным JSON-объектом.
+
+\begin{verbatim}
+{"answer":"8"}
+\end{verbatim}
+
+\subsection{Чтение состояния и восстановление после обрыва связи}\label{3-ux447ux442ux435ux43dux438ux435-ux441ux43eux441ux442ux43eux44fux43dux438ux44f-ux438-ux432ux43eux441ux441ux442ux430ux43dux43eux432ux43bux435ux43dux438ux435-ux43fux43eux441ux43bux435-ux43eux431ux440ux44bux432ux430-ux441ux432ux44fux437ux438}
+
+\hypertarget{3-чтение-состояния-и-восстановление-после-обрыва-связи}{}
+
+\texttt{GET /\allowbreak{}api/\allowbreak{}tasks/\allowbreak{}session/\allowbreak{}\{sessionId\}}
+
+В путь подставляют UUID собственной сессии. Ответ \texttt{200\ OK} содержит объект сессии из раздела 1. Операция доступна и после общего срока. Планировщик --- фоновая часть сервера, которая периодически закрывает задачи с истёкшим сроком. Даже до его очередного запуска сервер при чтении учтёт просрочку задач без своевременного ответа. Если принятый до срока ответ ещё обрабатывается в пределах отведённых 60 секунд, задача остаётся открытой. При повторном чтении сервер возвращает актуальное состояние, сохраняя зафиксированный вердикт. Чтение не расходует попытку и не запускает повторную проверку.
+
+Если после отправки решения клиент потерял соединение, сначала надо прочитать сессию и найти задачу по её \texttt{id}.
+
+{\def\LTcaptype{none} % do not increment counter
+\begin{longtable}[]{@{}
+  >{\raggedright\arraybackslash}p{(\linewidth - 2\tabcolsep) * \real{0.3200}}
+  >{\raggedright\arraybackslash}p{(\linewidth - 2\tabcolsep) * \real{0.6800}}@{}}
+\toprule\noalign{}
+\begin{minipage}[b]{\linewidth}\raggedright
+Что вернулось при чтении
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright
+Что видит пользователь
+\end{minipage} \\
+\midrule\noalign{}
+\endhead
+\bottomrule\noalign{}
+\endlastfoot
+\texttt{SOLVED}, результат с \texttt{isOk\ =\ true} & Сохранён верный ответ \\
+\texttt{FAILED}, результат с \texttt{isOk\ =\ false} & Сохранён неверный ответ. Причина содержится в \texttt{errorMessage} \\
+\texttt{FAILED}, \texttt{result\ =\ null} & Задача закрыта по истечении срока без предметного вердикта \\
+\texttt{NEW}, \texttt{result\ =\ null} & Итог ещё не определён. Ранее принятый ответ может оставаться в обработке, в том числе после общего срока. Клиент может прочитать состояние повторно \\
+\end{longtable}
+}
+
+Предметная попытка завершается при сохранении вердикта. После ошибки формата или технического отказа без вердикта исправленный ответ можно подать, пока задача открыта и общий срок допускает новый запрос.
+
+\subsection{Ошибки}\label{4-ux43eux448ux438ux431ux43aux438}
+
+\hypertarget{4-ошибки}{}
+
+При отказе ответ содержит объект со строками \texttt{code}, \texttt{message}, \texttt{timestamp} и \texttt{requestId}. Клиент выбирает действие по \texttt{code}, а \texttt{message} показывает пользователю. Поле \texttt{timestamp} имеет тот же формат, что \texttt{createdAt}. Поле \texttt{requestId} содержит UUID серверной операции. При \texttt{ACTIVE\_\allowbreak{}SESSION\_\allowbreak{}EXISTS} и \texttt{ASSESSMENT\_\allowbreak{}RETAKE\_\allowbreak{}DISABLED} ответ дополнительно содержит объект \texttt{details} с UUID собственной сессии в строковом поле \texttt{sessionId}. Сервер не включает в сообщение стек вызовов и внутренние данные хранилища.
+
+{\def\LTcaptype{none} % do not increment counter
+\begin{longtable}[]{@{}
+  >{\raggedright\arraybackslash}p{(\linewidth - 4\tabcolsep) * \real{0.1000}}
+  >{\raggedright\arraybackslash}p{(\linewidth - 4\tabcolsep) * \real{0.3400}}
+  >{\raggedright\arraybackslash}p{(\linewidth - 4\tabcolsep) * \real{0.5600}}@{}}
+\toprule\noalign{}
+\begin{minipage}[b]{\linewidth}\raggedright
+HTTP
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright
+\texttt{code}
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright
+Когда возвращается
+\end{minipage} \\
+\midrule\noalign{}
+\endhead
+\bottomrule\noalign{}
+\endlastfoot
+400 & \texttt{INVALID\_\allowbreak{}REQUEST} & Некорректный или повторённый параметр, отсутствующее тело решения, неверный JSON, пропущенное обязательное поле или ошибка его типа \\
+401 & \texttt{UNAUTHENTICATED} & Отсутствуют действительные данные аутентификации \\
+403 & \texttt{ACCESS\_\allowbreak{}DENIED} & У пользователя нет роли \texttt{USER} \\
+404 & \texttt{CONFIGURATION\_\allowbreak{}NOT\_\allowbreak{}FOUND} & Нет группы или для неё нет включённого шаблона с указанным именем \\
+404 & \texttt{ASSESSMENT\_\allowbreak{}NOT\_\allowbreak{}FOUND} & Студент не может увидеть мероприятие по указанному UUID \\
+404 & \texttt{TASK\_\allowbreak{}NOT\_\allowbreak{}FOUND} & Задача с таким ID отсутствует у текущего пользователя \\
+404 & \texttt{SESSION\_\allowbreak{}NOT\_\allowbreak{}FOUND} & Сессия с таким ID отсутствует у текущего пользователя \\
+409 & \texttt{ACTIVE\_\allowbreak{}SESSION\_\allowbreak{}EXISTS} & При создании обнаружилась собственная незавершённая сессия \\
+409 & \texttt{ASSESSMENT\_\allowbreak{}NOT\_\allowbreak{}OPEN} & Мероприятие своей группы опубликовано, но момент открытия ещё не наступил \\
+409 & \texttt{ASSESSMENT\_\allowbreak{}CLOSED} & Старт видимого мероприятия запрошен в момент его окончания или позднее \\
+409 & \texttt{ASSESSMENT\_\allowbreak{}RETAKE\_\allowbreak{}DISABLED} & В открытое время студент с завершённым прохождением этой работы запросил новое, а преподаватель запретил повтор \\
+409 & \texttt{TASK\_\allowbreak{}FINALIZED} & До общего срока пришёл ответ на уже закрытую задачу или сессию \\
+409 & \texttt{CHECK\_\allowbreak{}IN\_\allowbreak{}PROGRESS} & До общего срока поступил ещё один ответ на задачу, по которой идёт проверка \\
+410 & \texttt{SESSION\_\allowbreak{}EXPIRED} & Полный запрос с новым решением получен в момент общего срока сессии или позднее \\
+413 & \texttt{PAYLOAD\_\allowbreak{}TOO\_\allowbreak{}LARGE} & Тело решения превышает 1 МиБ \\
+500 & \texttt{INTERNAL\_\allowbreak{}ERROR} & Ошибка настройки или сохранения данных, в том числе неподдерживаемый тип задачи в шаблоне \\
+503 & \texttt{CHECK\_\allowbreak{}UNAVAILABLE} & Предметный обработчик недоступен или его работа завершилась техническим сбоем \\
+503 & \texttt{CHECK\_\allowbreak{}TIMEOUT} & К границе 60 секунд от получения полного запроса вердикт не зафиксирован \\
+\end{longtable}
+}
+
+Сервер сначала устанавливает доступ к запрошенному объекту. Для чужого и отсутствующего объекта ответ одинаков. У собственной задачи момент поступления проверяется до проверки итогового состояния. Поэтому отправка решения после общего срока даёт \texttt{410} даже для уже закрытой задачи. Прочитать её сохранённый результат можно по-прежнему. После закрытия видимого мероприятия запрос нового старта возвращает \texttt{409 ASSESSMENT\_\allowbreak{}CLOSED}, даже если повтор был запрещён или у студента сохранилась начатая работа. Её состояние по-прежнему можно прочитать.
+
+\subsection{Пример от создания до чтения результата}\label{5-ux43fux440ux438ux43cux435ux440-ux43eux442-ux441ux43eux437ux434ux430ux43dux438ux44f-ux434ux43e-ux447ux442ux435ux43dux438ux44f-ux440ux435ux437ux443ux43bux44cux442ux430ux442ux430}
+
+\hypertarget{5-пример-от-создания-до-чтения-результата}{}
+
+В этом примере \texttt{Sem4} --- имя шаблона самостоятельной практики, включённого для группы студента. В 12:00 UTC студент с ролью \texttt{USER} отправляет \texttt{POST /\allowbreak{}api/\allowbreak{}tasks/\allowbreak{}session?\allowbreak{}configuration=\allowbreak{}Sem4}. Сервер возвращает \texttt{201\ Created}. В объекте сессии \texttt{id} равен \texttt{312c6ab8-\allowbreak{}5c12-\allowbreak{}46ae-\allowbreak{}a8bf-\allowbreak{}942d3c45c125}, \texttt{createdAt} равен \texttt{2026-\allowbreak{}11-\allowbreak{}20T12:00:00.\allowbreak{}000Z}, \texttt{deadlineAt} --- \texttt{2026-\allowbreak{}11-\allowbreak{}20T12:20:00.\allowbreak{}000Z}, а \texttt{assessmentId} равен \texttt{null}. В массиве \texttt{problems} одна задача типа \texttt{EL\_GAMAL} с идентификатором \texttt{a626ae49-\allowbreak{}2020-\allowbreak{}4ca2-\allowbreak{}94ed-\allowbreak{}d5aef1193ee3}. В условии \texttt{p\ =\ 23} --- простой модуль, \texttt{g\ =\ 5} --- основание, \texttt{x\ =\ 6} --- учебный показатель, \texttt{m\ =\ 13} --- исходное сообщение. Назначение пяти полей решения и расчёт этих значений показаны в {\href{../07\_Программные\_требования/DOC-06.2\_Сессии\_задач\_и\_планировщик.pdf\#учебный-пример-решения-эль-гамаля}{примере из контракта Эль-Гамаля}}.
+
+Клиент подставляет идентификатор \textbf{задачи} в \texttt{statementId} операции \texttt{PUT /\allowbreak{}api/\allowbreak{}tasks/\allowbreak{}submit} и передаёт решение в теле запроса.
+
+\begin{verbatim}
+{
+  "y": "8",
+  "k": "3",
+  "c1": "10",
+  "c2": "9",
+  "decryptedMessage": "13"
+}
+\end{verbatim}
+
+Полный запрос поступает в 12:19:59.500. Сервер сохраняет вердикт в 12:20:02.000, когда общий срок уже истёк, а срок обработки ещё идёт. Соединение разрывается до доставки ответа. Клиент выполняет \texttt{GET /\allowbreak{}api/\allowbreak{}tasks/\allowbreak{}session/\allowbreak{}\{sessionId\}}, подставив идентификатор \textbf{сессии} из ответа на создание. В полученном объекте сессия и её единственная задача имеют состояние \texttt{SOLVED}. Клиент берёт сохранённый вердикт из поля \texttt{result} этой задачи.
+
+\begin{verbatim}
+{
+  "problemId": "a626ae49-2020-4ca2-94ed-d5aef1193ee3",
+  "problemType": "EL_GAMAL",
+  "isOk": true,
+  "errorMessage": null
+}
+\end{verbatim}
+
+
+\end{document}

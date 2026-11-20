@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Собрать шесть документов из Markdown: самостоятельные LaTeX и PDF."""
+"""Собрать проектные документы из Markdown в самостоятельные LaTeX и PDF."""
 
 import argparse
 import copy
@@ -17,59 +17,97 @@ REPO = ROOT.parent
 DATE = "07.11.2026"
 DOCUMENTS = [
     {
-        "id": "DOC-05", "version": "0.4",
-        "title": "Системные требования. Сессии, интеграция и ранцевые задачи",
+        "id": "DOC-02", "version": "1.1", "date": "20.11.2026",
+        "title": "Техническое задание", "author": "Анохин Г.А.",
+        "change": "Определены права преподавателя на группы, подтверждение группы студента через МИФИ, время проведения контрольной и условия повторного прохождения.",
+        "sources": ["02_Техническое_задание/DOC-02_Техническое_задание.md"],
+    },
+    {
+        "id": "DOC-05", "version": "1.1", "date": "20.11.2026",
+        "title": "Системные требования к учебной платформе",
         "author": "Анохин Г.А.",
+        "change": "Сведены системные требования ко всем учебным и служебным операциям, доступу, сохранности данных и времени отклика.",
         "sources": ["04_Системные_требования/DOC-05_Системные_требования.md",
                     "04_Системные_требования/Сессии_задач.md",
                     "04_Системные_требования/Интеграция.md",
-                    "04_Системные_требования/Ранцевые_задачи.md"],
+                    "04_Системные_требования/Ранцевые_задачи.md",
+                    "04_Системные_требования/Платформенные_и_предметные_требования.md"],
     },
     {
-        "id": "DOC-06", "version": "0.6", "title": "Сводные программные требования",
+        "id": "DOC-06", "version": "1.0", "date": "20.11.2026", "title": "Сводные программные требования",
         "author": "Анохин Г.А.",
-        "sources": ["07_Программные_требования/DOC-06_Программные_требования.md"],
+        "change": "Сведены обязанности программных компонентов для всех доменов. Включены требования платформы и редакторское приложение о данных.",
+        "sources": ["07_Программные_требования/DOC-06_Программные_требования.md",
+                    "07_Программные_требования/Программные_требования_платформы.md"],
     },
     {
-        "id": "DOC-06.2", "version": "0.9", "title": "Сессии задач и планировщик",
+        "id": "DOC-06.2", "version": "1.0", "date": "20.11.2026", "title": "Сессии задач и планировщик",
         "author": "Анохин Г.А.",
+        "change": "Переработаны требования к жизненному циклу сессии, восстановлению и контрактам операций.",
         "sources": ["07_Программные_требования/DOC-06.2_Сессии_задач_и_планировщик.md",
                     "07_Программные_требования/Контракты_сессий.md"],
     },
     {
-        "id": "DOC-06.3", "version": "0.8", "title": "Ранцевые криптосистемы",
-        "author": "Георгиев Д.Д.",
-        "change": "Подготовлена первая редакция подсистемных требований; трассировка на SR-KNAP; зафиксированы известные особенности реализации.",
+        "id": "DOC-06.3", "version": "0.9", "date": "20.11.2026", "title": "Ранцевые криптосистемы",
+        "author": "Георгиев Д.Д.", "change_author": "Анохин Г.А.",
+        "change": "Уточнены критерии выбора варианта, проверки решения и представления результата.",
         "sources": ["07_Программные_требования/DOC-06.3_Ранцевые_криптосистемы.md"],
     },
     {
-        "id": "DOC-07", "version": "0.5", "title": "Архитектура ПО",
-        "author": "Георгиев Д.Д.",
-        "change": "Подготовлен проект архитектуры: слои, компоненты и связи, развёртывание, соответствие требованиям.",
+        "id": "DOC-07", "version": "1.0", "date": "20.11.2026", "title": "Архитектура ПО",
+        "author": "Анохин Г.А.",
+        "change": "Описаны целевая архитектура, развёртывание, ответственность компонентов и восстановление обработки сессии.",
         "sources": ["09_Архитектура_и_API/DOC-07_Архитектура.md"],
     },
     {
-        "id": "Методика ID", "version": "0.3", "title": "Методика идентификаторов",
+        "id": "DOC-08", "version": "1.0", "date": "20.11.2026",
+        "title": "Справочник API учебной платформы", "author": "Анохин Г.А.",
+        "change": "Сведены публичные операции платформы и контракты сессий. Указаны форматы запросов, результатов и отказов.",
+        "sources": ["09_Архитектура_и_API/DOC-08_Справочник_API.md",
+                    "09_Архитектура_и_API/DOC-08_API_сессий.md"],
+    },
+    {
+        "id": "DOC-10", "version": "1.0", "date": "20.11.2026",
+        "title": "План верификации программного обеспечения", "author": "Анохин Г.А.",
+        "change": "Описаны условия проверки, сценарии по всем доменам и их связи с требованиями.",
+        "sources": ["10_Верификация_и_тестирование/DOC-10_План_верификации.md",
+                    "10_Верификация_и_тестирование/DOC-10_Верификация_сессий.md"],
+    },
+    {
+        "id": "DOC-13.5", "version": "0.2", "date": "20.11.2026",
+        "title": "Протокол формальной инспекции архитектуры и API", "author": "Анохин Г.А.",
+        "change": "Зафиксированы результаты сверки DOC-07 и DOC-08 и два замечания для рассмотрения.",
+        "sources": ["08_Протоколы_формальных_инспекций/DOC-13.5_Протокол_ФИ-АРХ-API.md"],
+    },
+    {
+        "id": "Методика ID", "version": "0.4", "date": "20.11.2026", "title": "Методика идентификаторов",
         "author": "Анохин Г.А.",
+        "change": "Уточнены границы доменов для мероприятий и личных сессий с сохранением действующих обозначений.",
         "sources": ["02_Общие_соглашения/Методика_идентификаторов.md"],
     },
     {
-        "id": "Глоссарий", "version": "0.3", "title": "Глоссарий",
+        "id": "Глоссарий", "version": "0.4", "date": "20.11.2026", "title": "Глоссарий",
         "author": "Анохин Г.А.",
+        "change": "Различены группа студента и управляемые группы преподавателя, повторное прохождение, срок контрольной и срок практики.",
         "sources": ["02_Общие_соглашения/Глоссарий.md"],
     },
     {
-        "id": "Карточка домена", "version": "0.3", "title": "Карточка домена: сессии задач",
+        "id": "Карточка домена", "version": "0.4", "date": "20.11.2026", "title": "Карточка домена: сессии задач",
         "author": "Анохин Г.А.",
+        "change": "Описаны автоматическое закрытие мероприятия, срок личной сессии и повторное прохождение по настройке преподавателя.",
         "sources": ["03_Карточки_доменов/Сессии_задач.md"],
     },
 ]
 ROOT_EXPORTS = {
+    "DOC-02": "02_Техническое_задание/Техническое_задание.pdf",
     "DOC-05": "04_Системные_требования/DOC-05_Системные_требования.pdf",
     "DOC-06": "07_Программные_требования/DOC-06_Программные_требования.pdf",
     "DOC-06.2": "07_Программные_требования/DOC-06.2_Сессии_задач_и_планировщик.pdf",
     "DOC-06.3": "07_Программные_требования/DOC-06.3_Ранцевые_криптосистемы.pdf",
     "DOC-07": "09_Архитектура_и_API/DOC-07_Архитектура.pdf",
+    "DOC-08": "09_Архитектура_и_API/DOC-08_Справочник_API.pdf",
+    "DOC-10": "10_Верификация_и_тестирование/DOC-10_План_верификации.pdf",
+    "DOC-13.5": "08_Протоколы_формальных_инспекций/DOC-13.5_Протокол_ФИ-АРХ-API.pdf",
     "Методика ID": "notes/methodology/Методика_идентификаторов.pdf",
     "Глоссарий": "notes/methodology/Глоссарий.pdf",
     "Карточка домена": "notes/domains/Сессии_задач.pdf",
@@ -106,6 +144,24 @@ def slug(title):
     return re.sub(r"[^\w\- ]", "", title.lower()).replace(" ", "-")
 
 
+def html_anchor(node):
+    if node.get("t") == "RawInline" and node["c"][0] == "html":
+        match = re.fullmatch(r'<a id="([a-z0-9-]+)">', node["c"][1])
+        if match:
+            return match[1]
+
+
+def latex_inline(text):
+    return {"t": "RawInline", "c": ["latex", text]}
+
+
+def standalone_anchor(block):
+    if block.get("t") == "Para":
+        inlines = block["c"]
+        if len(inlines) == 2 and inlines[1].get("c") == ["html", "</a>"]:
+            return html_anchor(inlines[0])
+
+
 def pdf_path(document):
     if "root_pdf" in document:
         return REPO / document["root_pdf"]
@@ -124,9 +180,9 @@ def remap_link(target, origin, document, owners, headings):
         if owner["id"] == document["id"]:
             return "#" + anchor
         relative = Path(os.path.relpath(pdf_path(owner), pdf_path(document).parent)).as_posix()
-        return quote(relative) + "#nameddest=" + quote(anchor)
+        return relative + "#" + anchor
     if dest.suffix == ".tex" and dest.with_suffix(".pdf").exists():
-        return quote(Path(os.path.relpath(dest.with_suffix(".pdf"), pdf_path(document).parent)).as_posix())
+        return Path(os.path.relpath(dest.with_suffix(".pdf"), pdf_path(document).parent)).as_posix()
     try:
         relative = dest.relative_to(REPO).as_posix()
     except ValueError:
@@ -141,17 +197,31 @@ def transform(value, origin, document, owners, headings):
         return value
     result = {k: transform(v, origin, document, owners, headings) for k, v in value.items()}
     if result.get("t") == "Link":
-        result["c"][2][0] = remap_link(result["c"][2][0], origin, document, owners, headings)
+        attrs, label, address = result["c"]
+        target = remap_link(address[0], origin, document, owners, headings)
+        if urlsplit(target).scheme or target.startswith("//"):
+            address[0] = target
+        else:
+            # File links in PDF use file-system paths and destination names, not URL fragments.
+            if target.startswith("#"):
+                opening = r"\hyperlink{" + escape(target[1:]) + "}{"
+            else:
+                opening = r"\href{" + escape(target) + "}{"
+            return {"t": "Span", "c": [attrs, [latex_inline(opening), *label, latex_inline("}")]]}
+    anchor = html_anchor(result)
+    if anchor:
+        return latex_inline(r"\hypertarget{" + anchor + "}{}")
     if result.get("t") == "Code":
         literal = result["c"][1]
-        if len(literal) > 18 and not re.search(r"\s", literal):
-            wrapped = "".join(escape(char) + (r"\allowbreak{}" if char in "/.-_" else "") for char in literal)
+        if len(literal) > 10 and any(char in literal for char in "/.-_"):
+            wrapped = "".join(escape(char) + (r"\allowbreak{}" if char in "/.?=-_" else "") for char in literal)
             return {"t": "RawInline", "c": ["latex", r"\texttt{" + wrapped + "}"]}
     if result.get("t") == "Table":
         table = result["c"]
         count = len(table[2])
-        rows = list(table[3][1])
-        for group in table[4]:
+        original_table = value["c"]
+        rows = list(original_table[3][1])
+        for group in original_table[4]:
             rows.extend(group[2])
             rows.extend(group[3])
 
@@ -186,6 +256,8 @@ def main():
     parser.add_argument("--tex-only", action="store_true")
     parser.add_argument("--root-copies", action="store_true",
                         help="Также обновить .tex и .pdf в исходных корневых папках")
+    parser.add_argument("--only", nargs="+", choices=[doc["id"] for doc in DOCUMENTS],
+                        help="Собрать только перечисленные документы")
     args = parser.parse_args()
     pandoc = shutil.which(args.pandoc)
     tectonic = shutil.which(args.tectonic)
@@ -211,24 +283,32 @@ def main():
         jobs.extend((document, root_owners) for document in root_documents)
     report = []
     for index, (document, group_owners) in enumerate(jobs):
+        if args.only and document["id"] not in args.only:
+            continue
         combined = None
         for position, source in enumerate(document["sources"]):
             path = (ROOT / source).resolve()
             ast = copy.deepcopy(asts[path])
             blocks = []
             for block in ast["blocks"]:
-                if block["t"] == "Header":
-                    level, attributes, inlines = block["c"]
-                    attributes[0] = slug(inline_text(inlines))
-                    if level == 1 and position == 0:
-                        blocks.append({"t": "RawBlock", "c": ["latex", r"\hypertarget{" + attributes[0] + "}{}"]})
-                        continue
+                if block["t"] != "Header":
+                    blocks.append(block)
+                    continue
+                level, attributes, inlines = block["c"]
+                attributes[0] = slug(inline_text(inlines))
+                destinations = [attributes[0]]
+                # A Markdown anchor preceding a heading belongs on the same printed page.
+                alias = standalone_anchor(blocks[-1]) if blocks else None
+                if alias:
+                    blocks.pop()
+                    destinations.append(alias)
+                if position != 0 or level != 1:
                     block["c"][0] = max(1, level - 1) if position == 0 else level
-                    if inlines and inlines[0]["t"] == "Str" and re.fullmatch(r"\d+\.", inlines[0]["c"]):
+                    if inlines and inlines[0]["t"] == "Str" and re.fullmatch(r"\d+(?:\.\d+)*\.", inlines[0]["c"]):
                         block["c"][2] = inlines[2:] if len(inlines) > 1 and inlines[1]["t"] == "Space" else inlines[1:]
-                blocks.append(block)
-                if block["t"] == "Header":
-                    blocks.append({"t": "RawBlock", "c": ["latex", r"\hypertarget{" + block["c"][1][0] + "}{}"]})
+                    blocks.append(block)
+                for name in destinations:
+                    blocks.append({"t": "RawBlock", "c": ["latex", r"\hypertarget{" + name + "}{}"]})
             ast["blocks"] = transform(blocks, path, document, group_owners, headings)
             if combined is None:
                 combined = ast
@@ -236,7 +316,8 @@ def main():
                 combined["blocks"].extend(ast["blocks"])
         body = run([pandoc, "-f", "json", "-t", "latex", "--wrap=none", "--no-highlight"], input=json.dumps(combined, ensure_ascii=False), capture_output=True).stdout
         values = {"TITLE": document["title"], "DOCID": document["id"], "VERSION": document["version"],
-                  "DATE": DATE, "AUTHOR": document.get("author", "Анохин Г.А."),
+                  "DATE": document.get("date", DATE), "AUTHOR": document.get("author", "Анохин Г.А."),
+                  "CHANGE_AUTHOR": document.get("change_author", document["author"]),
                   "CHANGE": document.get("change", "Уточнены правила и контракты; расширено описание сценариев; подготовлена печатная редакция.")}
         tex = template
         for key, value in values.items():

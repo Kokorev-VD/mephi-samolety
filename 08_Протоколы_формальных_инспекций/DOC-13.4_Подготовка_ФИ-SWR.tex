@@ -1,0 +1,206 @@
+% Источники: 08_Протоколы_формальных_инспекций/DOC-13.4_Подготовка_ФИ-SWR.md
+% Генератор: docs/build_pdf.py
+% Шаблон печатного представления. Содержимое подставляет docs/build_pdf.py.
+\documentclass[12pt,a4paper]{article}
+\usepackage{iftex}
+\ifPDFTeX
+  \usepackage[utf8]{inputenc}
+  \usepackage{cmap}
+  \usepackage[T2A]{fontenc}
+  % Tempora retains Times-like text and provides Cyrillic bold/italic shapes.
+  \usepackage{tempora,newtxmath}
+\else
+  \usepackage{fontspec}
+  \IfFontExistsTF{Times New Roman}
+    {\setmainfont{Times New Roman}}
+    {\setmainfont{Libertinus Serif}}
+  \IfFontExistsTF{Arial}{\setsansfont{Arial}}{\setsansfont{Latin Modern Sans}}
+  \IfFontExistsTF{Menlo}{\setmonofont{Menlo}[Scale=MatchLowercase]}
+    {\setmonofont{Latin Modern Mono}[Scale=MatchLowercase]}
+\fi
+\usepackage[russian]{babel}
+\usepackage{geometry}
+\geometry{left=25mm,right=15mm,top=20mm,bottom=20mm}
+\usepackage{setspace}
+\onehalfspacing
+\usepackage{indentfirst}
+\setlength{\parindent}{1.25cm}
+\setlength{\parskip}{2pt}
+\setlength{\emergencystretch}{3em}
+\usepackage{graphicx,booktabs,longtable,array,tabularx,calc,etoolbox}
+\newcounter{none} % Pandoc 3.9 uses this counter for unnumbered longtables.
+\usepackage{enumitem}
+\setlist[itemize]{leftmargin=1.25cm,itemsep=2pt,topsep=4pt}
+\setlist[enumerate]{leftmargin=1.25cm,itemsep=2pt,topsep=4pt}
+\newcommand{\tightlist}{\setlength{\itemsep}{0pt}\setlength{\parskip}{0pt}}
+\AtBeginEnvironment{longtable}{\small\singlespacing}
+\setlength{\LTpre}{8pt}
+\setlength{\LTpost}{8pt}
+\setlength{\tabcolsep}{5pt}
+\setlength{\LTleft}{0pt}
+\setlength{\LTright}{0pt}
+\usepackage{xurl}
+\usepackage[unicode,colorlinks=true,linkcolor=black,urlcolor=blue]{hyperref}
+\usepackage{bookmark}
+\hypersetup{pdftitle={Пакет подготовки ФИ-SWR},pdfauthor={Самбьюи А.Ж.},pdfsubject={Криптотренажёр mephi-12}}
+\urlstyle{same}
+\pagestyle{plain}
+\setcounter{secnumdepth}{3}
+\setcounter{tocdepth}{2}
+\listfiles
+
+\begin{document}
+\hypersetup{pageanchor=false}
+\begin{titlepage}
+  \thispagestyle{empty}
+  \centering
+  {\large НИЯУ МИФИ\par}
+  \vspace*{3.5cm}
+  {\LARGE\bfseries Пакет подготовки ФИ-SWR\par}
+  \vspace{0.5cm}
+  {\large DOC-13.4\par}
+  \vspace{0.6cm}
+  {\large Платформа для изучения и практики курса по криптографии\par}
+  {\large Криптотренажёр mephi-12\par}
+  \vspace{0.7cm}
+  {\large Версия 0.1\par}
+  {\large Редакция от 25.11.2026\par}
+  \vspace{1cm}
+  \begin{tabularx}{\textwidth}{@{}p{3.4cm}Xp{4cm}@{}}
+    \toprule
+    Роль & ФИО & Подпись / Дата \\
+    \midrule
+    Разработал & Самбьюи А.Ж. & \\
+    \addlinespace[6pt]
+    Согласовано & & \\
+    \addlinespace[6pt]
+    Утверждено & & \\
+    \bottomrule
+  \end{tabularx}
+  \vfill
+  {\large Москва, 2026\par}
+\end{titlepage}
+\hypersetup{pageanchor=true}
+
+\section*{Лист регистрации изменений}
+\addcontentsline{toc}{section}{Лист регистрации изменений}
+\begingroup\small\singlespacing
+\noindent
+\begin{tabularx}{\textwidth}{@{}p{1.2cm}p{2cm}p{2.5cm}Xp{1.8cm}@{}}
+\toprule
+Версия & Дата & Автор & Содержание изменения & Утвердил \\
+\midrule
+0.1 & 25.11.2026 & Самбьюи А.Ж. & Подготовлены комплект, план ролей, вопросы и форма записи итогов; заседание не подтверждено. & \\
+\bottomrule
+\end{tabularx}
+\endgroup
+\clearpage
+\begingroup\small\singlespacing
+\tableofcontents
+\endgroup
+\clearpage
+
+\hypertarget{doc-134-пакет-подготовки-фи-swr}{}
+
+Редакция 0.1 от 25.11.2026. Подготовил Самбьюи А.Ж. как ведущий по плану спринта 3. Статус --- материалы и форма будущего протокола; проведение заседания, решения и подписи не подтверждены.
+
+\section{Объект и готовность пакета}\label{ux43eux431ux44aux435ux43aux442-ux438-ux433ux43eux442ux43eux432ux43dux43eux441ux442ux44c-ux43fux430ux43aux435ux442ux430}
+
+\hypertarget{объект-и-готовность-пакета}{}
+
+По задаче 3.4 рассматривают сводный DOC-06 и все шесть подсистемных SWR. Доступны {\href{../07\_Программные\_требования/DOC-06\_Программные\_требования.pdf\#doc-06-сводные-программные-требования}{DOC-06 v1.3 с моделью данных}}, {\href{../07\_Программные\_требования/DOC-06.2\_Сессии\_задач\_и\_планировщик.pdf\#doc-062-сессии-задач-и-планировщик}{DOC-06.2 v1.0}}, {\href{../07\_Программные\_требования/DOC-06.3\_Ранцевые\_криптосистемы.pdf\#doc-063-ранцевые-криптосистемы}{DOC-06.3 v1.0}} и {\href{../07\_Программные\_требования/DOC-06.6\_Конфигурации\_и\_модерация.pdf\#doc-066-шаблоны-наборов-задач-и-модерация}{кандидат DOC-06.6 v1.0}}. Требования AUTH, BDR и ELG можно предварительно читать в {\href{../07\_Программные\_требования/DOC-06\_Программные\_требования.pdf\#doc-06-программные-требования-платформы}{общей главе платформы}}, но отдельные DOC-06.1, DOC-06.4 и DOC-06.5 в доступном комплекте не найдены. Полная готовность объекта инспекции поэтому не подтверждается.
+
+Ведущий фиксирует точный состав файлов и редакции перед рассылкой. Независимые рецензенты проверяют чужие разделы; автор исправляет замечания к своему тексту. Основание ролей и процедуры --- DOC-04 и план третьего спринта.
+
+\section{Плановый состав и разделение проверки}\label{ux43fux43bux430ux43dux43eux432ux44bux439-ux441ux43eux441ux442ux430ux432-ux438-ux440ux430ux437ux434ux435ux43bux435ux43dux438ux435-ux43fux440ux43eux432ux435ux440ux43aux438}
+
+\hypertarget{плановый-состав-и-разделение-проверки}{}
+
+{\def\LTcaptype{none} % do not increment counter
+\begin{longtable}[]{@{}
+  >{\raggedright\arraybackslash}p{(\linewidth - 2\tabcolsep) * \real{0.3200}}
+  >{\raggedright\arraybackslash}p{(\linewidth - 2\tabcolsep) * \real{0.6800}}@{}}
+\toprule\noalign{}
+\begin{minipage}[b]{\linewidth}\raggedright
+Роль
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright
+Плановое назначение и материал
+\end{minipage} \\
+\midrule\noalign{}
+\endhead
+\bottomrule\noalign{}
+\endlastfoot
+Ведущий & Самбьюи А.Ж.; организация заседания, комплектность и порядок разбора \\
+Секретарь & Кокорев В.Д.; запись фактической явки, замечаний и решений \\
+Редактор сводного документа & Анохин Г.А.; общие разделы и согласование сводной редакции \\
+Рецензент & Георгиев Д.Д.: AUTH и ELG \\
+Рецензент & Минасов М.Р.: SES и KNAP \\
+Рецензент & Портнов Л.М.: CFG и BDR, включая собственный текст Самбьюи \\
+\end{longtable}
+}
+
+Фактическая явка и подтверждение ролей пока отсутствуют. Ведущий не выдаёт собственную проверку CFG или модели за независимое рецензирование. Прежние плановые даты 13--14.11.2026 не являются датой проведённого заседания.
+
+DOC-04 запрещает ведущему и секретарю быть автором проверяемого документа, а правило ротации связывает авторство сводного документа с ответственным редактором. Самбьюи одновременно подготовил доменный текст и приложение DOC-06. Допустимость планового ведущего при таком авторском вкладе требует явного решения участников до заседания либо корректировки фактического назначения. Таблица сохраняет план и не подтверждает разрешение совмещения; требование независимой проверки собственных разделов сохраняется в любом случае.
+
+\section{Маршрут рассмотрения}\label{ux43cux430ux440ux448ux440ux443ux442-ux440ux430ux441ux441ux43cux43eux442ux440ux435ux43dux438ux44f}
+
+\hypertarget{маршрут-рассмотрения}{}
+
+\begin{enumerate}
+\def\labelenumi{\arabic{enumi}.}
+\tightlist
+\item
+  Проверить наличие всех подсистемных редакций, их версий, авторов и системных оснований.
+\item
+  Сверить определения ID и ссылки SR → SWR; отделить программный уровень от HTTP-формата и описательной проверки.
+\item
+  Пройти стыки AUTH → CFG → SES: назначение группы, публикация, личный старт, варианты, повтор, результат и отзыв доступа.
+\item
+  Проверить модель данных: порядок позиций, все пары опубликованной редакции, отдельные прохождения, исходные сроки и атомарная запись.
+\item
+  Разобрать листы рецензентов; секретарю зарегистрировать принятые замечания, ответственных и сроки по процедуре DOC-04.
+\item
+  Записать фактическое решение и условия повторного рассмотрения. Принятие не выводится из номера версии.
+\end{enumerate}
+
+\section{Контрольные вопросы к собственному объёму}\label{ux43aux43eux43dux442ux440ux43eux43bux44cux43dux44bux435-ux432ux43eux43fux440ux43eux441ux44b-ux43a-ux441ux43eux431ux441ux442ux432ux435ux43dux43dux43eux43cux443-ux43eux431ux44aux451ux43cux443}
+
+\hypertarget{контрольные-вопросы-к-собственному-объёму}{}
+
+Для CFG проверяют роли каталога и модерации; подготовку банка без назначения группы; пустой черновик; обе границы публикации; обязательный выбор повтора; сохранность опубликованных пар после правки банка; отдельные задачи одинакового типа; историю повторов и чтение на границах D/L. Источники --- {\href{../07\_Программные\_требования/DOC-06.6\_Конфигурации\_и\_модерация.pdf\#doc-066-шаблоны-наборов-задач-и-модерация}{DOC-06.6}}, модель и {\href{../10\_Верификация\_и\_тестирование/DOC-10\_План\_верификации.pdf\#doc-10-план-верификации-программного-обеспечения}{DOC-10}}. Это вопросы рецензенту, не уже принятые DEF.
+
+\section{Задача 3.1 и замечания ФИ-СТ}\label{ux437ux430ux434ux430ux447ux430-31-ux438-ux437ux430ux43cux435ux447ux430ux43dux438ux44f-ux444ux438-ux441ux442}
+
+\hypertarget{задача-31-и-замечания-фи-ст}{}
+
+DOC-13.3 с зарегистрированными замечаниями ФИ-СТ в доступном комплекте не найден. Задача 3.1 по факту их устранения не закрывается. После получения протокола автор сопоставляет каждое принятое замечание со своим SR, исправлением, затронутыми SWR/TC и записью повторной проверки. Чужие замечания и номера DEF не придумываются. Проведённая авторская сверка собственного текста не заменяет этот перечень.
+
+\section{Форма записи итогов}\label{ux444ux43eux440ux43cux430-ux437ux430ux43fux438ux441ux438-ux438ux442ux43eux433ux43eux432}
+
+\hypertarget{форма-записи-итогов}{}
+
+{\def\LTcaptype{none} % do not increment counter
+\begin{longtable}[]{@{}
+  >{\raggedright\arraybackslash}p{(\linewidth - 2\tabcolsep) * \real{0.3200}}
+  >{\raggedright\arraybackslash}p{(\linewidth - 2\tabcolsep) * \real{0.6800}}@{}}
+\toprule\noalign{}
+\begin{minipage}[b]{\linewidth}\raggedright
+Сведения
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright
+Фактическое состояние
+\end{minipage} \\
+\midrule\noalign{}
+\endhead
+\bottomrule\noalign{}
+\endlastfoot
+Дата, время, место, явка & Не подтверждены \\
+Окончательный состав проверяемых файлов и редакций & Фиксируется ведущим перед заседанием \\
+Листы независимых рецензентов & Ожидаются \\
+Принятые замечания, номера DEF, ответственные и сроки & Вносятся секретарём после разбора \\
+Решение, повторная проверка, подписи & Ожидают заседания \\
+\end{longtable}
+}
+
+
+\end{document}

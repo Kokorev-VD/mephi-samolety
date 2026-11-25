@@ -41,18 +41,19 @@ DOCUMENTS = [
                     "04_Системные_требования/Платформенные_и_предметные_требования.md"],
     },
     {
-        "id": "DOC-06", "version": "1.2", "date": "25.11.2026", "title": "Сводные программные требования",
+        "id": "DOC-06", "version": "1.3", "date": "25.11.2026", "title": "Сводные программные требования",
         "author": "Анохин Г.А.",
         "change_author": "Самбьюи А.Ж.",
-        "change": "Уточнены логические структуры данных, опубликованные редакции и варианты, повторные прохождения, совместная фиксация и связи с API.",
+        "change": "Включено приложение Б: проект физической модели PostgreSQL, ER-диаграммы, поля, типы, ограничения и связи таблиц с API.",
         "sources": ["07_Программные_требования/DOC-06_Программные_требования.md",
                     "07_Программные_требования/Программные_требования_платформы.md",
-                    "07_Программные_требования/Конфигурации_и_модерация.md"],
+                    "07_Программные_требования/Конфигурации_и_модерация.md",
+                    "07_Программные_требования/Модель_данных.md"],
     },
     {
-        "id": "DOC-06.6", "version": "0.8", "date": "25.11.2026",
+        "id": "DOC-06.6", "version": "1.0", "date": "25.11.2026",
         "title": "Шаблоны наборов задач и модерация", "author": "Самбьюи А.Ж.",
-        "change": "Подготовлены самостоятельный DOC-06.6, границы подсистемы и таблица связей SR → SWR → TC. Определения SWR-CFG сохранены в общем исходнике.",
+        "change": "Подготовлен кандидат v1.0; сверены модель, API, кейсы и трассировка, уточнены права подготовки банка и черновика. Принятие ожидается.",
         "sources": ["07_Программные_требования/DOC-06.6_Конфигурации_и_модерация.md",
                     "07_Программные_требования/Конфигурации_и_модерация.md"],
     },
@@ -76,24 +77,26 @@ DOCUMENTS = [
         "sources": ["09_Архитектура_и_API/DOC-07_Архитектура.md"],
     },
     {
-        "id": "DOC-08", "version": "1.1", "date": "25.11.2026",
+        "id": "DOC-08", "version": "1.2", "date": "25.11.2026",
         "title": "Справочник API учебной платформы", "author": "Анохин Г.А.",
         "change_author": "Самбьюи А.Ж.",
-        "change": "Сверен API конфигураций и модерации; уточнены просрочка в ведомости и административном обзоре, последовательность публикации.",
+        "change": "Актуализирован статус авторского исправления TC-CFG-008 в DOC-10; контракты операций сохранены.",
         "sources": ["09_Архитектура_и_API/DOC-08_Справочник_API.md",
                     "09_Архитектура_и_API/DOC-08_API_сессий.md"],
     },
     {
-        "id": "DOC-10", "version": "1.0", "date": "20.11.2026",
+        "id": "DOC-10", "version": "1.1", "date": "25.11.2026",
         "title": "План верификации программного обеспечения", "author": "Анохин Г.А.",
-        "change": "Описаны условия проверки, сценарии по всем доменам и их связи с требованиями.",
+        "change_author": "Самбьюи А.Ж.",
+        "change": "Уточнены собственные кейсы CFG и инфраструктуры: роли, чтение на границах срока, публикация, повторы и восстановление. Исполнение не проводилось.",
         "sources": ["10_Верификация_и_тестирование/DOC-10_План_верификации.md",
                     "10_Верификация_и_тестирование/DOC-10_Верификация_сессий.md"],
     },
     {
-        "id": "DOC-13.5", "version": "0.2", "date": "20.11.2026",
+        "id": "DOC-13.5", "version": "0.3", "date": "25.11.2026",
         "title": "Протокол формальной инспекции архитектуры и API", "author": "Анохин Г.А.",
-        "change": "Зафиксированы результаты сверки DOC-07 и DOC-08 и два замечания для рассмотрения.",
+        "change_author": "Самбьюи А.Ж.",
+        "change": "Сохранена исходная сверка от 20.11, добавлены материалы повторного разбора двух авторских исправлений; решение участников ожидается.",
         "sources": ["08_Протоколы_формальных_инспекций/DOC-13.5_Протокол_ФИ-АРХ-API.md"],
     },
     {
@@ -114,6 +117,24 @@ DOCUMENTS = [
         "change": "Описаны автоматическое закрытие мероприятия, срок личной сессии и повторное прохождение по настройке преподавателя.",
         "sources": ["03_Карточки_доменов/Сессии_задач.md"],
     },
+    {
+        "id": "Вклад DOC-09", "version": "0.1", "date": "25.11.2026",
+        "title": "Вклад Самбьюи в матрицу трассировки", "author": "Самбьюи А.Ж.",
+        "change": "Подготовлены связи 13 собственных SR с реальными SWR/TC; общая матрица остаётся за редактором.",
+        "sources": ["05_Трассировка/DOC-09_Вклад_Самбьюи.md"],
+    },
+    {
+        "id": "DOC-13.4", "version": "0.1", "date": "25.11.2026",
+        "title": "Пакет подготовки ФИ-SWR", "author": "Самбьюи А.Ж.",
+        "change": "Подготовлены комплект, план ролей, вопросы и форма записи итогов; заседание не подтверждено.",
+        "sources": ["08_Протоколы_формальных_инспекций/DOC-13.4_Подготовка_ФИ-SWR.md"],
+    },
+    {
+        "id": "DOC-13.6", "version": "0.1", "date": "25.11.2026",
+        "title": "Пакет секретаря ФИ-TRACE+VER", "author": "Самбьюи А.Ж.",
+        "change": "Подготовлены зависимости, вопросы и форма протокола; полный объект инспекции и заседание ожидаются.",
+        "sources": ["08_Протоколы_формальных_инспекций/DOC-13.6_Подготовка_ФИ-TRACE-VER.md"],
+    },
 ]
 ROOT_EXPORTS = {
     "DOC-03": "03_ПУКПО_План_управления_конфигурацией/ПУКПО.pdf",
@@ -127,6 +148,9 @@ ROOT_EXPORTS = {
     "DOC-08": "09_Архитектура_и_API/DOC-08_Справочник_API.pdf",
     "DOC-10": "10_Верификация_и_тестирование/DOC-10_План_верификации.pdf",
     "DOC-13.5": "08_Протоколы_формальных_инспекций/DOC-13.5_Протокол_ФИ-АРХ-API.pdf",
+    "Вклад DOC-09": "05_Трассировка/DOC-09_Вклад_Самбьюи.pdf",
+    "DOC-13.4": "08_Протоколы_формальных_инспекций/DOC-13.4_Подготовка_ФИ-SWR.pdf",
+    "DOC-13.6": "08_Протоколы_формальных_инспекций/DOC-13.6_Подготовка_ФИ-TRACE-VER.pdf",
     "Методика ID": "notes/methodology/Методика_идентификаторов.pdf",
     "Глоссарий": "notes/methodology/Глоссарий.pdf",
     "Карточка домена": "notes/domains/Сессии_задач.pdf",
@@ -215,6 +239,14 @@ def transform(value, origin, document, owners, headings):
     if not isinstance(value, dict):
         return value
     result = {k: transform(v, origin, document, owners, headings) for k, v in value.items()}
+    if result.get("t") == "Image":
+        attrs, label, address = result["c"]
+        asset = (origin.parent / unquote(address[0])).resolve()
+        if not asset.is_relative_to(REPO) or not asset.exists():
+            raise ValueError("Не найдено изображение в репозитории: " + address[0])
+        if asset.with_suffix(".pdf").exists():
+            asset = asset.with_suffix(".pdf")
+        address[0] = Path(os.path.relpath(asset, pdf_path(document).parent)).as_posix()
     if result.get("t") == "Link":
         attrs, label, address = result["c"]
         target = remap_link(address[0], origin, document, owners, headings)
@@ -232,8 +264,10 @@ def transform(value, origin, document, owners, headings):
         return latex_inline(r"\hypertarget{" + anchor + "}{}")
     if result.get("t") == "Code":
         literal = result["c"][1]
-        if len(literal) > 10 and any(char in literal for char in "/.-_"):
-            wrapped = "".join(escape(char) + (r"\allowbreak{}" if char in "/.?=-_" else "") for char in literal)
+        if len(literal) > 10 and (any(char in literal for char in "/.-_") or re.search(r"[a-z][A-Z]", literal)):
+            wrapped = "".join((r"\allowbreak{}" if i and char.isupper() and literal[i-1].islower() else "")
+                              + escape(char) + (r"\allowbreak{}" if char in "/.?=-_" else "")
+                              for i, char in enumerate(literal))
             return {"t": "RawInline", "c": ["latex", r"\texttt{" + wrapped + "}"]}
     if result.get("t") == "Table":
         table = result["c"]
@@ -374,7 +408,11 @@ def main():
             outdir.mkdir(exist_ok=True)
             if pdflatex:
                 # ASCII staging names avoid Windows TeX filename-encoding limitations.
-                (outdir / "document.tex").write_text(tex, encoding="utf-8")
+                # Printed TeX keeps portable paths; the ASCII staging file resolves images
+                # against the printed file's directory while compiling from the build folder.
+                staged_tex = re.sub(r"(\\includegraphics(?:\[[^\]]*\])?)\{([^}]+)\}",
+                                    lambda match: match[1] + "{" + (target.parent / match[2]).resolve().as_posix() + "}", tex)
+                (outdir / "document.tex").write_text(staged_tex, encoding="utf-8")
                 for name in ("document.aux", "document.toc", "document.out"):
                     (outdir / name).unlink(missing_ok=True)
                 for attempt in range(1, 5):

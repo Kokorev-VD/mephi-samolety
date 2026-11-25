@@ -1,0 +1,204 @@
+% Источники: 08_Протоколы_формальных_инспекций/DOC-13.6_Подготовка_ФИ-TRACE-VER.md
+% Генератор: docs/build_pdf.py
+% Шаблон печатного представления. Содержимое подставляет docs/build_pdf.py.
+\documentclass[12pt,a4paper]{article}
+\usepackage{iftex}
+\ifPDFTeX
+  \usepackage[utf8]{inputenc}
+  \usepackage{cmap}
+  \usepackage[T2A]{fontenc}
+  % Tempora retains Times-like text and provides Cyrillic bold/italic shapes.
+  \usepackage{tempora,newtxmath}
+\else
+  \usepackage{fontspec}
+  \IfFontExistsTF{Times New Roman}
+    {\setmainfont{Times New Roman}}
+    {\setmainfont{Libertinus Serif}}
+  \IfFontExistsTF{Arial}{\setsansfont{Arial}}{\setsansfont{Latin Modern Sans}}
+  \IfFontExistsTF{Menlo}{\setmonofont{Menlo}[Scale=MatchLowercase]}
+    {\setmonofont{Latin Modern Mono}[Scale=MatchLowercase]}
+\fi
+\usepackage[russian]{babel}
+\usepackage{geometry}
+\geometry{left=25mm,right=15mm,top=20mm,bottom=20mm}
+\usepackage{setspace}
+\onehalfspacing
+\usepackage{indentfirst}
+\setlength{\parindent}{1.25cm}
+\setlength{\parskip}{2pt}
+\setlength{\emergencystretch}{3em}
+\usepackage{graphicx,booktabs,longtable,array,tabularx,calc,etoolbox}
+\newcounter{none} % Pandoc 3.9 uses this counter for unnumbered longtables.
+\usepackage{enumitem}
+\setlist[itemize]{leftmargin=1.25cm,itemsep=2pt,topsep=4pt}
+\setlist[enumerate]{leftmargin=1.25cm,itemsep=2pt,topsep=4pt}
+\newcommand{\tightlist}{\setlength{\itemsep}{0pt}\setlength{\parskip}{0pt}}
+\AtBeginEnvironment{longtable}{\small\singlespacing}
+\setlength{\LTpre}{8pt}
+\setlength{\LTpost}{8pt}
+\setlength{\tabcolsep}{5pt}
+\setlength{\LTleft}{0pt}
+\setlength{\LTright}{0pt}
+\usepackage{xurl}
+\usepackage[unicode,colorlinks=true,linkcolor=black,urlcolor=blue]{hyperref}
+\usepackage{bookmark}
+\hypersetup{pdftitle={Пакет секретаря ФИ-TRACE+VER},pdfauthor={Самбьюи А.Ж.},pdfsubject={Криптотренажёр mephi-12}}
+\urlstyle{same}
+\pagestyle{plain}
+\setcounter{secnumdepth}{3}
+\setcounter{tocdepth}{2}
+\listfiles
+
+\begin{document}
+\hypersetup{pageanchor=false}
+\begin{titlepage}
+  \thispagestyle{empty}
+  \centering
+  {\large НИЯУ МИФИ\par}
+  \vspace*{3.5cm}
+  {\LARGE\bfseries Пакет секретаря ФИ-TRACE+VER\par}
+  \vspace{0.5cm}
+  {\large DOC-13.6\par}
+  \vspace{0.6cm}
+  {\large Платформа для изучения и практики курса по криптографии\par}
+  {\large Криптотренажёр mephi-12\par}
+  \vspace{0.7cm}
+  {\large Версия 0.1\par}
+  {\large Редакция от 25.11.2026\par}
+  \vspace{1cm}
+  \begin{tabularx}{\textwidth}{@{}p{3.4cm}Xp{4cm}@{}}
+    \toprule
+    Роль & ФИО & Подпись / Дата \\
+    \midrule
+    Разработал & Самбьюи А.Ж. & \\
+    \addlinespace[6pt]
+    Согласовано & & \\
+    \addlinespace[6pt]
+    Утверждено & & \\
+    \bottomrule
+  \end{tabularx}
+  \vfill
+  {\large Москва, 2026\par}
+\end{titlepage}
+\hypersetup{pageanchor=true}
+
+\section*{Лист регистрации изменений}
+\addcontentsline{toc}{section}{Лист регистрации изменений}
+\begingroup\small\singlespacing
+\noindent
+\begin{tabularx}{\textwidth}{@{}p{1.2cm}p{2cm}p{2.5cm}Xp{1.8cm}@{}}
+\toprule
+Версия & Дата & Автор & Содержание изменения & Утвердил \\
+\midrule
+0.1 & 25.11.2026 & Самбьюи А.Ж. & Подготовлены зависимости, вопросы и форма протокола; полный объект инспекции и заседание ожидаются. & \\
+\bottomrule
+\end{tabularx}
+\endgroup
+\clearpage
+\begingroup\small\singlespacing
+\tableofcontents
+\endgroup
+\clearpage
+
+\hypertarget{doc-136-пакет-секретаря-фи-tracever}{}
+
+Редакция 0.1 от 25.11.2026. Подготовил Самбьюи А.Ж. как секретарь по плану спринта 3. Статус --- подготовка к инспекции; заседание и решения не подтверждены.
+
+\section{Комплект и зависимости}\label{ux43aux43eux43cux43fux43bux435ux43aux442-ux438-ux437ux430ux432ux438ux441ux438ux43cux43eux441ux442ux438}
+
+\hypertarget{комплект-и-зависимости}{}
+
+Объект задачи 3.11 --- общая матрица DOC-09, план верификации DOC-10 и план интеграционного тестирования DOC-11. В доступном комплекте есть {\href{../10\_Верификация\_и\_тестирование/DOC-10\_План\_верификации.pdf\#doc-10-план-верификации-программного-обеспечения}{DOC-10 v1.1}} и {\href{../05\_Трассировка/DOC-09\_Вклад\_Самбьюи.pdf\#doc-09-вклад-самбьюи-в-матрицу-трассировки}{вклад Самбьюи в DOC-09}}. Полный DOC-09 и содержательный DOC-11 не найдены; доменный CSV не заменяет общую матрицу. Полный объект для итоговой инспекции пока не собран.
+
+{\def\LTcaptype{none} % do not increment counter
+\begin{longtable}[]{@{}
+  >{\raggedright\arraybackslash}p{(\linewidth - 2\tabcolsep) * \real{0.3200}}
+  >{\raggedright\arraybackslash}p{(\linewidth - 2\tabcolsep) * \real{0.6800}}@{}}
+\toprule\noalign{}
+\begin{minipage}[b]{\linewidth}\raggedright
+Плановая роль
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright
+Участник
+\end{minipage} \\
+\midrule\noalign{}
+\endhead
+\bottomrule\noalign{}
+\endlastfoot
+Ведущий & Георгиев Д.Д. \\
+Секретарь & Самбьюи А.Ж. \\
+Рецензент & Анохин Г.А.; рассматривает чужие материалы \\
+Ответственные авторы & Портнов Л.М. --- DOC-09, Кокорев В.Д. --- DOC-10, Минасов М.Р. --- DOC-11 \\
+\end{longtable}
+}
+
+Плановые даты 20--21.11.2026 не подтверждают заседание. Фактический состав и роли устанавливаются перед рассмотрением. Секретарь фиксирует решения участников, не заменяя их собственной оценкой своих кейсов или CSV.
+
+По DOC-04 секретарь не должен быть автором проверяемого документа; для сводных материалов план также выделяет ответственного редактора. Самбьюи подготовил доменный CSV и кейсы DOC-10. До заседания ведущий и участники должны разрешить вопрос допустимости планового секретаря при таком вкладе либо изменить фактическое назначение. Этот пакет не подтверждает допустимость совмещения и не назначает замену самостоятельно.
+
+\section{Подготовка секретаря}\label{ux43fux43eux434ux433ux43eux442ux43eux432ux43aux430-ux441ux435ux43aux440ux435ux442ux430ux440ux44f}
+
+\hypertarget{подготовка-секретаря}{}
+
+До заседания собрать точные редакции трёх документов, полный перечень SR/SWR и лист рецензента; проверить относительные ссылки из фактических папок. Обозначить неполный комплект, отсутствующие определения и неразобранные предложения. Не заполнять показатели инспекции до появления фактических данных.
+
+При рассмотрении каждой связи различать существование ID, смысл соответствия и достаточность кейса. Одинаковый TC может покрывать несколько SR, если его условия и результаты действительно проверяют каждое из них. Покрытие собственной части 13/13 не является покрытием всего проекта. Описательный кейс не даёт статуса «тест пройден».
+
+\section{Контрольные цепочки}\label{ux43aux43eux43dux442ux440ux43eux43bux44cux43dux44bux435-ux446ux435ux43fux43eux447ux43aux438}
+
+\hypertarget{контрольные-цепочки}{}
+
+{\def\LTcaptype{none} % do not increment counter
+\begin{longtable}[]{@{}
+  >{\raggedright\arraybackslash}p{(\linewidth - 2\tabcolsep) * \real{0.3200}}
+  >{\raggedright\arraybackslash}p{(\linewidth - 2\tabcolsep) * \real{0.6800}}@{}}
+\toprule\noalign{}
+\begin{minipage}[b]{\linewidth}\raggedright
+Цепочка
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright
+Что должно быть прослежено
+\end{minipage} \\
+\midrule\noalign{}
+\endhead
+\bottomrule\noalign{}
+\endlastfoot
+Регистрация → группа → шаблон → сессия & Подтверждённое членство, доступный состав, отдельные UUID и целостная выдача \\
+Банк → публикация → старт → вердикт & Полная опубликованная редакция, выбор пары при старте, прежний эталон после правки банка \\
+Повторное прохождение & Выбор повтора при публикации, новый UUID, сохранение предыдущих результатов \\
+Ответ → очередь → фиксация → чтение & Исходные t\_in/L, атомарность, своевременная обработка после D, сохранённый вердикт \\
+Перезапуск & Те же данные и сроки; чтение не запускает повторную предметную проверку \\
+\end{longtable}
+}
+
+Сценарии DOC-11 должен предоставить его автор; таблица задаёт вопросы к полноте, а не подготовленный за него план интеграционного тестирования.
+
+\section{Форма протокольной записи}\label{ux444ux43eux440ux43cux430-ux43fux440ux43eux442ux43eux43aux43eux43bux44cux43dux43eux439-ux437ux430ux43fux438ux441ux438}
+
+\hypertarget{форма-протокольной-записи}{}
+
+{\def\LTcaptype{none} % do not increment counter
+\begin{longtable}[]{@{}
+  >{\raggedright\arraybackslash}p{(\linewidth - 2\tabcolsep) * \real{0.3200}}
+  >{\raggedright\arraybackslash}p{(\linewidth - 2\tabcolsep) * \real{0.6800}}@{}}
+\toprule\noalign{}
+\begin{minipage}[b]{\linewidth}\raggedright
+Сведения
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright
+Состояние до заседания
+\end{minipage} \\
+\midrule\noalign{}
+\endhead
+\bottomrule\noalign{}
+\endlastfoot
+Фактические дата, время, формат, явка & Не подтверждены \\
+Проверяемые редакции DOC-09/10/11 и перечень файлов & Ожидают полного комплекта и фиксации ведущим \\
+Листы рецензирования & Ожидаются \\
+Принятые замечания, их номера DEF, ответственные и сроки & Заполняются по решениям участников \\
+Число рассмотренных и принятых замечаний, затраты времени & Рассчитываются только по фактической записи \\
+Решение, повторное рассмотрение, подписи & Не подтверждены \\
+\end{longtable}
+}
+
+Для каждого фактического замечания секретарь запишет точное место, нарушенный критерий, источник, последствие, решение, ответственного и срок. Пустые сведения не заменяются нулём принятых дефектов или отметкой «принято».
+
+
+\end{document}

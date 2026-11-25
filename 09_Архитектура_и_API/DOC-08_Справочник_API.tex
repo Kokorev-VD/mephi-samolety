@@ -5,8 +5,10 @@
 \usepackage{iftex}
 \ifPDFTeX
   \usepackage[utf8]{inputenc}
+  \usepackage{cmap}
   \usepackage[T2A]{fontenc}
-  \usepackage{newtxtext,newtxmath}
+  % Tempora retains Times-like text and provides Cyrillic bold/italic shapes.
+  \usepackage{tempora,newtxmath}
 \else
   \usepackage{fontspec}
   \IfFontExistsTF{Times New Roman}
@@ -26,6 +28,7 @@
 \setlength{\parskip}{2pt}
 \setlength{\emergencystretch}{3em}
 \usepackage{graphicx,booktabs,longtable,array,tabularx,calc,etoolbox}
+\newcounter{none} % Pandoc 3.9 uses this counter for unnumbered longtables.
 \usepackage{enumitem}
 \setlist[itemize]{leftmargin=1.25cm,itemsep=2pt,topsep=4pt}
 \setlist[enumerate]{leftmargin=1.25cm,itemsep=2pt,topsep=4pt}
@@ -44,6 +47,7 @@
 \pagestyle{plain}
 \setcounter{secnumdepth}{3}
 \setcounter{tocdepth}{2}
+\listfiles
 
 \begin{document}
 \hypersetup{pageanchor=false}
@@ -59,8 +63,8 @@
   {\large Платформа для изучения и практики курса по криптографии\par}
   {\large Криптотренажёр mephi-12\par}
   \vspace{0.7cm}
-  {\large Версия 1.0\par}
-  {\large Редакция от 20.11.2026\par}
+  {\large Версия 1.1\par}
+  {\large Редакция от 25.11.2026\par}
   \vspace{1cm}
   \begin{tabularx}{\textwidth}{@{}p{3.4cm}Xp{4cm}@{}}
     \toprule
@@ -86,7 +90,7 @@
 \toprule
 Версия & Дата & Автор & Содержание изменения & Утвердил \\
 \midrule
-1.0 & 20.11.2026 & Анохин Г.А. & Сведены публичные операции платформы и контракты сессий. Указаны форматы запросов, результатов и отказов. & \\
+1.1 & 25.11.2026 & Самбьюи А.Ж. & Сверен API конфигураций и модерации; уточнены просрочка в ведомости и административном обзоре, последовательность публикации. & \\
 \bottomrule
 \end{tabularx}
 \endgroup
@@ -112,9 +116,10 @@
 \endhead
 \bottomrule\noalign{}
 \endlastfoot
-Редакция & 1.0 от 20.11.2026 \\
+Редакция & 1.1 от 25.11.2026 \\
 Владелец справочника & Минасов М.Р. \\
 Автор раздела о сессиях & Анохин Г.А. \\
+Предметная сверка конфигураций, мероприятий и модерации & Самбьюи А.Ж., 25.11.2026 \\
 Статус & Редакторская версия для согласования с владельцами предметных разделов \\
 \end{longtable}
 }
@@ -246,7 +251,7 @@
 
 \texttt{POST /\allowbreak{}api/\allowbreak{}assessments} требует роль \texttt{TEACHER}. В теле обязательны строковое название \texttt{title} и упорядоченный массив позиций \texttt{items}. Поле \texttt{repeatAllowed} задаёт правило повтора. Значение \texttt{true} разрешает повторное прохождение после завершения предыдущего, \texttt{false} запрещает. В черновике поле можно опустить или передать \texttt{null}, если преподаватель ещё не сделал выбор. Любое иное значение даёт 400. Для сохранения черновика без заданий клиент передаёт \texttt{"items":\ {[}{]}}. Если поле \texttt{items} пропущено или содержит значение другого типа, сервер отвечает 400. В каждой позиции требуется строковый идентификатор зарегистрированного типа \texttt{type}. Для \texttt{CUSTOM\_\allowbreak{}TEXT} преподаватель указывает UUID своего упражнения в \texttt{customTaskId}. Для математической позиции в приведённом ниже запросе достаточно кода типа. Модуль использует обычные правила генерации. Дополнительные настройки позиции зависят от описания конкретного модуля. Поле \texttt{solutionSchema} описывает только ответ студента. Параметр \texttt{bitLength} в операции самостоятельной генерации Эль-Гамаля относится к той операции. Одинаковый тип допускается на разных позициях. Клиент их не объединяет.
 
-Пусть созданное упражнение получило UUID \texttt{7d3c4781-\allowbreak{}6c9c-\allowbreak{}493d-\allowbreak{}9162-\allowbreak{}044fb753ca60}. Преподаватель включает этот вопрос в первую позицию, а задание Эль-Гамаля --- во вторую.
+В примере создано упражнение с UUID \texttt{7d3c4781-\allowbreak{}6c9c-\allowbreak{}493d-\allowbreak{}9162-\allowbreak{}044fb753ca60}. Преподаватель включает этот вопрос в первую позицию, а задание Эль-Гамаля --- во вторую.
 
 \begin{verbatim}
 {
@@ -284,6 +289,34 @@
 
 Успешная публикация возвращает 200. Объект мероприятия содержит \texttt{assessmentId}, состояние \texttt{state\ =\ PUBLISHED}, название \texttt{title}, состав \texttt{items}, назначенную группу \texttt{groupId}, обе границы времени и сохранённое \texttt{repeatAllowed}. Публикация закрепляет порядок позиций, редакции вариантов с эталонами и правило повтора. При отказе сохраняется прежнее состояние. Повтор публикации уже опубликованной работы даёт \texttt{409 ASSESSMENT\_\allowbreak{}ALREADY\_\allowbreak{}PUBLISHED}.
 
+\subsubsection{Пример последовательности отказов и публикации}\label{ux43fux440ux438ux43cux435ux440-ux43fux43eux441ux43bux435ux434ux43eux432ux430ux442ux435ux43bux44cux43dux43eux441ux442ux438-ux43eux442ux43aux430ux437ux43eux432-ux438-ux43fux443ux431ux43bux438ux43aux430ux446ux438ux438}
+
+\hypertarget{пример-последовательности-отказов-и-публикации}{}
+
+Во всех запросах публикации следующего примера преподаватель имеет доступ к группе и передаёт все три поля из объекта выше: \texttt{groupId}, \texttt{opensAt}, \texttt{closesAt}. Между запросами он изменяет тот же собственный черновик. Отказы не меняют его \texttt{assessmentId} и не создают запись расписания.
+
+{\def\LTcaptype{none} % do not increment counter
+\begin{longtable}[]{@{}
+  >{\raggedright\arraybackslash}p{(\linewidth - 2\tabcolsep) * \real{0.3200}}
+  >{\raggedright\arraybackslash}p{(\linewidth - 2\tabcolsep) * \real{0.6800}}@{}}
+\toprule\noalign{}
+\begin{minipage}[b]{\linewidth}\raggedright
+Сохранённый черновик перед запросом публикации
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright
+Ожидаемый ответ и состояние
+\end{minipage} \\
+\midrule\noalign{}
+\endhead
+\bottomrule\noalign{}
+\endlastfoot
+\texttt{items\ =\ {[}{]}}, выбор \texttt{repeatAllowed} отложен & \texttt{409 ASSESSMENT\_\allowbreak{}EMPTY}; остаётся \texttt{DRAFT} \\
+Через \texttt{PUT /\allowbreak{}api/\allowbreak{}assessments/\allowbreak{}\{assessmentId\}} сохранена одна допустимая позиция; \texttt{repeatAllowed} пропущен или равен \texttt{null} & \texttt{409 ASSESSMENT\_\allowbreak{}RETAKE\_\allowbreak{}POLICY\_\allowbreak{}REQUIRED}; остаётся \texttt{DRAFT} \\
+Тем же \texttt{PUT} сохранены название, одна позиция и явное \texttt{repeatAllowed\ =\ false} & \texttt{200}; становится \texttt{PUBLISHED}, карточка видна назначенной группе \\
+\end{longtable}
+}
+
+Пропуск \texttt{closesAt} не проверяет пустой состав: такой запрос получает 400 из-за отсутствующего обязательного поля. Для рассмотрения параллельной правки и публикации также заранее задаются допустимое назначение, непустой состав и явный режим повторов. Это пример контракта API, а не отчёт об исполнении {\href{../10\_Верификация\_и\_тестирование/DOC-10\_План\_верификации.pdf\#tc-cfg-008}{TC-CFG-008}}.
+
 \subsection{Расписание студента}\label{ux440ux430ux441ux43fux438ux441ux430ux43dux438ux435-ux441ux442ux443ux434ux435ux43dux442ux430}
 
 \hypertarget{расписание-студента}{}
@@ -299,6 +332,33 @@
 \texttt{GET /\allowbreak{}api/\allowbreak{}assessments/\allowbreak{}\{assessmentId\}/\allowbreak{}results} без тела или параметров возвращает результаты опубликованной работы. Для чтения требуются роль \texttt{TEACHER}, авторство работы и действующее назначение её группы. При отсутствии роли ответ 403. Если преподаватель указал неизвестную или чужую работу, черновик либо работу группы, которой он уже не управляет, ответ 404 во всех случаях. Запрос не изменяет результатов.
 
 Ответ 200 содержит \texttt{assessmentId} (UUID работы), \texttt{groupId} (UUID группы) и массив \texttt{sessions}. Каждый элемент --- отдельное прохождение в {\hyperlink{1-создание-сессии}{публичном формате сессии}}, включая собственный UUID прохождения \texttt{id}, UUID студента \texttt{userId}, время создания \texttt{createdAt}, срок \texttt{deadlineAt}, состояние \texttt{state} и задачи \texttt{problems} с сохранёнными вердиктами. Пока никто не начал работу, \texttt{sessions} равен \texttt{{[}{]}}. При разрешённых повторах преподаватель различает прохождения одного студента по \texttt{id}. Эталоны, закрытые данные проверки и привязки к кабинету МИФИ в ответ не входят.
+
+Состояния задач и итог сессии определяются на момент чтения по тому же {\hyperlink{3-чтение-состояния-и-восстановление-после-обрыва-связи}{контракту просрочки}}, что и при чтении студентом. Ведомость не выдаёт устаревшее \texttt{NEW} только потому, что планировщик ещё не выполнил очередной проход. Обозначим срок подачи \texttt{deadlineAt} через \texttt{D}, время получения полного своевременного ответа --- \texttt{t\_in}, его исходный предел обработки --- \texttt{L =\allowbreak{} t\_\allowbreak{}in + 60 секунд}. Сохранённый вердикт имеет приоритет: он остаётся в \texttt{result} вместе с соответствующим состоянием задачи. Для задачи без вердикта действуют следующие случаи.
+
+{\def\LTcaptype{none} % do not increment counter
+\begin{longtable}[]{@{}
+  >{\raggedright\arraybackslash}p{(\linewidth - 2\tabcolsep) * \real{0.3200}}
+  >{\raggedright\arraybackslash}p{(\linewidth - 2\tabcolsep) * \real{0.6800}}@{}}
+\toprule\noalign{}
+\begin{minipage}[b]{\linewidth}\raggedright
+Момент чтения и принятые ответы
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright
+Представление задачи в ведомости
+\end{minipage} \\
+\midrule\noalign{}
+\endhead
+\bottomrule\noalign{}
+\endlastfoot
+До \texttt{D} & \texttt{NEW}, \texttt{result\ =\ null}; в том числе если обработка прежнего ответа закончилась техническим таймаутом без вердикта \\
+В \texttt{D} или позднее, без своевременного ответа в допустимой обработке & \texttt{FAILED}, \texttt{result\ =\ null} \\
+В \texttt{D} или позднее, ответ получен при \texttt{t\_in\ \textless{}\ D}, остаётся в обработке и исходный \texttt{L} ещё не достигнут & \texttt{NEW}, \texttt{result\ =\ null} \\
+В \texttt{D} или позднее, наступил \texttt{L}, вердикта и другого своевременного ответа в допустимой обработке нет & \texttt{FAILED}, \texttt{result\ =\ null} \\
+\end{longtable}
+}
+
+Состояние набора вычисляется по этим же представлениям задач: пока есть открытая задача, набор имеет \texttt{NEW}; когда все закрыты, \texttt{SOLVED} требует успеха каждой, иначе набор имеет \texttt{FAILED}. Ведомость не запускает предметную проверку, не назначает новый срок и не предоставляет преподавателю право отправить ответ за студента.
+
+Например, \texttt{D} наступает в 10:30:00, а ближайший фоновый проход ожидается в 10:30:30. При чтении в 10:30:01 задача без ответа уже имеет \texttt{FAILED} и \texttt{result\ =\ null}. Если допустимый полный ответ получен в 10:29:59.900 и ещё обрабатывается, в 10:30:01 задача имеет \texttt{NEW}. При отсутствии сохранённого вердикта и другой своевременной обработки ровно в 10:30:59.900 она имеет \texttt{FAILED} и \texttt{result\ =\ null}. Вердикт, сохранённый до этой границы, остаётся доступен при любом последующем чтении. Примеры задают ожидаемое поведение, а не результат испытаний.
 
 \section{Учётная запись и вход}\label{ux443ux447ux451ux442ux43dux430ux44f-ux437ux430ux43fux438ux441ux44c-ux438-ux432ux445ux43eux434}
 
@@ -356,6 +416,8 @@
 \texttt{GET /\allowbreak{}api/\allowbreak{}moderator/\allowbreak{}tasks/\allowbreak{}session} доступен пользователю с ролью \texttt{ADMIN}. Параметры и тело запроса отсутствуют. До получения данных сервер проверяет JWT и право административного просмотра. При отсутствии действительного токена возвращается 401, без роли \texttt{ADMIN} --- 403. Студент видит свой набор через запрос чтения собственной сессии.
 
 При успехе ответ 200 содержит массив сессий всех пользователей. Элемент имеет поля \texttt{id}, \texttt{assessmentId}, \texttt{userId}, \texttt{createdAt}, \texttt{deadlineAt}, \texttt{state} и \texttt{problems} в {\hyperlink{1-создание-сессии}{формате сессии}}. По \texttt{userId} администратор различает владельцев, а по \texttt{state} сессии и состояниям её задач --- незавершённые и законченные наборы. Если сессий нет, возвращается \texttt{{[}{]}}. Чтение не изменяет состояния.
+
+Для состояний в ответе применяется тот же момент чтения и учёт своевременных ответов, что в {\hyperlink{результаты-контрольного-мероприятия}{ведомости преподавателя}} и собственной сессии. Фраза «чтение не изменяет состояния» означает отсутствие предметной попытки и нового вердикта; она не разрешает возвращать прежнее \texttt{NEW} после срока без действующей своевременной обработки. Закрытые эталоны и приватный контекст проверки в административное представление не входят.
 
 \section{Типы заданий и авторские упражнения}\label{ux442ux438ux43fux44b-ux437ux430ux434ux430ux43dux438ux439-ux438-ux430ux432ux442ux43eux440ux441ux43aux438ux435-ux443ux43fux440ux430ux436ux43dux435ux43dux438ux44f}
 
@@ -426,6 +488,37 @@
 }
 
 Системные основания для преподавателя, студента и администратора даны в {\href{../04\_Системные\_требования/DOC-05\_Системные\_требования.pdf\#doc-05-системные-требования}{DOC-05}}. Схемы запросов студента и примеры чтения сохранённого результата входят в {\hyperlink{doc-08-справочник-api-сессии-задач}{раздел о сессиях}}.
+
+\section{Предметная сверка конфигураций и модерации}\label{ux43fux440ux435ux434ux43cux435ux442ux43dux430ux44f-ux441ux432ux435ux440ux43aux430-ux43aux43eux43dux444ux438ux433ux443ux440ux430ux446ux438ux439-ux438-ux43cux43eux434ux435ux440ux430ux446ux438ux438}
+
+\hypertarget{предметная-сверка-конфигураций-и-модерации}{}
+
+25.11.2026 Самбьюи А.Ж. сверил свою часть API с {\href{../07\_Программные\_требования/DOC-06.6\_Конфигурации\_и\_модерация.pdf\#конфигурации-контрольные-мероприятия-и-модерация}{SWR-CFG-001--008}} и {\href{../07\_Программные\_требования/DOC-06\_Программные\_требования.pdf\#приложение-а-модель-данных}{логической моделью данных DOC-06}}. Методы, пути, поля, роли и коды отказов сохранены. Для группового каталога, банка, черновиков, публикации, расписания и модерации сопоставлены права, состав ответа и сохраняемые связи. Уточнены представление просрочки при чтении и последовательность публикации с обязательными параметрами.
+
+Замечание 1 из {\href{../08\_Протоколы\_формальных\_инспекций/DOC-13.5\_Протокол\_ФИ-АРХ-API.pdf\#замечания-к-разбору}{DOC-13.5}} учтено в тексте ведомости этой редакции; принятие исправления участниками инспекции не подтверждено. Замечание 2 относится к формулировке TC-CFG-008: пример API показывает необходимые предусловия, но карточка DOC-10 остаётся без изменения и требует правки владельцем. Исторический протокол и его решения этой редакцией не заменяются. Исполнение программного обеспечения не проверялось.
+
+\section{История редакций}\label{ux438ux441ux442ux43eux440ux438ux44f-ux440ux435ux434ux430ux43aux446ux438ux439}
+
+\hypertarget{история-редакций}{}
+
+{\def\LTcaptype{none} % do not increment counter
+\begin{longtable}[]{@{}
+  >{\raggedright\arraybackslash}p{(\linewidth - 2\tabcolsep) * \real{0.3200}}
+  >{\raggedright\arraybackslash}p{(\linewidth - 2\tabcolsep) * \real{0.6800}}@{}}
+\toprule\noalign{}
+\begin{minipage}[b]{\linewidth}\raggedright
+Редакция
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright
+Изменение
+\end{minipage} \\
+\midrule\noalign{}
+\endhead
+\bottomrule\noalign{}
+\endlastfoot
+1.0, 20.11.2026 & Подготовлен сводный справочник операций и контрактов сессий \\
+1.1, 25.11.2026 & Самбьюи А.Ж.: выполнена предметная сверка CFG, уточнён момент определения состояний в ведомости и модерации, добавлен пример последовательности публикации. Форматы обмена и часть о сессиях сохранены \\
+\end{longtable}
+}
 
 \section{DOC-08. Справочник API. Сессии задач}\label{doc-08-ux441ux43fux440ux430ux432ux43eux447ux43dux438ux43a-api-ux441ux435ux441ux441ux438ux438-ux437ux430ux434ux430ux447}
 

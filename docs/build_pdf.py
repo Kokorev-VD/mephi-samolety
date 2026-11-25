@@ -17,16 +17,23 @@ REPO = ROOT.parent
 DATE = "07.11.2026"
 DOCUMENTS = [
     {
+        "id": "DOC-03", "version": "1.0", "date": "25.11.2026",
+        "title": "План управления конфигурацией программного обеспечения", "author": "Самбьюи А.Ж.",
+        "change": "Уточнены управление изменениями, состояния, трассировка, выпуск, восстановление и сборка из Markdown. Подготовлено к проверке.",
+        "sources": ["03_ПУКПО_План_управления_конфигурацией/DOC-03_ПУКПО.md"],
+    },
+    {
         "id": "DOC-02", "version": "1.1", "date": "20.11.2026",
         "title": "Техническое задание", "author": "Анохин Г.А.",
         "change": "Определены права преподавателя на группы, подтверждение группы студента через МИФИ, время проведения контрольной и условия повторного прохождения.",
         "sources": ["02_Техническое_задание/DOC-02_Техническое_задание.md"],
     },
     {
-        "id": "DOC-05", "version": "1.1", "date": "20.11.2026",
+        "id": "DOC-05", "version": "1.2", "date": "25.11.2026",
         "title": "Системные требования к учебной платформе",
         "author": "Анохин Г.А.",
-        "change": "Сведены системные требования ко всем учебным и служебным операциям, доступу, сохранности данных и времени отклика.",
+        "change_author": "Самбьюи А.Ж.",
+        "change": "Уточнены условия проверки SR-CFG-001–008 и SR-SYS-011–015; сохранены ID, роли, сроки и численные показатели.",
         "sources": ["04_Системные_требования/DOC-05_Системные_требования.md",
                     "04_Системные_требования/Сессии_задач.md",
                     "04_Системные_требования/Интеграция.md",
@@ -34,11 +41,20 @@ DOCUMENTS = [
                     "04_Системные_требования/Платформенные_и_предметные_требования.md"],
     },
     {
-        "id": "DOC-06", "version": "1.0", "date": "20.11.2026", "title": "Сводные программные требования",
+        "id": "DOC-06", "version": "1.1", "date": "25.11.2026", "title": "Сводные программные требования",
         "author": "Анохин Г.А.",
-        "change": "Сведены обязанности программных компонентов для всех доменов. Включены требования платформы и редакторское приложение о данных.",
+        "change_author": "Самбьюи А.Ж.",
+        "change": "Подключён единый исходник SWR-CFG с самостоятельной сборкой DOC-06.6. Предметные определения и прежние адреса переходов сохранены.",
         "sources": ["07_Программные_требования/DOC-06_Программные_требования.md",
-                    "07_Программные_требования/Программные_требования_платформы.md"],
+                    "07_Программные_требования/Программные_требования_платформы.md",
+                    "07_Программные_требования/Конфигурации_и_модерация.md"],
+    },
+    {
+        "id": "DOC-06.6", "version": "0.8", "date": "25.11.2026",
+        "title": "Шаблоны наборов задач и модерация", "author": "Самбьюи А.Ж.",
+        "change": "Подготовлены самостоятельный DOC-06.6, границы подсистемы и таблица связей SR → SWR → TC. Определения SWR-CFG сохранены в общем исходнике.",
+        "sources": ["07_Программные_требования/DOC-06.6_Конфигурации_и_модерация.md",
+                    "07_Программные_требования/Конфигурации_и_модерация.md"],
     },
     {
         "id": "DOC-06.2", "version": "1.0", "date": "20.11.2026", "title": "Сессии задач и планировщик",
@@ -99,9 +115,11 @@ DOCUMENTS = [
     },
 ]
 ROOT_EXPORTS = {
+    "DOC-03": "03_ПУКПО_План_управления_конфигурацией/ПУКПО.pdf",
     "DOC-02": "02_Техническое_задание/Техническое_задание.pdf",
     "DOC-05": "04_Системные_требования/DOC-05_Системные_требования.pdf",
     "DOC-06": "07_Программные_требования/DOC-06_Программные_требования.pdf",
+    "DOC-06.6": "07_Программные_требования/DOC-06.6_Конфигурации_и_модерация.pdf",
     "DOC-06.2": "07_Программные_требования/DOC-06.2_Сессии_задач_и_планировщик.pdf",
     "DOC-06.3": "07_Программные_требования/DOC-06.3_Ранцевые_криптосистемы.pdf",
     "DOC-07": "09_Архитектура_и_API/DOC-07_Архитектура.pdf",
@@ -115,7 +133,7 @@ ROOT_EXPORTS = {
 
 
 def run(command, **kwargs):
-    return subprocess.run(command, check=True, text=True, **kwargs)
+    return subprocess.run(command, check=True, text=True, encoding="utf-8", **kwargs)
 
 
 def escape(text):
@@ -253,6 +271,7 @@ def main():
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--pandoc", default=os.environ.get("PANDOC", "pandoc"))
     parser.add_argument("--tectonic", default=os.environ.get("TECTONIC", "tectonic"))
+    parser.add_argument("--pdflatex", help="Собрать PDF через указанный pdfLaTeX вместо Tectonic")
     parser.add_argument("--tex-only", action="store_true")
     parser.add_argument("--root-copies", action="store_true",
                         help="Также обновить .tex и .pdf в исходных корневых папках")
@@ -261,11 +280,14 @@ def main():
     args = parser.parse_args()
     pandoc = shutil.which(args.pandoc)
     tectonic = shutil.which(args.tectonic)
-    if not pandoc or (not args.tex_only and not tectonic):
-        parser.error("Нужны Pandoc и Tectonic в PATH либо пути через --pandoc и --tectonic")
+    pdflatex = shutil.which(args.pdflatex) if args.pdflatex else None
+    if args.pdflatex and not pdflatex:
+        parser.error("Не найден pdfLaTeX: " + args.pdflatex)
+    if not pandoc or (not args.tex_only and not (tectonic or pdflatex)):
+        parser.error("Нужны Pandoc и Tectonic либо pdfLaTeX через --pandoc, --tectonic, --pdflatex")
     build = ROOT / ".build"
     build.mkdir(exist_ok=True)
-    template = (ROOT / "latex/document.tex").read_text()
+    template = (ROOT / "latex/document.tex").read_text(encoding="utf-8")
     asts, owners, headings = {}, {}, {}
     for document in DOCUMENTS:
         for source in document["sources"]:
@@ -285,13 +307,32 @@ def main():
     for index, (document, group_owners) in enumerate(jobs):
         if args.only and document["id"] not in args.only:
             continue
+        # A shared chapter is internal when it belongs to the current assembled document.
+        document_owners = dict(group_owners)
+        definition_anchors = set()
+        for source in document["sources"]:
+            path = (ROOT / source).resolve()
+            document_owners[path] = document
+            source_blocks = asts[path]["blocks"]
+            for block_index, block in enumerate(source_blocks):
+                if block.get("t") == "Header" and block_index:
+                    alias = standalone_anchor(source_blocks[block_index - 1])
+                    if alias:
+                        definition_anchors.add(alias)
         combined = None
         for position, source in enumerate(document["sources"]):
             path = (ROOT / source).resolve()
             ast = copy.deepcopy(asts[path])
             blocks = []
-            for block in ast["blocks"]:
+            for block_index, block in enumerate(ast["blocks"]):
                 if block["t"] != "Header":
+                    alias = standalone_anchor(block)
+                    next_is_header = (block_index + 1 < len(ast["blocks"])
+                                      and ast["blocks"][block_index + 1].get("t") == "Header")
+                    # Preserve Markdown compatibility anchors, but let the printed definition
+                    # own the destination when both sources occur in one PDF.
+                    if alias in definition_anchors and not next_is_header:
+                        continue
                     blocks.append(block)
                     continue
                 level, attributes, inlines = block["c"]
@@ -309,7 +350,7 @@ def main():
                     blocks.append(block)
                 for name in destinations:
                     blocks.append({"t": "RawBlock", "c": ["latex", r"\hypertarget{" + name + "}{}"]})
-            ast["blocks"] = transform(blocks, path, document, group_owners, headings)
+            ast["blocks"] = transform(blocks, path, document, document_owners, headings)
             if combined is None:
                 combined = ast
             else:
@@ -325,17 +366,43 @@ def main():
         tex = tex.replace("@@BODY@@", body)
         tex = "% Источники: " + ", ".join(document["sources"]) + "\n% Генератор: docs/build_pdf.py\n" + tex
         target = pdf_path(document).with_suffix(".tex")
-        target.write_text(tex)
+        target.parent.mkdir(parents=True, exist_ok=True)
+        target.write_text(tex, encoding="utf-8")
         if not args.tex_only:
             outdir = build / ("pdf-" + str(index))
             outdir.mkdir(exist_ok=True)
-            result = subprocess.run([tectonic, "--keep-logs", "--outdir", str(outdir), target.name], cwd=target.parent,
-                                    text=True, stdout=subprocess.PIPE, stderr=subprocess.STDOUT)
-            (outdir / "build-output.txt").write_text(result.stdout)
-            if result.returncode:
-                print(result.stdout)
-                raise SystemExit("Не собран " + target.name)
-            shutil.copyfile(outdir / target.with_suffix(".pdf").name, pdf_path(document))
+            if pdflatex:
+                # ASCII staging names avoid Windows TeX filename-encoding limitations.
+                (outdir / "document.tex").write_text(tex, encoding="utf-8")
+                for name in ("document.aux", "document.toc", "document.out"):
+                    (outdir / name).unlink(missing_ok=True)
+                for attempt in range(1, 5):
+                    result = subprocess.run([pdflatex, "-interaction=nonstopmode", "-halt-on-error",
+                                             "-no-shell-escape", "document.tex"], cwd=outdir,
+                                            text=True, encoding="utf-8", errors="replace",
+                                            stdout=subprocess.PIPE, stderr=subprocess.STDOUT)
+                    (outdir / f"pass-{attempt}.txt").write_text(result.stdout, encoding="utf-8")
+                    if result.returncode:
+                        print(result.stdout)
+                        raise SystemExit("Не собран " + target.name)
+                    log = (outdir / "document.log").read_text(encoding="utf-8", errors="replace")
+                    if attempt >= 2 and not re.search(r"Rerun to get|Rerun .* right|rerun LaTeX", log):
+                        break
+                else:
+                    raise SystemExit("Не стабилизировались ссылки: " + target.name)
+                if re.search(r"undefined references|Reference .* undefined|Missing character", log):
+                    raise SystemExit("Не разрешены ссылки или символы: " + target.name)
+                compiled_pdf = outdir / "document.pdf"
+            else:
+                result = subprocess.run([tectonic, "--keep-logs", "--outdir", str(outdir), target.name], cwd=target.parent,
+                                        text=True, encoding="utf-8", errors="replace",
+                                        stdout=subprocess.PIPE, stderr=subprocess.STDOUT)
+                (outdir / "build-output.txt").write_text(result.stdout, encoding="utf-8")
+                if result.returncode:
+                    print(result.stdout)
+                    raise SystemExit("Не собран " + target.name)
+                compiled_pdf = outdir / target.with_suffix(".pdf").name
+            shutil.copyfile(compiled_pdf, pdf_path(document))
         if "root_pdf" in document and document["id"] == "DOC-05":
             alias = REPO / "04_Системные_требования/Системные_требования.tex"
             shutil.copyfile(target, alias)
@@ -344,7 +411,7 @@ def main():
         report.append({"id": document["id"], "tex": str(target.relative_to(REPO)),
                        "pdf": str(pdf_path(document).relative_to(REPO)), "sources": document["sources"]})
         print(document["id"] + ": " + str(target.relative_to(REPO)), flush=True)
-    (build / "documents.json").write_text(json.dumps(report, ensure_ascii=False, indent=2))
+    (build / "documents.json").write_text(json.dumps(report, ensure_ascii=False, indent=2), encoding="utf-8")
 
 
 if __name__ == "__main__":

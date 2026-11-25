@@ -3,8 +3,10 @@
 \usepackage{iftex}
 \ifPDFTeX
   \usepackage[utf8]{inputenc}
+  \usepackage{cmap}
   \usepackage[T2A]{fontenc}
-  \usepackage{newtxtext,newtxmath}
+  % Tempora retains Times-like text and provides Cyrillic bold/italic shapes.
+  \usepackage{tempora,newtxmath}
 \else
   \usepackage{fontspec}
   \IfFontExistsTF{Times New Roman}
@@ -24,6 +26,7 @@
 \setlength{\parskip}{2pt}
 \setlength{\emergencystretch}{3em}
 \usepackage{graphicx,booktabs,longtable,array,tabularx,calc,etoolbox}
+\newcounter{none} % Pandoc 3.9 uses this counter for unnumbered longtables.
 \usepackage{enumitem}
 \setlist[itemize]{leftmargin=1.25cm,itemsep=2pt,topsep=4pt}
 \setlist[enumerate]{leftmargin=1.25cm,itemsep=2pt,topsep=4pt}
@@ -42,6 +45,7 @@
 \pagestyle{plain}
 \setcounter{secnumdepth}{3}
 \setcounter{tocdepth}{2}
+\listfiles
 
 \begin{document}
 \hypersetup{pageanchor=false}
